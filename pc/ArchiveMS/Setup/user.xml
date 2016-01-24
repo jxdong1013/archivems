@@ -1,0 +1,30 @@
+<users>
+  <user>
+    <id>0</id>
+    <code>
+    </code>
+    <name>
+    </name>
+    <password>
+    </password>
+    <date>2016-01-16 13:58:33</date>
+  </user>
+  <user>
+    <id>1</id>
+    <code>
+    </code>
+    <name>admin</name>
+    <password>
+    </password>
+    <date>2016-01-24 18:59:24</date>
+  </user>
+  <user>
+    <id>3</id>
+    <code>
+    </code>
+    <name>nannan</name>
+    <password>
+    </password>
+    <date>2016-01-24 20:19:03</date>
+  </user>
+</users>
