@@ -258,6 +258,37 @@ namespace ArchiveStation
             }
         }
 
+
+        public ArchiveResult ArchiveToBox(List<int> archiveIds, int boxid)
+        {
+            try
+            {
+                string url = Bean.Variable.RootUrl() + "/LabelRestfull/ArchiveToBox";
+
+                String jsonParam = JsonConvert.SerializeObject( archiveIds );
+                String paramstr = String.Format("{{archiveids:{0}, boxid:{1}}}", jsonParam, boxid );
+                HttpUtil util = new HttpUtil();
+                String responseContent = "";
+                WebHeaderCollection header = new WebHeaderCollection();
+
+                HttpStatusCode statusCode = util.Post(Variable.globelCookieContainer,
+                    url, paramstr, "application/json", "POST",
+                    ref responseContent, ref header);
+                if (statusCode != HttpStatusCode.OK)
+                {
+                    return null;
+                }
+                ArchiveResult result = JsonConvert.DeserializeObject<ArchiveResult>(responseContent);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                return null;
+            }
+        }
+
         public UserPageResult GetUser(Page<Bean.UserBean> page)
         {
             try
@@ -286,8 +317,7 @@ namespace ArchiveStation
                 return null;
             }
         }
-
-
+        
         public UserResult AddUser(UserBean bean)
         {
             try

@@ -148,6 +148,16 @@ namespace ContractMvcWeb.Controllers
             return jsonresult;
         }
 
+        [HttpPost]
+        public JsonResult ArchiveToBox(List<int> archiveids, int boxid)
+        {
+            ContractMvcWeb.Models.LabelContext db = new LabelContext();
+            bool isok = db.ArchiveToBox(archiveids, boxid);
 
+            JsonResult jsonResult = new JsonResult();
+            Result result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ? "归盒操作成功" : "归盒操作失败", null);
+            jsonResult.Data = result;
+            return jsonResult;
+        }
     }
 }

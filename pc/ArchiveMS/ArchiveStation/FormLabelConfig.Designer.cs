@@ -32,15 +32,15 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.ckbNoPosition = new System.Windows.Forms.CheckBox();
             this.btnConfig = new System.Windows.Forms.Button();
-            this.btnConfigCancel = new System.Windows.Forms.Button();
-            this.btnConfigOk = new System.Windows.Forms.Button();
             this.txtKey = new UILibrary.SkinTextBox();
             this.btnGo = new System.Windows.Forms.Button();
+            this.ckbAll = new System.Windows.Forms.CheckBox();
             this.pageControl1 = new ArchiveStation.PageControl();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.ckbSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.idx = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,62 +49,44 @@
             this.pages = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.remark = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lblPosition = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.position = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelLoading.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.panel3);
+            this.panel1.Controls.Add(this.ckbNoPosition);
+            this.panel1.Controls.Add(this.btnConfig);
             this.panel1.Controls.Add(this.txtKey);
             this.panel1.Controls.Add(this.btnGo);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 30);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(764, 53);
+            this.panel1.Size = new System.Drawing.Size(764, 65);
             this.panel1.TabIndex = 11;
             // 
-            // panel3
+            // ckbNoPosition
             // 
-            this.panel3.Controls.Add(this.btnConfig);
-            this.panel3.Controls.Add(this.btnConfigCancel);
-            this.panel3.Controls.Add(this.btnConfigOk);
-            this.panel3.Location = new System.Drawing.Point(545, 13);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(184, 30);
-            this.panel3.TabIndex = 5;
+            this.ckbNoPosition.AutoSize = true;
+            this.ckbNoPosition.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.ckbNoPosition.Location = new System.Drawing.Point(93, 44);
+            this.ckbNoPosition.Name = "ckbNoPosition";
+            this.ckbNoPosition.Size = new System.Drawing.Size(120, 16);
+            this.ckbNoPosition.TabIndex = 5;
+            this.ckbNoPosition.Text = "只显示未归盒数据";
+            this.ckbNoPosition.UseVisualStyleBackColor = true;
             // 
             // btnConfig
             // 
-            this.btnConfig.Location = new System.Drawing.Point(0, 0);
+            this.btnConfig.Location = new System.Drawing.Point(568, 14);
             this.btnConfig.Name = "btnConfig";
             this.btnConfig.Size = new System.Drawing.Size(75, 30);
             this.btnConfig.TabIndex = 0;
             this.btnConfig.Text = "档案归盒";
             this.btnConfig.UseVisualStyleBackColor = true;
-            // 
-            // btnConfigCancel
-            // 
-            this.btnConfigCancel.Location = new System.Drawing.Point(83, -1);
-            this.btnConfigCancel.Name = "btnConfigCancel";
-            this.btnConfigCancel.Size = new System.Drawing.Size(75, 30);
-            this.btnConfigCancel.TabIndex = 2;
-            this.btnConfigCancel.Text = "取消";
-            this.btnConfigCancel.UseVisualStyleBackColor = true;
-            this.btnConfigCancel.Visible = false;
-            // 
-            // btnConfigOk
-            // 
-            this.btnConfigOk.Location = new System.Drawing.Point(2, -1);
-            this.btnConfigOk.Name = "btnConfigOk";
-            this.btnConfigOk.Size = new System.Drawing.Size(75, 30);
-            this.btnConfigOk.TabIndex = 1;
-            this.btnConfigOk.Text = "确定";
-            this.btnConfigOk.UseVisualStyleBackColor = true;
-            this.btnConfigOk.Visible = false;
+            this.btnConfig.Click += new System.EventHandler(this.btnConfig_Click);
             // 
             // txtKey
             // 
@@ -138,13 +120,24 @@
             // 
             // btnGo
             // 
-            this.btnGo.Location = new System.Drawing.Point(463, 13);
+            this.btnGo.Location = new System.Drawing.Point(476, 13);
             this.btnGo.Name = "btnGo";
             this.btnGo.Size = new System.Drawing.Size(75, 30);
             this.btnGo.TabIndex = 4;
             this.btnGo.Text = "检索";
             this.btnGo.UseVisualStyleBackColor = true;
             this.btnGo.Click += new System.EventHandler(this.btnGo_Click);
+            // 
+            // ckbAll
+            // 
+            this.ckbAll.AutoSize = true;
+            this.ckbAll.Location = new System.Drawing.Point(50, 103);
+            this.ckbAll.Name = "ckbAll";
+            this.ckbAll.Size = new System.Drawing.Size(48, 16);
+            this.ckbAll.TabIndex = 6;
+            this.ckbAll.Text = "全选";
+            this.ckbAll.UseVisualStyleBackColor = true;
+            this.ckbAll.CheckedChanged += new System.EventHandler(this.ckbAll_CheckedChanged);
             // 
             // pageControl1
             // 
@@ -174,7 +167,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.ColumnHeadersHeight = 28;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ckbSelect,
             this.idx,
@@ -184,13 +177,13 @@
             this.pages,
             this.number,
             this.remark,
-            this.lblPosition});
+            this.position});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 83);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 95);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.ShowCellErrors = false;
-            this.dataGridView1.Size = new System.Drawing.Size(764, 386);
+            this.dataGridView1.Size = new System.Drawing.Size(764, 374);
             this.dataGridView1.TabIndex = 14;
             // 
             // backgroundWorker1
@@ -199,11 +192,18 @@
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
+            // backgroundWorker2
+            // 
+            this.backgroundWorker2.WorkerReportsProgress = true;
+            this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
+            this.backgroundWorker2.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker2_RunWorkerCompleted);
+            // 
             // ckbSelect
             // 
-            this.ckbSelect.HeaderText = "选择";
+            this.ckbSelect.Frozen = true;
+            this.ckbSelect.HeaderText = "";
             this.ckbSelect.Name = "ckbSelect";
-            this.ckbSelect.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ckbSelect.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ckbSelect.ToolTipText = "选择";
             this.ckbSelect.Width = 60;
             // 
@@ -256,24 +256,21 @@
             this.remark.MinimumWidth = 80;
             this.remark.Name = "remark";
             // 
-            // lblPosition
+            // position
             // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.lblPosition.DefaultCellStyle = dataGridViewCellStyle3;
-            this.lblPosition.HeaderText = "位置信息";
-            this.lblPosition.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.lblPosition.Name = "lblPosition";
-            this.lblPosition.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.lblPosition.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.lblPosition.Text = "位置信息";
-            this.lblPosition.ToolTipText = "位置信息";
-            this.lblPosition.UseColumnTextForLinkValue = true;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.position.DefaultCellStyle = dataGridViewCellStyle3;
+            this.position.HeaderText = "位置信息";
+            this.position.Name = "position";
+            this.position.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.position.ToolTipText = "位置信息";
             // 
             // FormLabelConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(770, 518);
+            this.Controls.Add(this.ckbAll);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.pageControl1);
             this.Controls.Add(this.panel1);
@@ -286,26 +283,28 @@
             this.Controls.SetChildIndex(this.panel1, 0);
             this.Controls.SetChildIndex(this.pageControl1, 0);
             this.Controls.SetChildIndex(this.dataGridView1, 0);
+            this.Controls.SetChildIndex(this.ckbAll, 0);
             this.panelLoading.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button btnConfig;
-        private System.Windows.Forms.Button btnConfigCancel;
-        private System.Windows.Forms.Button btnConfigOk;
         private UILibrary.SkinTextBox txtKey;
         private System.Windows.Forms.Button btnGo;
         private PageControl pageControl1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker2;
+        private System.Windows.Forms.CheckBox ckbNoPosition;
+        private System.Windows.Forms.CheckBox ckbAll;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ckbSelect;
         private System.Windows.Forms.DataGridViewTextBoxColumn idx;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
@@ -314,6 +313,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn pages;
         private System.Windows.Forms.DataGridViewTextBoxColumn number;
         private System.Windows.Forms.DataGridViewTextBoxColumn remark;
-        private System.Windows.Forms.DataGridViewLinkColumn lblPosition;
+        private System.Windows.Forms.DataGridViewTextBoxColumn position;
     }
 }

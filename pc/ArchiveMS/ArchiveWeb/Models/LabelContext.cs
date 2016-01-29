@@ -334,5 +334,25 @@ namespace ContractMvcWeb.Models
             return page;
         }
 
+
+        public bool ArchiveToBox(List<int> archiveids, int boxid)
+        {
+            try
+            {
+                String ids = "";
+                System.Collections.ArrayList sqlList = new System.Collections.ArrayList();
+                foreach (int id in archiveids)
+                {
+                    string sql = string.Format(" update t_archive set boxid={0} where id ={1}", boxid, id);
+                    sqlList.Add(sql);
+                }
+                MySqlHelper.ExecuteSqlTran(sqlList);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

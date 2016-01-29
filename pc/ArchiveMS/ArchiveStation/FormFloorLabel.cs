@@ -139,5 +139,160 @@ namespace ArchiveStation
                 this.Close();
             }
         }
+
+
+        IntPtr deviceId = IntPtr.Zero;
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                deviceId = Reader.RD_OpenDevice();
+                if (deviceId != IntPtr.Zero )
+                {
+                    MessageBox.Show("打开设备成功");
+                }
+                else
+                {
+                    MessageBox.Show("打开设备失败");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                StringBuilder port = new StringBuilder(100);
+                Int32 num = new Int32();
+                int result = Reader.RD_GetSerialNum(port, ref num);
+                if (result == 0)
+                {
+                    MessageBox.Show(port + "," + num);
+                }
+                else
+                {
+                    MessageBox.Show("error");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (deviceId== IntPtr.Zero ) return;
+            int result =  Reader.RD_CloseUSB(deviceId);
+            if (result == 0)
+            {
+                MessageBox.Show("关闭ok");
+            }
+            else
+            {
+                MessageBox.Show("关闭failed");
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                StringBuilder param= new StringBuilder(255);
+                int result = Reader.RD_GetSysInfo(deviceId , 0,  param);
+                if (result == 0)
+                {
+                    MessageBox.Show(param.ToString());
+                }
+                else
+                {
+                    MessageBox.Show("error");
+                        
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                StringBuilder puid = new StringBuilder(255);
+                int result = Reader.RD_InventoryTagPsSingle(deviceId, 1, puid);
+                if (result == 0)
+                {
+                    MessageBox.Show(puid.ToString() );
+                }
+                else
+                {
+                    MessageBox.Show("error code " + result );
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }            
+        }
+
+        protected void inventory()
+        {
+            try
+            {
+                StringBuilder puid = new StringBuilder(255);
+                int result = Reader.RD_InventoryTagPsSingle(deviceId, 1, puid);
+                if (result == 0)
+                {
+                    //MessageBox.Show(puid.ToString());
+                }
+                else
+                {
+                    //MessageBox.Show("error code " + result);
+                }
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.Message);
+            }            
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            inventory();
+        }
+
+        Reader reader = new Reader();
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            reader.GetUIDCallBack += reader_GetUIDCallBack;
+
+            reader.Start();
+        }
+
+        void reader_GetUIDCallBack(string uid)
+        {
+            //throw new NotImplementedException();
+            if (txtRFID.InvokeRequired)
+            {
+                txtRFID.Invoke(new Action<String>( reader_GetUIDCallBack) , new string[] { uid });
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(uid)) return;
+                txtRFID.Text = uid;
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            reader.Stop();
+        }
     }
 }

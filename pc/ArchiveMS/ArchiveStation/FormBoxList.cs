@@ -11,9 +11,29 @@ namespace ArchiveStation
 {
     public partial class FormBoxList : FormBase
     {
+        protected String _operateType = "";
+
+        public BoxBean SelectedBoxLabel
+        {
+            get;
+            set;
+        }
+
         public FormBoxList()
         {
             InitializeComponent();
+        }
+
+        public FormBoxList(string operateType)
+        {
+            _operateType = operateType;
+            InitializeComponent();
+
+            if (_operateType.Equals("档案归盒"))
+            {
+                dataGridView1.MultiSelect = false;
+                dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            }
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -194,10 +214,29 @@ namespace ArchiveStation
             Bean.BoxBean bean = dataGridView1.Rows[e.RowIndex].DataBoundItem as Bean.BoxBean;
             if (bean == null) return;
 
+            if (_operateType.Equals("档案归盒"))
+            {
+                SelectBoxLabel(bean);
+            }
+            else
+            {
+                EditBoxLabel(bean);
+            }
+
+        }
+
+        protected void EditBoxLabel( Bean.BoxBean bean )
+        {
             FormBoxLabel form = new FormBoxLabel(bean);
             form.OnRefreshData += form_OnRefreshData;
             form.StartPosition = FormStartPosition.CenterParent;
             form.ShowDialog();
+        }
+
+        protected void SelectBoxLabel(BoxBean bean)
+        {
+            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.SelectedBoxLabel = bean;
         }
     }
 }
