@@ -129,7 +129,31 @@ namespace ContractMvcWeb.Controllers
 
             return json;
         }
-        
+
+
+        [HttpGet]
+        public JsonResult DeleteBoxLabel(int id)
+        {
+            ContractMvcWeb.Models.LabelContext db = new Models.LabelContext();
+            Result result = null;
+
+            bool isExistArchive = db.ExistArchivesOfBoxLabel(id);
+            if (isExistArchive)
+            {
+                result = new Result((int)ResultCodeEnum.Error, "请先删除档案再操作。", null);
+            }
+            else
+            {
+                bool isok = db.DeleteBoxLabel(id);
+                result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ? "删除成功" : "删除失败", null);
+            }
+
+            JsonResult jsonResult = new JsonResult();
+            jsonResult.Data = result;
+            jsonResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jsonResult;
+        }
+
         [HttpGet]
         public JsonResult GetBoxLabelList(String name, String rfid, int pageidx = 0, int pagesize = 20)
         {

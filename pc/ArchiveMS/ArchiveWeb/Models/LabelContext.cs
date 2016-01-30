@@ -121,6 +121,16 @@ namespace ContractMvcWeb.Models
             return count > 0 ? true : false;
         }
 
+        public bool ExistArchivesOfBoxLabel(int id)
+        {
+            String sql = string.Format(" select count(1) from t_archive where  boxid =" + id);
+            object obj = MySqlHelper.GetSingle(sql);
+            if (obj == null) return false;
+            int count = 0;
+            int.TryParse(obj.ToString(), out count);
+            return count > 0 ? true : false;
+        }
+
         public bool AddFloorLabel(FloorLabel model)
         {
             try
@@ -266,6 +276,13 @@ namespace ContractMvcWeb.Models
                 return false;
             }
 
+        }
+
+        public bool DeleteBoxLabel(int id)
+        {
+            string sql = string.Format(" delete from t_boxlabel where id = " + id);
+            int count = MySqlHelper.ExecuteSql(sql);
+            return count > 0 ? true : false;
         }
 
         protected string GetWhere(BoxLabel query)

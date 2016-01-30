@@ -162,62 +162,10 @@ namespace ArchiveStation
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                StringBuilder port = new StringBuilder(100);
-                Int32 num = new Int32();
-                int result = Reader.RD_GetSerialNum(port, ref num);
-                if (result == 0)
-                {
-                    MessageBox.Show(port + "," + num);
-                }
-                else
-                {
-                    MessageBox.Show("error");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            if (deviceId== IntPtr.Zero ) return;
-            int result =  Reader.RD_CloseUSB(deviceId);
-            if (result == 0)
-            {
-                MessageBox.Show("关闭ok");
-            }
-            else
-            {
-                MessageBox.Show("关闭failed");
-            }
-        }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            try
-            {
-                StringBuilder param= new StringBuilder(255);
-                int result = Reader.RD_GetSysInfo(deviceId , 0,  param);
-                if (result == 0)
-                {
-                    MessageBox.Show(param.ToString());
-                }
-                else
-                {
-                    MessageBox.Show("error");
-                        
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            Reader.GetInstance().GetSysInfo();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -267,13 +215,10 @@ namespace ArchiveStation
             inventory();
         }
 
-        Reader reader = new Reader();
+        
 
         private void button6_Click(object sender, EventArgs e)
         {
-            reader.GetUIDCallBack += reader_GetUIDCallBack;
-
-            reader.Start();
         }
 
         void reader_GetUIDCallBack(string uid)
@@ -290,9 +235,36 @@ namespace ArchiveStation
             }
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        
+
+        private void FormFloorLabel_Activated(object sender, EventArgs e)
         {
-            reader.Stop();
+            Reader.GetInstance().GetUIDCallBack += FormFloorLabel_GetUIDCallBack;
+            Reader.GetInstance().Start();
+        }
+
+        void FormFloorLabel_GetUIDCallBack(string uid)
+        {
+            if (txtRFID.InvokeRequired)
+            {
+                txtRFID.Invoke(new Action<String>(FormFloorLabel_GetUIDCallBack), new string[] { uid });
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(uid)) return;
+                txtRFID.Text = uid;
+            }
+        }
+
+        private void FormFloorLabel_Deactivate(object sender, EventArgs e)
+        {
+            Reader.GetInstance().GetUIDCallBack -= FormFloorLabel_GetUIDCallBack;
+            Reader.GetInstance().Stop();
+        }
+
+        private void FormFloorLabel_FormClosing(object sender, FormClosingEventArgs e)
+        {
+     
         }
     }
 }

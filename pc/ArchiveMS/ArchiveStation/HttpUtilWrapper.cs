@@ -259,6 +259,36 @@ namespace ArchiveStation
         }
 
 
+        public BoxResult DeleteBoxLabel(BoxBean bean)
+        {
+            try
+            {
+                string url = Bean.Variable.RootUrl() + "/LabelRestfull/DeleteBoxLabel";
+
+                String paramstr = String.Format("?id={0}", bean.id);
+                url += paramstr;
+                HttpUtil util = new HttpUtil();
+                String responseContent = "";
+                WebHeaderCollection header = new WebHeaderCollection();
+
+                HttpStatusCode statusCode = util.Post(Variable.globelCookieContainer,
+                    url, "", "application/x-www-form-urlencoded", "Get", ref responseContent, ref header);
+                if (statusCode != HttpStatusCode.OK)
+                {
+                    return null;
+                }
+                BoxResult result = JsonConvert.DeserializeObject<BoxResult>(responseContent);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                return null;
+            }
+        }
+
+
         public ArchiveResult ArchiveToBox(List<int> archiveIds, int boxid)
         {
             try

@@ -87,7 +87,7 @@
             this.txtName.TabIndex = 4;
             this.txtName.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtName.WaterColor = System.Drawing.Color.DarkGray;
-            this.txtName.WaterText = "请输入档案名称，负责人，编号";
+            this.txtName.WaterText = "请输入档案名称";
             this.txtName.WordWrap = true;
             this.txtName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtName_KeyDown);
             // 
@@ -117,7 +117,7 @@
             this.txtRFID.TabIndex = 5;
             this.txtRFID.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtRFID.WaterColor = System.Drawing.Color.DarkGray;
-            this.txtRFID.WaterText = "请输入档案名称，负责人，编号";
+            this.txtRFID.WaterText = "请扫描标签";
             this.txtRFID.WordWrap = true;
             this.txtRFID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtName_KeyDown);
             // 
@@ -156,7 +156,7 @@
             this.txtNumber.TabIndex = 7;
             this.txtNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtNumber.WaterColor = System.Drawing.Color.DarkGray;
-            this.txtNumber.WaterText = "请输入档案名称，负责人，编号";
+            this.txtNumber.WaterText = "请输入编号";
             this.txtNumber.WordWrap = true;
             this.txtNumber.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtName_KeyDown);
             // 
@@ -222,8 +222,11 @@
             this.Name = "FormBoxLabel";
             this.Radius = 10;
             this.RoundStyle = SkinForm.RoundStyle.All;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "档案盒标签注册";
+            this.Activated += new System.EventHandler(this.FormBoxLabel_Activated);
+            this.Deactivate += new System.EventHandler(this.FormBoxLabel_Deactivate);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtName_KeyDown);
             this.Controls.SetChildIndex(this.panelLoading, 0);
             this.Controls.SetChildIndex(this.panel1, 0);

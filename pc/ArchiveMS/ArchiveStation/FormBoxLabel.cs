@@ -134,5 +134,30 @@ namespace ArchiveStation
                 this.Close();
             }
         }
+
+        private void FormBoxLabel_Activated(object sender, EventArgs e)
+        {
+            Reader.GetInstance().GetUIDCallBack += FormBoxLabel_GetUIDCallBack;
+            Reader.GetInstance().Start();
+        }
+
+        void FormBoxLabel_GetUIDCallBack(string uid)
+        {
+            if (txtRFID.InvokeRequired)
+            {
+                txtRFID.Invoke(new Action<String>(FormBoxLabel_GetUIDCallBack), new string[] { uid });
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(uid)) return;
+                txtRFID.Text = uid;
+            }
+        }
+
+        private void FormBoxLabel_Deactivate(object sender, EventArgs e)
+        {
+            Reader.GetInstance().GetUIDCallBack -= FormBoxLabel_GetUIDCallBack;
+            Reader.GetInstance().Stop();
+        }
     }
 }

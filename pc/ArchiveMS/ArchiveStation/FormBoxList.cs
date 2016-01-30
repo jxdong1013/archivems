@@ -238,5 +238,78 @@ namespace ArchiveStation
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.SelectedBoxLabel = bean;
         }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex < 0 || e.RowIndex < 0) return;
+            if (dataGridView1.Columns[e.ColumnIndex].Name.ToLower().Trim().Equals("lbldelete"))
+            {
+                Bean.BoxBean bean = dataGridView1.Rows[e.RowIndex].DataBoundItem as Bean.BoxBean;
+                if (bean == null) return;
+                DialogResult result = MessageBox.Show("您确定要删除名称为【" + bean.name + "】的标签吗？", "询问", MessageBoxButtons.OKCancel);
+                if (result != System.Windows.Forms.DialogResult.OK) return;
+                DeleteBoxLabel(bean);
+            }
+        }
+
+
+        protected void DeleteBoxLabel(Bean.BoxBean bean)
+        {
+            if (backgroundWorker2.IsBusy) return;
+
+            panelLoading.Visible = true;
+            panelLoading.BringToFront();
+            lblLoadingText.Text = "正在请求删除操作，请稍等......";
+            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
+
+            backgroundWorker2.RunWorkerAsync(bean);
+        }
+
+        private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Bean.BoxBean bean = e.Argument as Bean.BoxBean;
+            if (bean == null) return;
+
+            HttpUtilWrapper wrapper = new HttpUtilWrapper();
+            Bean.BoxResult result = wrapper.DeleteBoxLabel(bean);
+
+            e.Result = result;
+        }
+
+        private void backgroundWorker2_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            try
+            {
+                if (e.Result == null)
+                {
+                    panelLoading.Visible = false;
+                    MessageBox.Show("操作失败，请重试");
+                    return;
+                }
+                Bean.BoxResult result = e.Result as Bean.BoxResult;
+                if (result == null)
+                {
+                    panelLoading.Visible = false;
+                    MessageBox.Show("操作失败，请重试");
+                    return;
+                }
+                if (result.Code == (int)Bean.Constant.ResultCodeEnum.Error)
+                {
+                    panelLoading.Visible = false;
+                    MessageBox.Show(result.Message);
+                    return;
+                }
+
+                String key = txtKey.Text.Trim();
+                Go(0, Bean.Constant.PAGESIZE, key);
+
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                panelLoading.Visible = false;
+            }
+        }
+
     }
 }

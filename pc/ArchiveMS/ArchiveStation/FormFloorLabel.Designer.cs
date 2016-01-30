@@ -41,11 +41,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
             this.panelLoading.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -94,7 +89,7 @@
             this.txtName.TabIndex = 4;
             this.txtName.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtName.WaterColor = System.Drawing.Color.DarkGray;
-            this.txtName.WaterText = "请输入档案名称，负责人，编号";
+            this.txtName.WaterText = "请输入档案名称";
             this.txtName.WordWrap = true;
             this.txtName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtName_KeyDown);
             // 
@@ -124,7 +119,7 @@
             this.txtRFID.TabIndex = 5;
             this.txtRFID.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtRFID.WaterColor = System.Drawing.Color.DarkGray;
-            this.txtRFID.WaterText = "请输入档案名称，负责人，编号";
+            this.txtRFID.WaterText = "请扫描标签";
             this.txtRFID.WordWrap = true;
             this.txtRFID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtName_KeyDown);
             // 
@@ -163,7 +158,7 @@
             this.txtNumber.TabIndex = 7;
             this.txtNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtNumber.WaterColor = System.Drawing.Color.DarkGray;
-            this.txtNumber.WaterText = "请输入档案名称，负责人，编号";
+            this.txtNumber.WaterText = "请输入编号";
             this.txtNumber.WordWrap = true;
             this.txtNumber.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtName_KeyDown);
             // 
@@ -203,13 +198,8 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.button7);
-            this.panel1.Controls.Add(this.button6);
             this.panel1.Controls.Add(this.button5);
             this.panel1.Controls.Add(this.button4);
-            this.panel1.Controls.Add(this.button3);
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.txtRFID);
             this.panel1.Controls.Add(this.btnOk);
             this.panel1.Controls.Add(this.lblTwo);
@@ -245,56 +235,6 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(11, 225);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(104, 23);
-            this.button3.TabIndex = 15;
-            this.button3.Text = "getserialnum";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(236, 199);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 14;
-            this.button2.Text = "close";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(11, 195);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 13;
-            this.button1.Text = "open";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(100, 170);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 18;
-            this.button6.Text = "button6";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(201, 170);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 19;
-            this.button7.Text = "button7";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
             // FormFloorLabel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -306,7 +246,12 @@
             this.Name = "FormFloorLabel";
             this.Radius = 10;
             this.RoundStyle = SkinForm.RoundStyle.All;
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "层架标签注册";
+            this.Activated += new System.EventHandler(this.FormFloorLabel_Activated);
+            this.Deactivate += new System.EventHandler(this.FormFloorLabel_Deactivate);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormFloorLabel_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtName_KeyDown);
             this.Controls.SetChildIndex(this.panelLoading, 0);
             this.Controls.SetChildIndex(this.panel1, 0);
@@ -330,12 +275,7 @@
         private System.Windows.Forms.Label lblOne;
         private System.Windows.Forms.Label lblTwo;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
     }
 }

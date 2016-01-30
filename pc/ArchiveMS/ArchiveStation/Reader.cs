@@ -28,17 +28,22 @@ namespace ArchiveStation
 
 
 
-        public System.Timers.Timer timer;
-        public IntPtr deviceId = IntPtr.Zero;
+        private System.Timers.Timer timer;
+        private IntPtr deviceId = IntPtr.Zero;
         public delegate void CallBack(string uid);
-        public event CallBack GetUIDCallBack=null; 
+        public event CallBack GetUIDCallBack=null;
+        private static Reader reader = new Reader();
 
-        public Reader()
+        public static Reader GetInstance()
+        {
+            return reader;
+        }
+
+        private Reader()
         {
             timer = new System.Timers.Timer(200);
             timer.Elapsed += timer_Elapsed;
-            timer.Enabled = false;
-           
+            timer.Enabled = false;           
         }
 
         public void Start()
@@ -56,15 +61,23 @@ namespace ArchiveStation
 
         protected void CloseDevice()
         {
-            if (deviceId == IntPtr.Zero) return;
-            int result = Reader.RD_CloseUSB(deviceId);
-            if (result == 0)
+            try
             {
-                //MessageBox.Show("关闭ok");
+                if (deviceId == IntPtr.Zero) return;
+                int result = Reader.RD_CloseUSB(deviceId);
+                if (result == 0)
+                {
+                    deviceId = IntPtr.Zero;
+                    //MessageBox.Show("关闭ok");
+                }
+                else
+                {
+                    //MessageBox.Show("关闭failed");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                //MessageBox.Show("关闭failed");
+                LogHelper.WriteException(ex);
             }
         }
 
@@ -88,6 +101,7 @@ namespace ArchiveStation
             catch (Exception ex)
             {
                 //MessageBox.Show(ex.Message);
+                LogHelper.WriteException(ex);
             }
         }
 
@@ -130,5 +144,53 @@ namespace ArchiveStation
             }
         }
 
+
+        protected void GetSerialNumber()
+        {
+            try
+            {
+                StringBuilder port = new StringBuilder(100);
+                Int32 num = new Int32();
+                int result = Reader.RD_GetSerialNum(port, ref num);
+                if (result == 0)
+                {
+                    //MessageBox.Show(port + "," + num);
+                }
+                else
+                {
+                    //MessageBox.Show("error");
+                }
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.Message);
+            }
+        }
+
+
+        public string GetSysInfo()
+        {
+            try
+            {
+                StringBuilder param = new StringBuilder(255);
+                int result = Reader.RD_GetSysInfo(deviceId, 0, param);
+                if (result == 0)
+                {
+                    return param.ToString();
+                    //MessageBox.Show(param.ToString());
+                }
+                else
+                {
+                    //MessageBox.Show("error");
+                    return "";
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                return "";
+                //MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
