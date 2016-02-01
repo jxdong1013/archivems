@@ -1,13 +1,47 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.jxd.archiveapp.fragments.SearchFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:id="@+id/rlheader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="search" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+    <com.huotu.android.library.libedittext.EditText
+        android:id="@+id/etKey"
+        android:layout_toLeftOf="@+id/tvSearch"
+        android:hint="请输入文件题目，负责人或编号"
+        style="@style/CyEditTextStyle"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="搜索"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_centerVertical="true"
+        android:id="@+id/tvSearch"
+        android:layout_alignParentRight="true"
+        android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+        android:id="@+id/refreslayout"
+        android:layout_below="@id/rlheader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleView"
+            android:scrollbars="none"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"></android.support.v7.widget.RecyclerView>
+    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+
+</RelativeLayout>
