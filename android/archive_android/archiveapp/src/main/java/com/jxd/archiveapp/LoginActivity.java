@@ -1,12 +1,10 @@
 package com.jxd.archiveapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -19,9 +17,7 @@ import com.jxd.archiveapp.bean.UserResult;
 import com.jxd.archiveapp.utils.AsyncHttpUtil;
 import com.jxd.archiveapp.utils.PreferenceHelper;
 import com.loopj.android.http.RequestParams;
-
 import java.net.SocketTimeoutException;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
@@ -30,7 +26,6 @@ public class LoginActivity extends BaseActivity implements
         View.OnClickListener , Handler.Callback
         //, ISimpleDialogListener
 {
-    private final static int REQUEST_UPDATE=2045;
     @Bind(R.id.header_back)
     public Button header_back;
     // 用户名
@@ -48,11 +43,7 @@ public class LoginActivity extends BaseActivity implements
     // 界面名称
     @Bind(R.id.header_title)
     public TextView header_title;
-
     Handler handler = new Handler(this);
-    //消息的类型
-    private int messageType = 0;
-
     private GsonResponseHandler<UserResult> gsonResponseHandler;
 
     @Override
@@ -72,16 +63,15 @@ public class LoginActivity extends BaseActivity implements
         forgetPsw.setVisibility(View.GONE);
         header_back.setOnClickListener(this);
 
-        if(getIntent().hasExtra("type")){
-            messageType = getIntent().getIntExtra("type", 0);
-        }
-
         gsonResponseHandler = new GsonResponseHandler<>(this, handler, UserResult.class );
 
-
         String username = PreferenceHelper.readString(this , Constant.USER_INFO_FILE, Constant.USER_NAME);
+        String pwd = PreferenceHelper.readString(this, Constant.USER_INFO_FILE,Constant.USER_PASSWORD);
         if( TextUtils.isEmpty(username)==false) {
             userName.setText(username);
+        }
+        if(TextUtils.isEmpty(pwd)==false){
+            passWord.setText(pwd);
         }
     }
 
@@ -102,8 +92,9 @@ public class LoginActivity extends BaseActivity implements
                 if( code == Constant.REQUEST_SCUESS) {
                     UserBean bean = result.getData();
                     PreferenceHelper.writeInt(this, Constant.USER_INFO_FILE, Constant.USER_USERID, bean.getUserid());
-                    PreferenceHelper.writeString(this, Constant.USER_INFO_FILE , Constant.USER_NAME , bean.getUsername() );
+                    PreferenceHelper.writeString(this, Constant.USER_INFO_FILE, Constant.USER_NAME, bean.getUsername());
                     PreferenceHelper.writeString(this , Constant.USER_INFO_FILE,Constant.USER_REALNAME,bean.getRealname());
+                    PreferenceHelper.writeString(this,Constant.USER_INFO_FILE,Constant.USER_PASSWORD,bean.getPassword());
                     PreferenceHelper.writeString(this,Constant.USER_INFO_FILE,Constant.USER_PHONE,bean.getPhone());
                     PreferenceHelper.writeString(this,Constant.USER_INFO_FILE,Constant.USER_SEX,bean.getSex());
 
@@ -132,7 +123,6 @@ public class LoginActivity extends BaseActivity implements
             return;
         }
 
-
         String username = userName.getText().toString();
         String password = passWord.getText().toString();
         if (TextUtils.isEmpty(username)) {
@@ -151,36 +141,8 @@ public class LoginActivity extends BaseActivity implements
         params.add("password", password);
         AsyncHttpUtil.post(Constant.LOGIN_URL, params, gsonResponseHandler);
 
-        //skipActivity(this , new Intent(this , MainActivity.class));
-
         //调用登录接口之前，先清空一下Token的值
         //PreferenceHelper.writeString(this.getApplicationContext(), Constant.LOGIN_USER_INFO, Constant.PRE_USER_TOKEN, "");
-
-//        String url = Constant.LOGIN_URL;
-//        HttpParaUtils httpUtils = new HttpParaUtils();
-//        Map<String,String> paras = new HashMap<>();
-//        String pwd = passWord.getText().toString();
-//
-//        String pwdEncy ="";
-//        try {
-//            pwdEncy = DigestUtils.md5DigestAsHex(pwd.getBytes("utf-8"));
-//        }catch (UnsupportedEncodingException ex){
-//        }
-//
-//        paras.put("username", userName.getText().toString().trim());
-//        paras.put("password", pwdEncy);
-//        url = httpUtils.getHttpGetUrl(url , paras);
-//
-//        GsonRequest<HTMerchantModel> loginRequest = new GsonRequest<HTMerchantModel>(
-//                Request.Method.GET,
-//                url ,
-//                HTMerchantModel.class,
-//                null,
-//                loginListener,
-//                new MJErrorListener(this)
-//        );
-//
-//        VolleyRequestManager.AddRequest(loginRequest);
     }
 
     @Override
@@ -212,12 +174,6 @@ public class LoginActivity extends BaseActivity implements
 //
 //    }
 
-//    @Override
-//    public void onPositiveButtonClicked(int requestCode) {
-//        if( requestCode == REQUEST_UPDATE){
-//            updateApp();
-//        }
-//    }
 
     public boolean onKeyDown(int keyCode, KeyEvent event){
         if (keyCode == KeyEvent.KEYCODE_BACK
@@ -229,57 +185,4 @@ public class LoginActivity extends BaseActivity implements
         }
         return super.onKeyDown(keyCode, event);
     }
-
-//    Response.Listener<HTMerchantModel> loginListener = new Response.Listener<HTMerchantModel>() {
-//        @Override
-//        public void onResponse(HTMerchantModel htMerchantModel) {
-//            LoginActivity.this.closeProgressDialog();
-//
-//            if( null == htMerchantModel ){
-//                SimpleDialogFragment.createBuilder( LoginActivity.this , LoginActivity.this.getSupportFragmentManager())
-//                        .setTitle("错误信息")
-//                        .setMessage("请求出错")
-//                        .setNegativeButtonText("关闭")
-//                        .show();
-//                return;
-//            }
-//            else if( htMerchantModel.getSystemResultCode() != 1){
-//                SimpleDialogFragment.createBuilder( LoginActivity.this , LoginActivity.this.getSupportFragmentManager())
-//                        .setTitle("错误信息")
-//                        .setMessage(htMerchantModel.getSystemResultDescription())
-//                        .setNegativeButtonText("关闭")
-//                        .show();
-//                return;
-//            }else if( htMerchantModel.getResultCode() !=1){
-//                SimpleDialogFragment.createBuilder( LoginActivity.this , LoginActivity.this.getSupportFragmentManager())
-//                        .setTitle("错误信息")
-//                        .setMessage(htMerchantModel.getResultDescription() )
-//                        .setNegativeButtonText("关闭")
-//                        .show();
-//                return;
-//            }
-//            if( htMerchantModel.getResultData() ==null ){
-//                DialogUtils.showDialog( LoginActivity.this , LoginActivity.this.getSupportFragmentManager(),
-//                        "错误信息","请求的数据有问题","关闭");
-//                return;
-//            }
-//
-//            MerchantModel user = htMerchantModel.getResultData().getUser();
-//            if(null != user)
-//            {
-//                //记录token
-//                SellerApplication.getInstance().writeMerchantInfo(user);
-//                Intent intent = new Intent(LoginActivity.this , MainActivity.class);
-//                intent.putExtra("type", messageType);
-//                EventBus.getDefault().post(new RefreshSettingEvent());
-//                ActivityUtils.getInstance().skipActivity(LoginActivity.this, intent );
-//            }
-//            else
-//            {
-//                ToastUtils.showShort( "未请求到数据");
-//            }
-//        }
-//    };
-
-
 }

@@ -14,6 +14,7 @@ public class Constant {
     public static String USER_INFO_FILE="user_info_file";
     public static String USER_USERID="user_id";
     public static String USER_NAME="user_name";
+    public static String USER_PASSWORD="user_password";
     public static String USER_REALNAME="user_realname";
     public static String USER_SEX = "user_sex";
     public static String USER_PHONE ="user_phone";

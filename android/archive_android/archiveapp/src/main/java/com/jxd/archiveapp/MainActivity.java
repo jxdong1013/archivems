@@ -1,6 +1,5 @@
 package com.jxd.archiveapp;
 
-
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
