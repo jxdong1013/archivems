@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +22,7 @@ import com.loopj.android.http.RequestParams;
 import java.net.SocketTimeoutException;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.conn.ConnectTimeoutException;
 import de.greenrobot.event.EventBus;
 
 public class LoginActivity extends BaseActivity implements
@@ -43,6 +46,11 @@ public class LoginActivity extends BaseActivity implements
     // 界面名称
     @Bind(R.id.header_title)
     public TextView header_title;
+    @Bind(R.id.login_setting)
+    TextView loginSetting;
+    @Bind(R.id.login_url)
+    com.huotu.android.library.libedittext.EditText loginUrl;
+
     Handler handler = new Handler(this);
     private GsonResponseHandler<UserResult> gsonResponseHandler;
 
@@ -63,6 +71,31 @@ public class LoginActivity extends BaseActivity implements
         forgetPsw.setVisibility(View.GONE);
         header_back.setOnClickListener(this);
 
+        loginSetting.setOnClickListener(this);
+
+        String url = PreferenceHelper.readString(this,Constant.URL_FILE,Constant.URL_API);
+        loginUrl.setText(url);
+
+        loginUrl.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String temp = s.toString();
+                if( temp.toString().endsWith("/")==false){
+                    temp +="/";
+                }
+                PreferenceHelper.writeString(LoginActivity.this, Constant.URL_FILE, Constant.URL_API, temp);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String temp = s.toString();
+            }
+        });
+
         gsonResponseHandler = new GsonResponseHandler<>(this, handler, UserResult.class );
 
         String username = PreferenceHelper.readString(this , Constant.USER_INFO_FILE, Constant.USER_NAME);
@@ -73,6 +106,8 @@ public class LoginActivity extends BaseActivity implements
         if(TextUtils.isEmpty(pwd)==false){
             passWord.setText(pwd);
         }
+
+
     }
 
     @Override
@@ -107,10 +142,11 @@ public class LoginActivity extends BaseActivity implements
                 }
             }
         }else {
-            if( msg.obj instanceof SocketTimeoutException ){
-                Snackbar.make( this.getWindow().getDecorView() ,"连接超时，请重试",Snackbar.LENGTH_LONG ).show();
+            if( msg.obj instanceof SocketTimeoutException || msg.obj instanceof ConnectTimeoutException  ){
+                Snackbar.make(this.getWindow().getDecorView(), "连接超时，请重试", Snackbar.LENGTH_LONG).show();
                 return  true;
-            }else {
+            }
+            else {
                 Toast.makeText(this, "登录失败", Toast.LENGTH_LONG).show();
                 return true;
             }
@@ -139,7 +175,7 @@ public class LoginActivity extends BaseActivity implements
         RequestParams params = new RequestParams();
         params.add("userName", username);
         params.add("password", password);
-        AsyncHttpUtil.post(Constant.LOGIN_URL, params, gsonResponseHandler);
+        AsyncHttpUtil.post( Constant.LOGIN_URL, params, gsonResponseHandler);
 
         //调用登录接口之前，先清空一下Token的值
         //PreferenceHelper.writeString(this.getApplicationContext(), Constant.LOGIN_USER_INFO, Constant.PRE_USER_TOKEN, "");
@@ -153,7 +189,10 @@ public class LoginActivity extends BaseActivity implements
             }
             break;
             case R.id.btnLogin: {
-                login();
+
+                this.skipActivity(this,MainActivity.class);
+
+                //login();
             }
             break;
             case R.id.header_back: {
@@ -161,6 +200,10 @@ public class LoginActivity extends BaseActivity implements
                 finish();
             }
             break;
+            case R.id.login_setting:{
+                loginUrl.setVisibility( loginUrl.getVisibility() == View.GONE ? View.VISIBLE : View.GONE );
+                break;
+            }
         }
     }
 

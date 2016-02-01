@@ -1,11 +1,11 @@
 package com.jxd.archiveapp.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +20,7 @@ public abstract class BaseFragment extends Fragment {
     protected String TAG;
     protected MApplication mApp;
     protected View mContentView;
-    //protected Engine mEngine;
     protected BaseActivity mActivity;
-
 
     @Override
     public void onAttach(Context context) {

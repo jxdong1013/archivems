@@ -4,106 +4,164 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.reflect.TypeToken;
+import com.jxd.archiveapp.Constant;
+import com.jxd.archiveapp.MApplication;
 import com.jxd.archiveapp.R;
+import com.jxd.archiveapp.adapters.LocationAdapter;
+import com.jxd.archiveapp.adapters.OnRCItemClickListener;
+import com.jxd.archiveapp.bean.LocationBean;
+import com.jxd.archiveapp.utils.JSONUtil;
+import com.jxd.archiveapp.utils.Logger;
+import com.jxd.archiveapp.utils.PreferenceHelper;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LocationFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LocationFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
-public class LocationFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class LocationFragment extends BaseFragment implements View.OnClickListener , OnRCItemClickListener {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
+    RecyclerView recyclerView;
+    LocationAdapter adapter;
+    TextView tvFloorName;
+    TextView tvInfo;
+    TextView tvOperate;
+    List<LocationBean> data;
+    RelativeLayout rlNoData;
+    TextView tvNoDataTip;
+    TextView tvNoDataPic;
 
     public LocationFragment() {
-        // Required empty public constructor
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment LocationFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static LocationFragment newInstance(String param1, String param2) {
+    public static LocationFragment newInstance() {
         LocationFragment fragment = new LocationFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+        setContentView(R.layout.fragment_location);
+        recyclerView = getViewById(R.id.location_boxs);
+        LinearLayoutManager manager = new LinearLayoutManager(this.getActivity());
+        recyclerView.setLayoutManager(manager);
+        tvFloorName = getViewById(R.id.location_floor);
+        tvInfo = getViewById(R.id.location_info);
+        tvOperate =getViewById(R.id.location_operate);
+        tvOperate.setTypeface(MApplication.typeface);
+
+        rlNoData = getViewById(R.id.location_nodata);
+        tvNoDataTip = getViewById(R.id.location_nodata_tip);
+        tvNoDataPic = getViewById(R.id.location_nodata_pic);
+        tvNoDataPic.setTypeface(MApplication.typeface);
+    }
+
+    @Override
+    protected void setListener() {
+        tvOperate.setOnClickListener(this);
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
+        loadLocalData();
+    }
+
+    @Override
+    protected void onUserVisible() {
+       String tt = "sss";
+    }
+
+    @Override
+    public void onClick(View v) {
+        if( v.getId() == R.id.location_operate ){
+            Update();
+        }
+    }
+
+    protected void Update(){
+        LocationBean bean = new LocationBean();
+        bean.setBoxName("一号盒");
+        bean.setBoxRfid("werw2342323222121");
+        bean.setFloorname("");
+        bean.setFloorRfid("");
+        if( data==null){
+            data=new ArrayList<>();
+        }
+
+
+        data.add(bean);
+        JSONUtil<List<LocationBean>> jsonUtil = new JSONUtil<>();
+        String json = jsonUtil.toJson( data );
+        PreferenceHelper.writeString(this.getActivity(), Constant.LOCATION_INFO_FILE , Constant.LOCATION_BOXDATA ,  json);
+
+        adapter.notifyDataSetChanged();
+        rlNoData.setVisibility(View.GONE);
+    }
+
+    protected void loadLocalData(){
+        String floorname = PreferenceHelper.readString( this.getActivity() , Constant.LOCATION_INFO_FILE , Constant.LOCATION_FLOORNAME,"");
+        String floorrfid = PreferenceHelper.readString(this.getActivity(),Constant.LOCATION_INFO_FILE,Constant.LOCATION_FLOORRFID,"");
+        String boxdata = PreferenceHelper.readString(this.getActivity(),Constant.LOCATION_INFO_FILE,Constant.LOCATION_BOXDATA );
+
+        if( !TextUtils.isEmpty(floorname)) {
+            tvFloorName.setText(floorname);
+        }
+        JSONUtil<List<LocationBean>> jsonUtil = new JSONUtil<>();
+        data = new ArrayList<LocationBean>();
+        if(!TextUtils.isEmpty(boxdata)) {
+            try {
+                Type type = new TypeToken<ArrayList<LocationBean>>(){}.getType();
+                data = jsonUtil.toListBean(boxdata, type);
+            }catch (Exception ex){
+                Logger.e( ex.getMessage() , ex);
+            }
+        }
+        adapter = new LocationAdapter(data , this.getActivity());
+        adapter.setOnRCItemClickListener(this);
+        recyclerView.setAdapter(adapter);
+
+        if( data.size() <1 ){
+            rlNoData.setVisibility(View.VISIBLE);
+        }else{
+            rlNoData.setVisibility(View.GONE);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_location, container, false);
-    }
+    public void OnRCItemClick(View view, int postion) {
+        if( postion<0 || postion >= data.size() )return;
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+        Toast.makeText(getContext(), "position="+ String.valueOf( postion ),Toast.LENGTH_LONG).show();
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-    }
+        data.remove(postion);
+        adapter.notifyDataSetChanged();
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+        JSONUtil<List<LocationBean>> jsonUtil = new JSONUtil<>();
+        String json = jsonUtil.toJson( data);
+        PreferenceHelper.writeString( getActivity() , Constant.LOCATION_INFO_FILE, Constant.LOCATION_BOXDATA , json );
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        rlNoData.setVisibility( data.size()<1? View.GONE:View.VISIBLE );
     }
 }

@@ -67,8 +67,6 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
         super.onDestroy();
     }
 
-
-
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.fragment_search);

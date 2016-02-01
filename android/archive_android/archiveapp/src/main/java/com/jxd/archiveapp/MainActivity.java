@@ -62,6 +62,7 @@ public class MainActivity extends BaseActivity
 
         fragmentManager = this.getSupportFragmentManager();
 
+
         setSupportActionBar(toolbar);
 
 
@@ -210,7 +211,7 @@ public class MainActivity extends BaseActivity
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         if( locationFragment ==null ){
-            locationFragment = LocationFragment.newInstance("","");
+            locationFragment = LocationFragment.newInstance();
         }
 
         transaction.replace( R.id.main , locationFragment );
