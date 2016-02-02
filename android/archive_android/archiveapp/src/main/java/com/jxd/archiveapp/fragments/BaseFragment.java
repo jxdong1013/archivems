@@ -18,18 +18,14 @@ import com.jxd.archiveapp.MApplication;
  */
 public abstract class BaseFragment extends Fragment {
     protected String TAG;
-    protected MApplication mApp;
     protected View mContentView;
     protected BaseActivity mActivity;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         TAG = this.getClass().getSimpleName();
-        mApp = MApplication.getApplication();
         mActivity = (BaseActivity) context;
-
     }
 
     @Override
@@ -57,7 +53,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void setContentView(@LayoutRes int layoutResID) {
-        mContentView = LayoutInflater.from(mApp).inflate(layoutResID, null);
+        mContentView = LayoutInflater.from(MApplication.getApplication()).inflate(layoutResID, null);
     }
     /**
      * 初始化View控件
@@ -90,4 +86,6 @@ public abstract class BaseFragment extends Fragment {
     protected <VT extends View> VT getViewById(@IdRes int id) {
         return (VT) mContentView.findViewById(id);
     }
+
+    public abstract String getTitle();
 }

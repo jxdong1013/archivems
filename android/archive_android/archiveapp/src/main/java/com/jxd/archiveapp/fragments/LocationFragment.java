@@ -48,9 +48,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     public LocationFragment() {
     }
 
-    /**
-     * @return A new instance of fragment LocationFragment.
-     */
     public static LocationFragment newInstance() {
         LocationFragment fragment = new LocationFragment();
         return fragment;
@@ -162,6 +159,11 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         String json = jsonUtil.toJson( data);
         PreferenceHelper.writeString( getActivity() , Constant.LOCATION_INFO_FILE, Constant.LOCATION_BOXDATA , json );
 
-        rlNoData.setVisibility( data.size()<1? View.GONE:View.VISIBLE );
+        rlNoData.setVisibility( data.size()<1? View.VISIBLE:View.GONE );
+    }
+
+    @Override
+    public String getTitle() {
+        return "标签定位";
     }
 }

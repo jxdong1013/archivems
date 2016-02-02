@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -21,29 +23,35 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
+import com.jxd.archiveapp.adapters.MyFragmentViewAdapter;
+import com.jxd.archiveapp.bean.LocationBean;
+import com.jxd.archiveapp.fragments.BaseFragment;
 import com.jxd.archiveapp.fragments.InventoryFragment;
 import com.jxd.archiveapp.fragments.LocationFragment;
 import com.jxd.archiveapp.fragments.SearchFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        SearchView.OnQueryTextListener{
+        implements SearchView.OnQueryTextListener{
 
-    //@Bind(R.id.search_view)
-    SearchView searchView;
-    @Bind(R.id.drawer_layout)
-    DrawerLayout drawer;
+    //SearchView searchView;
+    //@Bind(R.id.drawer_layout)
+    //DrawerLayout drawer;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    //@Bind(R.id.fab)
-    //FloatingActionButton fab;
-    @Bind(R.id.nav_view)
-    NavigationView navigationView;
-    @Bind(R.id.main)
-    RelativeLayout rlmain;
+    //@Bind(R.id.nav_view)
+    //NavigationView navigationView;
+    //@Bind(R.id.main)
+    //RelativeLayout rlmain;
+    @Bind(R.id.mainviewPager)
+    ViewPager viewPager;
+    @Bind(R.id.tab)
+    TabLayout tab;
 
     String[] searchKeys;
 
@@ -52,46 +60,45 @@ public class MainActivity extends BaseActivity
     FragmentManager fragmentManager;
     SearchFragment searchFragment;
     LocationFragment locationFragment;
+    MyFragmentViewAdapter fragmentViewAdapter;
+    List<BaseFragment> fragmentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.app_bar_main);
 
         ButterKnife.bind(this);
 
         fragmentManager = this.getSupportFragmentManager();
 
-
         setSupportActionBar(toolbar);
 
-
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, null , toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        //drawer.setDrawerListener(toggle);
+//        toggle.syncState();
 
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        //navigationView.setNavigationItemSelectedListener(this);
 
+        searchFragment = new SearchFragment();
+        inventoryFragment =new InventoryFragment();
+        locationFragment = new LocationFragment();
 
-        navigationView.setNavigationItemSelectedListener(this);
-
-
-
+        fragmentList = new ArrayList<>();
+        fragmentList.add(searchFragment);
+        fragmentList.add(locationFragment);
+        fragmentList.add(inventoryFragment);
+        fragmentViewAdapter = new MyFragmentViewAdapter(fragmentList, fragmentManager);
+        viewPager.setAdapter(fragmentViewAdapter);
+        tab.setupWithViewPager(viewPager);
+        //tab.setOnTabSelectedListener();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
-        // When a user executes a search the system starts your searchable activity and sends it a ACTION_SEARCH intent
 
         //Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
@@ -102,11 +109,9 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        }else {
+
             super.onBackPressed();
-        }
+
     }
 
     @Override
@@ -115,8 +120,8 @@ public class MainActivity extends BaseActivity
         getMenuInflater().inflate(R.menu.main, menu);
 
         MenuItem item= menu.findItem(R.id.action_search);
-        searchView = (SearchView)MenuItemCompat.getActionView( item);
-        searchView.setOnQueryTextListener(this);
+        //searchView = (SearchView)MenuItemCompat.getActionView( item);
+        //searchView.setOnQueryTextListener(this);
 
         return true;
     }
@@ -128,10 +133,7 @@ public class MainActivity extends BaseActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }else if( id == R.id.action_search){
+        if( id == R.id.action_search){
             //searchView.setMenuItem(item);
             //item.collapseActionView();
             //searchView = (SearchView)item.getActionView();
@@ -151,74 +153,6 @@ public class MainActivity extends BaseActivity
 
         ButterKnife.unbind(this);
     }
-
-
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.menu_inventory) {
-            // Handle the camera action
-            goInventoryFragment();
-
-        } else if (id == R.id.menu_location) {
-            goLocationFragment();
-
-        } else if (id == R.id.menu_search) {
-            goSearchFragment();
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-
-    protected void goInventoryFragment() {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        if( inventoryFragment ==null ){
-            inventoryFragment = InventoryFragment.newInstance("","");
-        }
-
-        transaction.replace( R.id.main , inventoryFragment );
-
-        transaction.commit();
-    }
-
-    protected void goSearchFragment() {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        if( searchFragment ==null ){
-            searchFragment = SearchFragment.newInstance("","");
-        }
-
-        transaction.replace( R.id.main , searchFragment );
-
-        transaction.commit();
-    }
-    protected void goLocationFragment() {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        if( locationFragment ==null ){
-            locationFragment = LocationFragment.newInstance();
-        }
-
-        transaction.replace( R.id.main , locationFragment );
-
-        transaction.commit();
-    }
-
 
     @Override
     public boolean onQueryTextChange(String newText) {

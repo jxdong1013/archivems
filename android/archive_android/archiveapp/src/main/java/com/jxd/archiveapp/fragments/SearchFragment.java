@@ -1,30 +1,25 @@
 package com.jxd.archiveapp.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.jxd.archiveapp.MApplication;
 import com.jxd.archiveapp.R;
 import com.jxd.archiveapp.adapters.ArchiveAdapter;
+import com.jxd.archiveapp.bean.ArchiveBean;
 
-import java.nio.Buffer;
-import java.util.logging.Logger;
+import java.util.List;
 
-import butterknife.ButterKnife;
+import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SearchFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SearchFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate{
 
@@ -33,33 +28,24 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
     private ArchiveAdapter adapter;
     private int mNewPageNumber = 0;
     private int mMorePageNumber = 0;
+    private List<ArchiveBean> data;
+
+    private TextView search_nodata_pic;
+    private RelativeLayout search_nodata;
 
 
     public SearchFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SearchFragment newInstance(String param1, String param2) {
+    public static SearchFragment newInstance() {
         SearchFragment fragment = new SearchFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -72,26 +58,32 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
         setContentView(R.layout.fragment_search);
         refreshLayout = getViewById(R.id.refreslayout);
         recyclerView = getViewById(R.id.recycleView);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        search_nodata = getViewById(R.id.search_nodata);
+        search_nodata_pic = getViewById(R.id.search_nodata_pic);
+        search_nodata_pic.setTypeface(MApplication.typeface);
     }
 
 
     @Override
     protected void setListener() {
         refreshLayout.setDelegate(this);
-        adapter = new ArchiveAdapter(recyclerView);
+
 
         // 使用addOnScrollListener，而不是setOnScrollListener();
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                //Logger.i(TAG, "测试自定义onScrollStateChanged被调用");
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                //Logger.i(TAG, "测试自定义onScrolled被调用");
-            }
-        });
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                //Logger.i(TAG, "测试自定义onScrollStateChanged被调用");
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                //Logger.i(TAG, "测试自定义onScrolled被调用");
+//            }
+//        });
     }
 
 
@@ -114,17 +106,24 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-
+        adapter = new ArchiveAdapter(recyclerView);
+        BGARefreshViewHolder refreshViewHolder = new BGANormalRefreshViewHolder( MApplication.getApplication() ,true);
+        refreshViewHolder.setLoadingMoreText("sadfasdfas");
+        refreshLayout.setRefreshViewHolder(refreshViewHolder);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        mMorePageNumber++;
-        if (mMorePageNumber > 4) {
-            refreshLayout.endLoadingMore();
-            //showToast("没有更多数据了");
-            return false;
-        }
+
+        String dd="";
+
+//        mMorePageNumber++;
+//        if (mMorePageNumber > 4) {
+//            refreshLayout.endLoadingMore();
+//            //showToast("没有更多数据了");
+//            return false;
+//        }
 
         //showLoadingDialog();
 //        mEngine.loadMoreData(mMorePageNumber).enqueue(new Callback<List<RefreshModel>>() {
@@ -152,6 +151,9 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+
+        String dd="";
+
 //        mNewPageNumber++;
 //        if (mNewPageNumber > 4) {
 //            mRefreshLayout.endRefreshing();
@@ -180,5 +182,10 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
 //                dismissLoadingDialog();
 //            }
 //        });
+    }
+
+    @Override
+    public String getTitle() {
+        return "标签检索";
     }
 }
