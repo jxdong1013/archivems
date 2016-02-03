@@ -1,8 +1,10 @@
 package com.jxd.archiveapp;
 
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +15,7 @@ import android.support.v4.view.MenuCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -29,6 +32,7 @@ import com.jxd.archiveapp.fragments.BaseFragment;
 import com.jxd.archiveapp.fragments.InventoryFragment;
 import com.jxd.archiveapp.fragments.LocationFragment;
 import com.jxd.archiveapp.fragments.SearchFragment;
+import com.jxd.archiveapp.utils.ByteUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +43,6 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseActivity
         implements SearchView.OnQueryTextListener{
 
-    //SearchView searchView;
-    //@Bind(R.id.drawer_layout)
-    //DrawerLayout drawer;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     //@Bind(R.id.nav_view)
@@ -63,6 +64,9 @@ public class MainActivity extends BaseActivity
     MyFragmentViewAdapter fragmentViewAdapter;
     List<BaseFragment> fragmentList;
 
+    NfcAdapter nfcAdapter;
+    PendingIntent mPendingIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,11 +77,6 @@ public class MainActivity extends BaseActivity
         fragmentManager = this.getSupportFragmentManager();
 
         setSupportActionBar(toolbar);
-
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, null , toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        //drawer.setDrawerListener(toggle);
-//        toggle.syncState();
 
 
         //navigationView.setNavigationItemSelectedListener(this);
@@ -94,18 +93,108 @@ public class MainActivity extends BaseActivity
         viewPager.setAdapter(fragmentViewAdapter);
         tab.setupWithViewPager(viewPager);
         //tab.setOnTabSelectedListener();
+
+        initNFC();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (nfcAdapter != null) {
+            if (!nfcAdapter.isEnabled()) {
+                Snackbar.make( getWindow().getDecorView(), "请打开NFC功能。", Snackbar.LENGTH_LONG).show();
+                return;
+            }
+            nfcAdapter.enableForegroundDispatch(this , mPendingIntent, null, null);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (nfcAdapter != null) {
+            nfcAdapter.disableForegroundDispatch(this);
+            //mAdapter.disableForegroundNdefPush(this);
+        }
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        //Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            //doMySearch(query);
+
+        //this.setIntent( intent);
+        String rfid = resolveIntent(intent);
+
+        int idx =viewPager.getCurrentItem();
+        if( fragmentList.get(idx).getTitle().equals("标签定位")){
+            fragmentList.get(idx).setRFID(rfid);
+
         }
     }
+
+    private String resolveIntent(Intent intent) {
+        String action = intent.getAction();
+        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
+                || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
+                || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+
+            byte[] myNFCID = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
+            if (myNFCID != null) {
+                String rfid = ByteUtil.Bytes2HexString(myNFCID, myNFCID.length);
+                return  rfid;
+            }
+
+            //Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+            //NdefMessage[] msgs;
+            //if (rawMsgs != null) {
+            //    msgs = new NdefMessage[rawMsgs.length];
+            //    for (int i = 0; i < rawMsgs.length; i++) {
+            //        msgs[i] = (NdefMessage) rawMsgs[i];
+            //    }
+            //} else {
+            //    ToastUtil.Show("无法识别的标签类型。");
+            //    return;
+            // Unknown tag type
+            //byte[] empty = new byte[0];
+            //byte[] id = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
+            //Parcelable tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            //byte[] payload = dumpTagData(tag).getBytes();
+            //NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN, empty, id, payload);
+            //NdefMessage msg = new NdefMessage(new NdefRecord[] { record });
+            //msgs = new NdefMessage[] { msg };
+        }
+        // Setup the views
+        //buildTagViews(msgs);
+        //}
+        return null;
+    }
+
+
+    protected void initNFC(){
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (nfcAdapter == null) {
+            Snackbar.make( this.getWindow().getDecorView(), "设备没有NFC功能,无法扫描标签。", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        mPendingIntent = PendingIntent.getActivity( this , 0,
+                new Intent( this , getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        //mNdefPushMessage = new NdefMessage(new NdefRecord[] { newTextRecord(
+        //        "Message from NFC Reader :-)", Locale.ENGLISH, true) });
+    }
+
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        super.onNewIntent(intent);
+//
+//
+//        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+//            String query = intent.getStringExtra(SearchManager.QUERY);
+//            //doMySearch(query);
+//        }
+//    }
 
     @Override
     public void onBackPressed() {

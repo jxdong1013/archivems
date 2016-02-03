@@ -205,6 +205,7 @@
     <Compile Include="Models\Beans\FloorLabel.cs" />
     <Compile Include="Models\Beans\KeyValue.cs" />
     <Compile Include="Models\Beans\Contract.cs" />
+    <Compile Include="Models\Beans\LabelInfo.cs" />
     <Compile Include="Models\Beans\Page.cs" />
     <Compile Include="Models\Beans\User.cs" />
     <Compile Include="Models\Beans\BoxLabel.cs" />

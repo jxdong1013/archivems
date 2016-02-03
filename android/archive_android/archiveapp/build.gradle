@@ -7,12 +7,12 @@ android {
         config {
             keyAlias 'jxd'
             keyPassword 'jinxiangdong'
-            storeFile file('F:/jxd/archivems/src/android/KeyStore/keystore')
+            storeFile file('E:/MyJob/Person/Project/ArchiveMS/src/android/KeyStore/keystore')
             storePassword 'jinxiangdong'
         }
     }
     compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    buildToolsVersion '23.0.1'
     defaultConfig {
         applicationId "com.jxd.archiveapp"
         minSdkVersion 14

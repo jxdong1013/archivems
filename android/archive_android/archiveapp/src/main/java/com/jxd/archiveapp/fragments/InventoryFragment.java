@@ -3,7 +3,9 @@ package com.jxd.archiveapp.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,6 +116,15 @@ public class InventoryFragment extends BaseFragment {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    public void setRFID(String rfid) {
+        if(TextUtils.isEmpty(rfid))return;
+
+        //TODO
+        Snackbar.make(mContentView,rfid,Snackbar.LENGTH_LONG).show();
 
     }
 }

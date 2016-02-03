@@ -10,6 +10,7 @@ public class Constant {
     public static String QUERY_ARCHIVE_URL = "ArchiveRestfull/GetArchiveList";
     public static String QUERY_BOXLISTOFFLOOR_URL="LabelRestfull/GetBoxListOfFloor";
     public static String UPLOAD_BOX_URL="LabelRestfull/UploadBoxListOfFloor";
+    public static String GETLABELINF_URL="LabelRestfull/GetLabelInfoByRFID";
 
     public static int REQUEST_SCUESS = 1;
     public static int REQUEST_FAILED = 0;
@@ -31,4 +32,7 @@ public class Constant {
     public static String URL_API ="url_api";
 
     public static int PAGESIZE=20;
+
+    public static int RESULT_SUCCESS = 1;
+    public static int RESULT_ERROR=0;
 }

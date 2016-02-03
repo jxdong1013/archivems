@@ -196,15 +196,30 @@ namespace ContractMvcWeb.Controllers
             return jsonResult;
         }
 
+        [HttpGet]
         public JsonResult UploadBoxListOfFloor(string floorrfid, string boxrfids)
         {
             ContractMvcWeb.Models.LabelContext db = new LabelContext();
             bool isok = db.UploadBoxListOfFloor(floorrfid, boxrfids);
             JsonResult jsonResult = new JsonResult();
+            jsonResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             Result result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ? "定位成功" : "定位失败", null);
             jsonResult.Data = result;
             return jsonResult;
 
+        }
+
+        [HttpGet]
+        public JsonResult GetLabelInfoByRFID(string rfid)
+        {
+            ContractMvcWeb.Models.LabelContext db = new LabelContext();
+            Models.Beans.LabelInfo info= db.GetLabelInfoByRFID(rfid);
+
+            JsonResult jsonResult = new JsonResult();
+            jsonResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            Result result = new Result( info !=null ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, info!=null ? "查询成功" : "查无此标签", info);
+            jsonResult.Data = result;
+            return jsonResult;
         }
     }
 }

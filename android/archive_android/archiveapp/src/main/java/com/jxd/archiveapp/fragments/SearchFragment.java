@@ -208,4 +208,12 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
         refreshLayout.beginRefreshing();
     }
 
+
+    @Override
+    public void setRFID(String rfid) {
+        if(TextUtils.isEmpty(rfid))return;
+
+        Snackbar.make(mContentView,rfid,Snackbar.LENGTH_LONG).show();
+
+    }
 }

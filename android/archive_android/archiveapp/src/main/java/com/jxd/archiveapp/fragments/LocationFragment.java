@@ -1,7 +1,10 @@
 package com.jxd.archiveapp.fragments;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -27,6 +31,7 @@ import com.jxd.archiveapp.R;
 import com.jxd.archiveapp.adapters.LocationAdapter;
 import com.jxd.archiveapp.adapters.OnRCItemClickListener;
 import com.jxd.archiveapp.bean.BaseBean;
+import com.jxd.archiveapp.bean.LabelResult;
 import com.jxd.archiveapp.bean.LocationBean;
 import com.jxd.archiveapp.utils.AsyncHttpUtil;
 import com.jxd.archiveapp.utils.JSONUtil;
@@ -38,6 +43,7 @@ import com.loopj.android.http.RequestParams;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,7 +60,9 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     TextView tvNoDataTip;
     TextView tvNoDataPic;
     GsonResponseHandler<BaseBean> gsonResponseHandler;
+    GsonResponseHandler<LabelResult> labelResponeseHandler;
     Handler handler;
+
 
     public LocationFragment() {
     }
@@ -72,19 +80,72 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public boolean handleMessage(Message msg) {
         this.closeProgressDialog();
-        if( msg.what==Constant.REQUEST_SCUESS){
-            BaseBean result = (BaseBean)msg.obj;
-            PreferenceHelper.writeString(getActivity(),Constant.LOCATION_INFO_FILE,Constant.LOCATION_FLOORRFID,"");
-            PreferenceHelper.writeString(getActivity(),Constant.LOCATION_INFO_FILE,Constant.LOCATION_FLOORNAME,"");
-            PreferenceHelper.writeString(getActivity(), Constant.LOCATION_INFO_FILE, Constant.LOCATION_BOXDATA,"");
-            data.clear();
-            adapter.notifyDataSetChanged();
-            Snackbar.make(mContentView, "上传成功",Snackbar.LENGTH_LONG).show();
-
-        }else if(msg.what==Constant.REQUEST_FAILED){
-
+        if( msg.what== GsonResponseHandler.SUCCESS ){
+            if( msg.obj instanceof LabelResult ){
+                deal_scan(msg.obj);
+            }else {
+                deal_upload(msg.obj);
+            }
+        }else if(msg.what==GsonResponseHandler.FAILTURE){
+            if( msg.obj instanceof  LabelResult ){
+                LabelResult result= (LabelResult)msg.obj;
+                String erro = result.getMessage();
+                Snackbar.make(mContentView,erro,Snackbar.LENGTH_LONG).show();
+            }else if(msg.obj instanceof BaseBean){
+                BaseBean result = (BaseBean)msg.obj;
+                String error = result.getMessage();
+                Snackbar.make(mContentView,error,Snackbar.LENGTH_LONG).show();
+            }else{
+                Snackbar.make(mContentView,"请求失败",Snackbar.LENGTH_LONG).show();
+            }
         }
         return false;
+    }
+
+    protected void deal_scan(Object obj){
+        LabelResult result = (LabelResult)obj;
+        if( result.getCode() == Constant.RESULT_SUCCESS) {
+            if( result.getData().getType().equals("floor")) {
+
+                tvFloorName.setText(result.getData().getName());
+                tvFloorName.setTag(result.getData());
+                String floorname = result.getData().getName();
+                String floorrfid = result.getData().getRfid();
+                PreferenceHelper.writeString(getContext(), Constant.LOCATION_INFO_FILE, Constant.LOCATION_FLOORNAME, floorname);
+                PreferenceHelper.writeString(getContext(), Constant.LOCATION_INFO_FILE, Constant.LOCATION_FLOORRFID, floorrfid);
+            }else{
+                String boxname = result.getData().getName();
+                String boxrfid = result.getData().getRfid();
+                LocationBean bean =new LocationBean();
+                bean.setBoxRfid(boxrfid);
+                bean.setBoxName(boxname);
+                data.add(bean);
+                adapter.notifyDataSetChanged();
+                JSONUtil<List<LocationBean>> jsonUtil = new JSONUtil<>();
+                String json = jsonUtil.toJson( data );
+                PreferenceHelper.writeString(this.getActivity(), Constant.LOCATION_INFO_FILE, Constant.LOCATION_BOXDATA, json);
+                rlNoData.setVisibility(View.GONE);
+            }
+        }else {
+            String msg = result.getMessage();
+            Snackbar.make(mContentView,  msg, Snackbar.LENGTH_LONG).show();
+
+        }
+    }
+
+    protected void deal_upload( Object obj){
+        BaseBean result = (BaseBean)obj;
+        if( result.getCode() == Constant.RESULT_SUCCESS) {
+            PreferenceHelper.writeString(getActivity(), Constant.LOCATION_INFO_FILE, Constant.LOCATION_FLOORRFID, "");
+            PreferenceHelper.writeString(getActivity(), Constant.LOCATION_INFO_FILE, Constant.LOCATION_FLOORNAME, "");
+            PreferenceHelper.writeString(getActivity(), Constant.LOCATION_INFO_FILE, Constant.LOCATION_BOXDATA, "");
+            data.clear();
+            adapter.notifyDataSetChanged();
+            Snackbar.make(mContentView, "上传成功", Snackbar.LENGTH_LONG).show();
+        }else{
+            String msg = result.getMessage();
+            Snackbar.make(mContentView,"上传失败"+msg,Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -103,8 +164,14 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         tvNoDataPic = getViewById(R.id.location_nodata_pic);
         tvNoDataPic.setTypeface(MApplication.typeface);
 
+        handler = new Handler(this);
         gsonResponseHandler = new GsonResponseHandler<>(getContext(), handler , BaseBean.class);
+
+        labelResponeseHandler =new GsonResponseHandler<>(getContext(),handler,LabelResult.class);
+
     }
+
+
 
     @Override
     protected void setListener() {
@@ -165,7 +232,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         data.add(bean);
         JSONUtil<List<LocationBean>> jsonUtil = new JSONUtil<>();
         String json = jsonUtil.toJson( data );
-        PreferenceHelper.writeString(this.getActivity(), Constant.LOCATION_INFO_FILE , Constant.LOCATION_BOXDATA ,  json);
+        PreferenceHelper.writeString(this.getActivity(), Constant.LOCATION_INFO_FILE, Constant.LOCATION_BOXDATA, json);
 
         adapter.notifyDataSetChanged();
         rlNoData.setVisibility(View.GONE);
@@ -211,13 +278,40 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
         JSONUtil<List<LocationBean>> jsonUtil = new JSONUtil<>();
         String json = jsonUtil.toJson( data);
-        PreferenceHelper.writeString( getActivity() , Constant.LOCATION_INFO_FILE, Constant.LOCATION_BOXDATA , json );
+        PreferenceHelper.writeString(getActivity(), Constant.LOCATION_INFO_FILE, Constant.LOCATION_BOXDATA, json);
 
-        rlNoData.setVisibility( data.size()<1? View.VISIBLE:View.GONE );
+        rlNoData.setVisibility(data.size() < 1 ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public String getTitle() {
         return "标签定位";
+    }
+
+
+    @Override
+    public void setRFID(String rfid) {
+        if(TextUtils.isEmpty(rfid))return;
+
+        //String floor = tvFloorName.getText().toString();
+        //if(TextUtils.isEmpty(floor)){
+
+        //    return;
+        //}
+        querybelInfoByRFID(rfid);
+
+        //tvFloorName.setText( rfid );
+    }
+
+    protected  void querybelInfoByRFID(String rfid){
+        this.showProgressDialog("", "正在查询标签信息，请稍等...");
+        String url = Constant.GETLABELINF_URL;
+        RequestParams params =new RequestParams();
+        params.add("rfid",rfid);
+
+
+
+        AsyncHttpUtil.get( url , params, labelResponeseHandler);
+
     }
 }
