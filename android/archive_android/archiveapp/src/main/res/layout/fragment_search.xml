@@ -27,7 +27,6 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycleView"
             android:scrollbars="none"
-            android:background="@color/green"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"></android.support.v7.widget.RecyclerView>

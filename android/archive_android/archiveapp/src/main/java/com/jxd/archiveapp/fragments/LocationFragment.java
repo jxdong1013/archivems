@@ -3,6 +3,10 @@ package com.jxd.archiveapp.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.ContactsContract;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,14 +21,19 @@ import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.jxd.archiveapp.Constant;
+import com.jxd.archiveapp.GsonResponseHandler;
 import com.jxd.archiveapp.MApplication;
 import com.jxd.archiveapp.R;
 import com.jxd.archiveapp.adapters.LocationAdapter;
 import com.jxd.archiveapp.adapters.OnRCItemClickListener;
+import com.jxd.archiveapp.bean.BaseBean;
 import com.jxd.archiveapp.bean.LocationBean;
+import com.jxd.archiveapp.utils.AsyncHttpUtil;
 import com.jxd.archiveapp.utils.JSONUtil;
 import com.jxd.archiveapp.utils.Logger;
 import com.jxd.archiveapp.utils.PreferenceHelper;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -33,7 +42,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LocationFragment extends BaseFragment implements View.OnClickListener , OnRCItemClickListener {
+public class LocationFragment extends BaseFragment implements View.OnClickListener , OnRCItemClickListener , Handler.Callback{
 
     RecyclerView recyclerView;
     LocationAdapter adapter;
@@ -44,6 +53,8 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     RelativeLayout rlNoData;
     TextView tvNoDataTip;
     TextView tvNoDataPic;
+    GsonResponseHandler<BaseBean> gsonResponseHandler;
+    Handler handler;
 
     public LocationFragment() {
     }
@@ -56,6 +67,24 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        this.closeProgressDialog();
+        if( msg.what==Constant.REQUEST_SCUESS){
+            BaseBean result = (BaseBean)msg.obj;
+            PreferenceHelper.writeString(getActivity(),Constant.LOCATION_INFO_FILE,Constant.LOCATION_FLOORRFID,"");
+            PreferenceHelper.writeString(getActivity(),Constant.LOCATION_INFO_FILE,Constant.LOCATION_FLOORNAME,"");
+            PreferenceHelper.writeString(getActivity(), Constant.LOCATION_INFO_FILE, Constant.LOCATION_BOXDATA,"");
+            data.clear();
+            adapter.notifyDataSetChanged();
+            Snackbar.make(mContentView, "上传成功",Snackbar.LENGTH_LONG).show();
+
+        }else if(msg.what==Constant.REQUEST_FAILED){
+
+        }
+        return false;
     }
 
     @Override
@@ -73,6 +102,8 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         tvNoDataTip = getViewById(R.id.location_nodata_tip);
         tvNoDataPic = getViewById(R.id.location_nodata_pic);
         tvNoDataPic.setTypeface(MApplication.typeface);
+
+        gsonResponseHandler = new GsonResponseHandler<>(getContext(), handler , BaseBean.class);
     }
 
     @Override
@@ -97,6 +128,31 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
+    protected void Updata(){
+        String floorrfid = tvFloorName.getText().toString().trim();
+        if(TextUtils.isEmpty(floorrfid)){
+            Snackbar.make(mContentView,"请扫描层架标签",Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        if( data==null|| data.size()<1){
+            Snackbar.make(mContentView,"请扫描档案盒标签",Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        String boxids ="";
+        for(LocationBean bean : data){
+            if(!TextUtils.isEmpty( boxids )){
+                boxids+=",";
+            }
+            boxids+= bean.getBoxRfid();
+        }
+
+        showProgressDialog("","正在上传数据，请稍等...");
+        RequestParams params = new RequestParams();
+        params.add("floorrfid", floorrfid);
+        params.add("boxrfids",boxids);
+        AsyncHttpUtil.get( Constant.UPLOAD_BOX_URL , params , gsonResponseHandler );
+    }
+
     protected void Update(){
         LocationBean bean = new LocationBean();
         bean.setBoxName("一号盒");
@@ -106,8 +162,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         if( data==null){
             data=new ArrayList<>();
         }
-
-
         data.add(bean);
         JSONUtil<List<LocationBean>> jsonUtil = new JSONUtil<>();
         String json = jsonUtil.toJson( data );

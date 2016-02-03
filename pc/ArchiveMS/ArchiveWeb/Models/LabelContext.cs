@@ -371,5 +371,118 @@ namespace ContractMvcWeb.Models
                 return false;
             }
         }
+
+
+        public List<BoxLabel> GetBoxListOfFloor(String rfid)
+        {
+            try
+            {
+                String sql = " select a.id,a.name,a.rfid , a.number  from t_boxlabel a INNER JOIN t_position b on a.id= b.boxid ";
+                sql +=" INNER JOIN t_floorlabel c on b.floorid = c.id where c.rfid= '"+ rfid +"'";
+
+                DataSet ds = MySqlHelper.Query(sql);
+                if (ds == null || ds.Tables.Count < 1 || ds.Tables[0].Rows.Count < 1) return null;
+                int count = ds.Tables[0].Rows.Count;
+                List<BoxLabel> list = new List<BoxLabel>();
+                for (int i = 0; i < count; i++)
+                {
+                    DataRow row = ds.Tables[0].Rows[i];
+                    BoxLabel model = DataRowToBoxLabel(row);
+                    list.Add(model);
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool UploadBoxListOfFloor(string rfid, string boxids)
+        {
+            try
+            {
+                if ( string.IsNullOrEmpty(rfid) || string.IsNullOrEmpty(boxids)) return true;
+                string[] boxidList = boxids.Split( new string[]{","}, StringSplitOptions.RemoveEmptyEntries);
+                if (boxidList == null || boxidList.Length<1) return true;              
+                
+                string sql_1 = string.Format( "select * from t_position where floorrfid='{0}'" , rfid);
+                DataSet ds = MySqlHelper.Query( sql_1);
+                if (ds == null || ds.Tables[0].Rows.Count < 1)
+                {
+                    System.Collections.ArrayList sqlList = new System.Collections.ArrayList();     
+                    for (int i = 0; i < boxidList.Length; i++)
+                    {
+                        string boxrfid = boxidList[i];
+                        String sql = string.Format(" insert into t_position (boxrfid,floorrfid) values('{0}','{1}') ", boxrfid, rfid);
+                        sqlList.Add(sql);
+                    }
+                    MySqlHelper.ExecuteSqlTran(sqlList);
+                }
+                else
+                {
+                    InsertBoxList(boxidList, ds.Tables[0], rfid);
+
+                    DeleteBoxList(boxidList, ds.Tables[0], rfid);                    
+                }
+               
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        protected void InsertBoxList(String[] boxidList, DataTable dt, string floorrfid)
+        {
+            System.Collections.ArrayList sqlList = new System.Collections.ArrayList();
+
+            for (int i = 0; i < boxidList.Length; i++)
+            {
+                string brfid = boxidList[i];
+                bool isexist = false;
+                for (int k = 0; k < dt.Rows.Count; k++)
+                {
+                    DataRow row = dt.Rows[k];
+                    string bbbboxrfid = row["boxrfid"].ToString();
+                    if (bbbboxrfid.Equals(brfid)) { isexist = true; break; }
+                }
+                if (isexist) continue;
+
+                String sql = string.Format(" insert into t_position (boxrfid,floorrfid) values('{0}','{1}') ", brfid, floorrfid);
+                sqlList.Add(sql);
+            }
+            MySqlHelper.ExecuteSqlTran(sqlList);
+        }
+
+        protected void DeleteBoxList(String[] list, DataTable dt, string floorrfid)
+        {
+            System.Collections.ArrayList sqlList = new System.Collections.ArrayList();   
+
+
+            for (int k = 0; k < dt.Rows.Count; k++)
+            {
+                DataRow row = dt.Rows[k];
+                string bbbboxrfid = row["boxrfid"].ToString();
+                bool isexist = false;
+                for (int i = 0; i < list.Length; i++)
+                {
+                    string brfid = list[i];
+                    if (brfid.Equals(bbbboxrfid))
+                    {
+                        isexist = true; break;
+                    }
+                }
+                if (isexist == false)
+                {
+                    string sql = string.Format("delete from t_position where boxrfid='{0}' and floorrfid='{1}'", bbbboxrfid, floorrfid);
+                    sqlList.Add(sql);
+                }
+
+                MySqlHelper.ExecuteSqlTran(sqlList);
+            }
+        }
     }
 }

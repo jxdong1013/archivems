@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.avast.android.dialogs.fragment.ProgressDialogFragment;
 import com.jxd.archiveapp.BaseActivity;
 import com.jxd.archiveapp.MApplication;
 
@@ -20,6 +21,7 @@ public abstract class BaseFragment extends Fragment {
     protected String TAG;
     protected View mContentView;
     protected BaseActivity mActivity;
+    protected ProgressDialogFragment _progressDialog=null;
 
     @Override
     public void onAttach(Context context) {
@@ -88,4 +90,26 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public abstract String getTitle();
+
+
+    protected void showProgressDialog( String title , String message ){
+        if( _progressDialog !=null ) {
+            _progressDialog.dismiss();
+            _progressDialog=null;
+        }
+
+        ProgressDialogFragment.ProgressDialogBuilder builder = ProgressDialogFragment.createBuilder(this.getActivity() , this.getFragmentManager())
+                .setTitle(title)
+                .setMessage( message )
+                        //.setCancelable(false);
+                .setCancelableOnTouchOutside(false);
+        _progressDialog = (ProgressDialogFragment) builder.show();
+    }
+
+    protected  void closeProgressDialog(){
+        if(_progressDialog!=null){
+            _progressDialog.dismiss();
+            _progressDialog=null;
+        }
+    }
 }

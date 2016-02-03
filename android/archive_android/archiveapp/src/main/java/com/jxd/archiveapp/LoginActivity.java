@@ -19,10 +19,13 @@ import com.jxd.archiveapp.bean.UserResult;
 import com.jxd.archiveapp.utils.AsyncHttpUtil;
 import com.jxd.archiveapp.utils.PreferenceHelper;
 import com.loopj.android.http.RequestParams;
+
+import org.apache.http.conn.ConnectTimeoutException;
+
 import java.net.SocketTimeoutException;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cz.msebera.android.httpclient.conn.ConnectTimeoutException;
+//import cz.msebera.android.httpclient.conn.ConnectTimeoutException;
 import de.greenrobot.event.EventBus;
 
 public class LoginActivity extends BaseActivity implements
@@ -142,7 +145,7 @@ public class LoginActivity extends BaseActivity implements
                 }
             }
         }else {
-            if( msg.obj instanceof SocketTimeoutException || msg.obj instanceof ConnectTimeoutException  ){
+            if( msg.obj instanceof SocketTimeoutException || msg.obj instanceof ConnectTimeoutException){
                 Snackbar.make(this.getWindow().getDecorView(), "连接超时，请重试", Snackbar.LENGTH_LONG).show();
                 return  true;
             }
@@ -190,9 +193,9 @@ public class LoginActivity extends BaseActivity implements
             break;
             case R.id.btnLogin: {
 
-                this.skipActivity(this,MainActivity.class);
+                //this.skipActivity(this,MainActivity.class);
 
-                //login();
+                login();
             }
             break;
             case R.id.header_back: {

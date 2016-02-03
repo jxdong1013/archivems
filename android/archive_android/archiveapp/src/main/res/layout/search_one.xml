@@ -13,6 +13,7 @@
         android:textColor="@color/black"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
+        android:imeOptions="actionSearch"
         android:singleLine="true"
         android:hint="商品搜索:请输入商品关键字"
         android:layout_height="wrap_content"/>

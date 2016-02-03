@@ -7,6 +7,9 @@ public class Constant {
     //public static String BASE_ROOT_URL="http://192.168.1.6/yzarchiveweb/";
 
     public static String LOGIN_URL= "Account/LoginRestfull";
+    public static String QUERY_ARCHIVE_URL = "ArchiveRestfull/GetArchiveList";
+    public static String QUERY_BOXLISTOFFLOOR_URL="LabelRestfull/GetBoxListOfFloor";
+    public static String UPLOAD_BOX_URL="LabelRestfull/UploadBoxListOfFloor";
 
     public static int REQUEST_SCUESS = 1;
     public static int REQUEST_FAILED = 0;
@@ -26,4 +29,6 @@ public class Constant {
 
     public static String URL_FILE="url_file";
     public static String URL_API ="url_api";
+
+    public static int PAGESIZE=20;
 }

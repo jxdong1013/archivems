@@ -14,8 +14,6 @@ import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
  * Created by 向东 on 2016-1-31.
  */
 public class ArchiveAdapter extends BGARecyclerViewAdapter<ArchiveBean> {
-    private List<ArchiveBean> data;
-
 
     public ArchiveAdapter(RecyclerView recyclerView ) {
         super(recyclerView, R.layout.layout_arcchive_item);

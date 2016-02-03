@@ -12,5 +12,30 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.jxd.archive_android.HomeActivity"
     tools:showIn="@layout/app_bar_home">
+    <Button
+        android:id="@+id/btn2"
+        android:text="ffffffffffff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btn1"
+        android:layout_below="@id/btn2"
+        android:text="sdfssdfsdfs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+        android:id="@+id/refreslayout"
+        android:layout_below="@id/btn1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleView"
+            android:scrollbars="none"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"></android.support.v7.widget.RecyclerView>
+    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
 
 </RelativeLayout>

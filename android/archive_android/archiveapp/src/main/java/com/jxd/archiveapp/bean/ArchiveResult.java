@@ -4,13 +4,13 @@ package com.jxd.archiveapp.bean;
  * Created by 向东 on 2016-1-31.
  */
 public class ArchiveResult extends BaseBean {
-    private Page Data;
+    private PageArchive Data;
 
-    public Page getData() {
+    public PageArchive getData() {
         return Data;
     }
 
-    public void setData(Page data) {
+    public void setData(PageArchive data) {
         Data = data;
     }
 }

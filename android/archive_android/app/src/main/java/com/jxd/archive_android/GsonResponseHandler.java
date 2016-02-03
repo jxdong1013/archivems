@@ -1,18 +1,17 @@
-package com.jxd.archiveapp;
+package com.jxd.archive_android;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceActivity;
-import android.widget.TextClock;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
 
+//import cz.msebera.android.httpclient.Header;
+
 import org.apache.http.Header;
 
-//import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by Administrator on 2016/1/27.
@@ -25,7 +24,7 @@ public class GsonResponseHandler<T> extends BaseJsonHttpResponseHandler<T> {
     public static int SUCCESS=100;
     public static int FAILTURE = 101;
 
-    public GsonResponseHandler( Context context , Handler handler , Class<T> tclass ) {
+    public GsonResponseHandler(Context context, Handler handler, Class<T> tclass) {
         super();
 
         this.context = context;

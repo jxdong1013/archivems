@@ -183,5 +183,28 @@ namespace ContractMvcWeb.Controllers
             jsonResult.Data = result;
             return jsonResult;
         }
+
+        [HttpGet]
+        public JsonResult GetBoxListOfFloor(string floorrfid)
+        {
+            ContractMvcWeb.Models.LabelContext db = new LabelContext();
+            List< Models.Beans.BoxLabel> list = db.GetBoxListOfFloor(floorrfid );
+
+            JsonResult jsonResult = new JsonResult();
+            Result result = new Result( (int)ResultCodeEnum.Success , "获取数据成功" , list);
+            jsonResult.Data = result;
+            return jsonResult;
+        }
+
+        public JsonResult UploadBoxListOfFloor(string floorrfid, string boxrfids)
+        {
+            ContractMvcWeb.Models.LabelContext db = new LabelContext();
+            bool isok = db.UploadBoxListOfFloor(floorrfid, boxrfids);
+            JsonResult jsonResult = new JsonResult();
+            Result result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ? "定位成功" : "定位失败", null);
+            jsonResult.Data = result;
+            return jsonResult;
+
+        }
     }
 }

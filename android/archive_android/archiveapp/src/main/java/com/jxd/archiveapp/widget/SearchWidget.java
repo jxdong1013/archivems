@@ -2,16 +2,24 @@ package com.jxd.archiveapp.widget;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.jxd.archiveapp.Constant;
 import com.jxd.archiveapp.MApplication;
 import com.jxd.archiveapp.R;
 import com.jxd.archiveapp.bean.SearchConfig;
+import com.jxd.archiveapp.bean.SearchEvent;
 import com.jxd.archiveapp.utils.DensityUtils;
+import com.jxd.archiveapp.utils.PreferenceHelper;
+
+import de.greenrobot.event.EventBus;
 
 
 /**
@@ -31,6 +39,7 @@ public class SearchWidget  extends LinearLayout {
     //private SearchConfig config;
     private TextView tvName;
     private TextView tvSearch;
+    private EditText etKey;
 
 //    public SearchWidget(Context context , SearchConfig config) {
 //        super(context);
@@ -71,6 +80,49 @@ public class SearchWidget  extends LinearLayout {
         tvName=(TextView)findViewById(R.id.search_one_text);
 
         tvSearch.setTypeface(MApplication.typeface);
+
+        etKey = (android.widget.EditText) findViewById(R.id.search_one_text);
+        etKey.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH
+                        || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    if (TextUtils.isEmpty(etKey.getText())) {
+                        etKey.requestFocus();
+                        etKey.setError("搜索条件不能为空");
+                    } else {
+//                        key = etKey.getText().toString();
+//                        key = key.trim();
+//                        key = key.replace(",", "");
+//                        key = key.replace("，", "");
+//                        if (searchKeysList != null && !searchKeysList.contains(key)) {
+//                            String temp = "";
+//                            for (String item : searchKeysList) {
+//                                if (!TextUtils.isEmpty(temp)) temp += ",";
+//                                temp += item;
+//                            }
+//                            if (temp != "") temp = "," + temp;
+//                            temp = key + temp;
+//                            AddGoodsActivity.this.searchKeysList.add(0, key);
+//                            keysAdapter.notifyDataSetChanged();
+//                            PreferenceHelper.writeString(AddGoodsActivity.this, PRE_SEARCHKEY_FILE, PRE_SEARCHKEY_NAME, temp);
+//                        }
+
+                        EventBus.getDefault().post( new SearchEvent());
+
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                goodListView.setRefreshing(true);
+//                            }
+//                        });
+                    }
+                    return true;
+                }
+
+                return false;
+            }
+        });
     }
 
     protected void setStyle2(){
