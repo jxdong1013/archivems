@@ -484,5 +484,94 @@ namespace ContractMvcWeb.Models
                 MySqlHelper.ExecuteSqlTran(sqlList);
             }
         }
+
+
+        public LabelInfo GetLabelInfoByRFID( string rfid)
+        {
+            String sql = string.Format("select  * from t_floorlabel where rfid='{0}'", rfid);
+            DataSet ds = MySqlHelper.Query(sql);
+            if( ds!=null && ds.Tables[0].Rows.Count > 0)
+            {
+                DataRow row = ds.Tables[0].Rows[0];
+                LabelInfo bean = new LabelInfo();
+                //bean.id = int.Parse(row["id"].ToString());
+                bean.name = row["name"].ToString();
+                bean.rfid = rfid;
+                bean.type = "floor";
+                //bean.number = row["number"].ToString();
+                return bean;
+            }
+
+            sql = string.Format( "select * from t_boxlabel where rfid='{0}'", rfid);
+            ds = MySqlHelper.Query(sql);
+            if( ds!=null && ds.Tables[0].Rows.Count > 0)
+            {
+                DataRow row = ds.Tables[0].Rows[0];
+                LabelInfo bean = new LabelInfo();
+                //bean.id = int.Parse(row["id"].ToString());
+                bean.name = row["name"].ToString();
+                bean.rfid = rfid;
+                bean.type = "box";
+                //bean.number = row["number"].ToString();
+                return bean;
+            }
+            return null;
+        }
+
+        public InventoryLabelInfo GetInventoryLabelInfo(string rfid)
+        {
+            String sql = string.Format("select * from t_floorlabel where rfid='{0}'", rfid);
+            DataSet ds = MySqlHelper.Query(sql);
+            if (ds != null && ds.Tables[0].Rows.Count > 0)
+            {
+                DataRow row = ds.Tables[0].Rows[0];
+                InventoryLabelInfo bean = new InventoryLabelInfo();
+                //bean.id = int.Parse(row["id"].ToString());
+                bean.name = row["name"].ToString();
+                bean.rfid = rfid;
+                bean.type = "floor";
+                //bean.number = row["number"].ToString();
+                bean.boxs = GetBoxListOfFloorRFId(rfid);
+               
+                return bean;
+            }
+
+            sql = string.Format("select * from t_boxlabel where rfid='{0}'", rfid);
+            ds = MySqlHelper.Query(sql);
+            if (ds != null && ds.Tables[0].Rows.Count > 0)
+            {
+                DataRow row = ds.Tables[0].Rows[0];
+                InventoryLabelInfo bean = new InventoryLabelInfo();
+                //bean.id = int.Parse(row["id"].ToString());
+                bean.name = row["name"].ToString();
+                bean.rfid = rfid;
+                bean.type = "box";
+                //bean.number = row["number"].ToString();
+                return bean;
+            }
+            return null;
+        }
+
+
+        public List<BoxLabel> GetBoxListOfFloorRFId(string floorrfid)
+        {
+            string sql = string.Format( "select b.id , b.number , b.rfid , b.name from t_position a INNER JOIN t_boxlabel b on a.boxrfid = b.rfid where a.floorrfid='{0}'", floorrfid);
+            DataSet ds = MySqlHelper.Query(sql);
+            if (ds != null && ds.Tables[0].Rows.Count > 0)
+            {
+                int count = ds.Tables[0].Rows.Count;
+                List<BoxLabel> list = new List<BoxLabel>();
+                for (int i = 0; i < count; i++)
+                {
+                    DataRow row = ds.Tables[0].Rows[i];
+                    BoxLabel model = DataRowToBoxLabel(row);
+                    list.Add(model);
+                }
+
+                return list;
+            }
+            return null;
+
+        }
     }
 }

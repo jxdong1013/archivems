@@ -19,6 +19,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import java.util.Set;
+
+import javax.microedition.khronos.egl.EGLDisplay;
+
 /**
  * SharedPreferences操作工具包<br>
  * 
@@ -41,6 +45,8 @@ public class PreferenceHelper
                 Context.MODE_PRIVATE);
         Editor editor = preference.edit();
         editor.putInt(k, v);
+
+
         editor.commit();
     }
 
@@ -71,6 +77,13 @@ public class PreferenceHelper
                 Context.MODE_PRIVATE);
         Editor editor = preference.edit();
         editor.putLong(k, v);
+        editor.commit();
+    }
+
+    public static void writeStringSet(Context context,String fileName,String k , Set<String> set){
+        SharedPreferences preference = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        Editor editor = preference.edit();
+        editor.putStringSet(k, set);
         editor.commit();
     }
 
@@ -126,6 +139,11 @@ public class PreferenceHelper
         return preference.getLong(k, 0L);
     }
 
+    public static Set<String> readStringSet(Context context , String fileName , String k){
+        SharedPreferences preference = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        return preference.getStringSet(k, null);
+    }
+
     public static void remove(Context context, String fileName, String k)
     {
         SharedPreferences preference = context.getSharedPreferences(fileName,
@@ -134,6 +152,8 @@ public class PreferenceHelper
         editor.remove(k);
         editor.commit();
     }
+
+
 
     public static void clean(Context cxt, String fileName)
     {

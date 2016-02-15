@@ -18,6 +18,7 @@ namespace ContractMvcWeb.Models
     public enum ResultCodeEnum
     {
         Error=0,
-        Success=1
+        Success=1,
+        Login = -1,
     }
 }

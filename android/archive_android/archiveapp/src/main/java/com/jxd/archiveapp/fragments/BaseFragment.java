@@ -91,6 +91,8 @@ public abstract class BaseFragment extends Fragment {
 
     public abstract String getTitle();
 
+    public abstract void setRFID(String rfid);
+
 
     protected void showProgressDialog( String title , String message ){
         if( _progressDialog !=null ) {

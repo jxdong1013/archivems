@@ -56,7 +56,7 @@ namespace ContractMvcWeb.Attributes
         {
             if (filterContext.HttpContext.User.Identity.IsAuthenticated == false)
             {
-                Models.Result res2 = new Models.Result((int)Models.ResultCodeEnum.Error, "请登录以后在操作。",null);
+                Models.Result res2 = new Models.Result((int)Models.ResultCodeEnum.Login, "请登录以后在操作。",null);
                 string temp2 = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(res2);
                 filterContext.HttpContext.Response.Write(temp2);
                 filterContext.HttpContext.Response.End();

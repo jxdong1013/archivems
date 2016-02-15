@@ -18,19 +18,19 @@ import com.jxd.archiveapp.bean.UserBean;
 import com.jxd.archiveapp.bean.UserResult;
 import com.jxd.archiveapp.utils.AsyncHttpUtil;
 import com.jxd.archiveapp.utils.PreferenceHelper;
+import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
-
 import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.cookie.Cookie;
 
 import java.net.SocketTimeoutException;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
-//import cz.msebera.android.httpclient.conn.ConnectTimeoutException;
 import de.greenrobot.event.EventBus;
 
-public class LoginActivity extends BaseActivity implements
-        View.OnClickListener , Handler.Callback
-        //, ISimpleDialogListener
+public class LoginActivity extends BaseActivity implements View.OnClickListener , Handler.Callback
 {
     @Bind(R.id.header_back)
     public Button header_back;
@@ -60,6 +60,14 @@ public class LoginActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        PersistentCookieStore cookieStore = new PersistentCookieStore(MApplication.getApplication());
+        List<Cookie> cookies = cookieStore.getCookies();
+        if(cookies !=null && cookies.size()>0){
+            this.skipActivity(this,MainActivity.class);
+            return;
+        }
+
         setContentView(R.layout.activity_login);
         initView();
     }
@@ -73,12 +81,9 @@ public class LoginActivity extends BaseActivity implements
         forgetPsw.setText("忘记密码？");
         forgetPsw.setVisibility(View.GONE);
         header_back.setOnClickListener(this);
-
         loginSetting.setOnClickListener(this);
-
         String url = PreferenceHelper.readString(this,Constant.URL_FILE,Constant.URL_API);
         loginUrl.setText(url);
-
         loginUrl.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,6 +94,9 @@ public class LoginActivity extends BaseActivity implements
                 String temp = s.toString();
                 if( temp.toString().endsWith("/")==false){
                     temp +="/";
+                }
+                if( !temp.startsWith("http://") ){
+                    temp +="http://";
                 }
                 PreferenceHelper.writeString(LoginActivity.this, Constant.URL_FILE, Constant.URL_API, temp);
             }
@@ -103,14 +111,12 @@ public class LoginActivity extends BaseActivity implements
 
         String username = PreferenceHelper.readString(this , Constant.USER_INFO_FILE, Constant.USER_NAME);
         String pwd = PreferenceHelper.readString(this, Constant.USER_INFO_FILE,Constant.USER_PASSWORD);
-        if( TextUtils.isEmpty(username)==false) {
+        if( !TextUtils.isEmpty(username)) {
             userName.setText(username);
         }
-        if(TextUtils.isEmpty(pwd)==false){
+        if( !TextUtils.isEmpty(pwd)){
             passWord.setText(pwd);
         }
-
-
     }
 
     @Override
@@ -134,9 +140,10 @@ public class LoginActivity extends BaseActivity implements
                     PreferenceHelper.writeString(this , Constant.USER_INFO_FILE,Constant.USER_REALNAME,bean.getRealname());
                     PreferenceHelper.writeString(this,Constant.USER_INFO_FILE,Constant.USER_PASSWORD,bean.getPassword());
                     PreferenceHelper.writeString(this,Constant.USER_INFO_FILE,Constant.USER_PHONE,bean.getPhone());
-                    PreferenceHelper.writeString(this,Constant.USER_INFO_FILE,Constant.USER_SEX,bean.getSex());
+                    PreferenceHelper.writeString(this, Constant.USER_INFO_FILE, Constant.USER_SEX, bean.getSex());
 
                     this.skipActivity(this, MainActivity.class);
+                    return true;
                 }else if( code== Constant.REQUEST_FAILED){
                     String error = result.getMessage();
                     if(TextUtils.isEmpty( error )) error="请求失败";

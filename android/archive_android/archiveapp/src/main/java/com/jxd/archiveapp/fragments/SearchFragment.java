@@ -178,6 +178,8 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
     }
 
     protected void go(int index){
+        etKey.setError("");
+
         String key = etKey.getText().toString().trim();
         RequestParams params = new RequestParams();
         //manager={0}&title={1}&number={2}&pageidx={3}&pagesize={4}
@@ -198,7 +200,7 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
 
     @Override
     public String getTitle() {
-        return "标签检索";
+        return Constant.FRAGMENT_SEARCH;
     }
 
 
@@ -207,4 +209,12 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
         refreshLayout.beginRefreshing();
     }
 
+
+    @Override
+    public void setRFID(String rfid) {
+        if(TextUtils.isEmpty(rfid))return;
+
+        Snackbar.make(mContentView,rfid,Snackbar.LENGTH_LONG).show();
+
+    }
 }

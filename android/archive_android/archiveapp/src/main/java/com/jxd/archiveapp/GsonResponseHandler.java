@@ -12,8 +12,6 @@ import com.loopj.android.http.BaseJsonHttpResponseHandler;
 
 import org.apache.http.Header;
 
-//import cz.msebera.android.httpclient.Header;
-
 /**
  * Created by Administrator on 2016/1/27.
  */
