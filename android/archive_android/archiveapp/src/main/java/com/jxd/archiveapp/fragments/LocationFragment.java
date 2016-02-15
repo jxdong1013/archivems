@@ -1,24 +1,17 @@
 package com.jxd.archiveapp.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.reflect.TypeToken;
 import com.jxd.archiveapp.Constant;
 import com.jxd.archiveapp.GsonResponseHandler;
@@ -32,15 +25,13 @@ import com.jxd.archiveapp.utils.AsyncHttpUtil;
 import com.jxd.archiveapp.utils.JSONUtil;
 import com.jxd.archiveapp.utils.Logger;
 import com.jxd.archiveapp.utils.PreferenceHelper;
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 标签定位
  */
 public class LocationFragment extends BaseFragment implements View.OnClickListener , OnRCItemClickListener , Handler.Callback{
 
@@ -124,11 +115,11 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if( v.getId() == R.id.location_operate ){
-            Update();
+            update();
         }
     }
 
-    protected void Updata(){
+    protected void update(){
         String floorrfid = tvFloorName.getText().toString().trim();
         if(TextUtils.isEmpty(floorrfid)){
             Snackbar.make(mContentView,"请扫描层架标签",Snackbar.LENGTH_LONG).show();

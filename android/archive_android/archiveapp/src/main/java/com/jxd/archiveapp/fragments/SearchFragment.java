@@ -35,14 +35,14 @@ import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
 import de.greenrobot.event.Subscribe;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 标签检索
  */
 public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate , Handler.Callback{
     private BGARefreshLayout refreshLayout;
     private RecyclerView recyclerView;
     private ArchiveAdapter adapter;
     private int pageIdx = 0;
-    private int mMorePageNumber = 0;
+    //private int mMorePageNumber = 0;
     private TextView search_nodata_pic;
     private RelativeLayout search_nodata;
     private EditText etKey;
@@ -143,7 +143,6 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
 //            }
 //        });
     }
-
 
     @Override
     protected void onUserVisible() {
