@@ -35,6 +35,9 @@ public class ScanAdapter extends BGARecyclerViewAdapter<ScanBean> {
     protected void fillData(BGAViewHolderHelper bgaViewHolderHelper, int i, ScanBean scanBean ) {
         bgaViewHolderHelper.setText( R.id.scan_item_name , scanBean.getName() );
         bgaViewHolderHelper.setText(R.id.scan_item_rfid, scanBean.getRfid());
+        bgaViewHolderHelper.setChecked(R.id.scan_item_normal,false);
+        bgaViewHolderHelper.setChecked(R.id.scan_item_damage,false);
+        bgaViewHolderHelper.setChecked(R.id.scan_item_miss,false);
         //bgaViewHolderHelper.getTextView(R.id.scan_item_delete).setTypeface(MApplication.typeface);
         if( scanBean.getStatus() !=null && scanBean.getStatus().equals(Constant.LABEL_NORMAL)){
             bgaViewHolderHelper.setChecked(R.id.scan_item_normal,true);

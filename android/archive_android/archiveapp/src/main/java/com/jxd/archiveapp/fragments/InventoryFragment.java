@@ -83,10 +83,40 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
     @Override
     public void onItemChildClick(ViewGroup viewGroup, View view, int i) {
         //Snackbar.make(mContentView , String.valueOf( i ), Snackbar.LENGTH_LONG).show();
-        InventoryLabelInfoBean bean = inventoryAdapter.getItem(i);
-        rlContain.setVisibility(View.GONE);
-        rlScan.setVisibility(View.VISIBLE);
-        setScanData(bean);
+       if(view.getId()== R.id.item_panel) {
+
+           InventoryLabelInfoBean bean = inventoryAdapter.getItem(i);
+           rlContain.setVisibility(View.GONE);
+           rlScan.setVisibility(View.VISIBLE);
+           setScanData(bean);
+       }else if(view.getId()==R.id.item_delete){
+           InventoryLabelInfoBean bean = inventoryAdapter.getItem(i);
+           String rfid_name = bean.getRfid()+split+bean.getName();
+           PreferenceHelper.remove(getActivity(),Constant.INVENTORY_INFO_FILE,rfid_name);
+           data.remove(bean);
+
+           String json = "";
+           for(InventoryLabelInfoBean item : data){
+               String temp = item.getRfid()+split+item.getName();
+               if(!TextUtils.isEmpty(json)){
+                   json+=",";
+               }
+               json+= temp;
+           }
+           PreferenceHelper.writeString(getActivity(), Constant.INVENTORY_INFO_FILE, Constant.INVENTORY_Floor, json);
+
+           inventoryAdapter.removeItem(i);
+
+           if( !TextUtils.isEmpty( tvScanFloor.getText().toString() )){
+               InventoryLabelInfoBean model = (InventoryLabelInfoBean)tvScanFloor.getTag();
+               if( bean.getRfid().equals( model.getRfid())){
+                   tvScanFloor.setText("");
+                   tvScanFloor.setTag(null);
+                   scanAdapter.clear();
+               }
+           }
+
+       }
     }
 
     @Override
@@ -235,6 +265,7 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
                 String json = jsonUtil.toJson( boxes );
                 PreferenceHelper.writeString(getActivity(), Constant.INVENTORY_INFO_FILE , key ,  json );
                 isExist=true;
+                Snackbar.make(mContentView, bean.getName(),Snackbar.LENGTH_LONG).show();
                 break;
             }
         }
@@ -364,7 +395,10 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
         //如果rfid 等于 同一个标签，则返回 true
         if( !TextUtils.isEmpty( tvScanFloor.getText()) ){
             InventoryLabelInfoBean floor = (InventoryLabelInfoBean)tvScanFloor.getTag();
-            if( floor.getRfid().equals(rfid) ) return true;
+            if( floor.getRfid().equals(rfid) ) {
+                Snackbar.make(mContentView, floor.getName(), Snackbar.LENGTH_LONG).show();
+                return true;
+            }
         }
 
         for(InventoryLabelInfoBean bean : data ){

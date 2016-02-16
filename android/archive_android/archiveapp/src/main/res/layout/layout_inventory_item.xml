@@ -4,6 +4,13 @@
               android:padding="3dp"
                 android:id="@+id/item_panel"
               android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_toLeftOf="@+id/item_delete"
+        android:id="@+id/item_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
     <TextView
         android:id="@+id/item_floorname"
         android:textSize="18sp"
@@ -21,5 +28,20 @@
         android:text="判断信息"
         android:layout_below="@id/item_floorname"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/item_delete"
+        android:layout_width="wrap_content"
+        android:text="@string/fa_times"
+        android:textSize="18sp"
+        android:paddingTop="6dp"
+        android:background="@drawable/location_item_delete_style"
+        android:paddingBottom="6dp"
+        android:paddingRight="8dp"
+        android:paddingLeft="6dp"
+        android:textColor="@color/orangered"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_height="wrap_content"/>
 </RelativeLayout>

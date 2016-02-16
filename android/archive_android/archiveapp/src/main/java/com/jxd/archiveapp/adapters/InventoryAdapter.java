@@ -3,6 +3,7 @@ package com.jxd.archiveapp.adapters;
 import android.support.v7.widget.RecyclerView;
 
 import com.jxd.archiveapp.Constant;
+import com.jxd.archiveapp.MApplication;
 import com.jxd.archiveapp.R;
 import com.jxd.archiveapp.bean.InventoryLabelInfoBean;
 import com.jxd.archiveapp.bean.ScanBean;
@@ -23,6 +24,8 @@ public class InventoryAdapter extends BGARecyclerViewAdapter<InventoryLabelInfoB
         super.setItemChildListener(viewHolderHelper);
 
         viewHolderHelper.setItemChildClickListener(R.id.item_panel);
+
+        viewHolderHelper.setItemChildClickListener(R.id.item_delete);
     }
 
     @Override
@@ -49,6 +52,8 @@ public class InventoryAdapter extends BGARecyclerViewAdapter<InventoryLabelInfoB
         info+="共"+ String.valueOf(total)+"个标签,正常"+ String.valueOf(normal)+"个,损坏"+String.valueOf(damage)+"个,丢失"+String.valueOf(miss)+"个";
         //String info = "共"+ String.valueOf( inventoryBean.g() ) + "个资产,已盘定"+ String.valueOf( inventoryBean.getInventorycount() )+"个";
         bgaViewHolderHelper.setText(R.id.item_info, info);
+
+        bgaViewHolderHelper.getTextView(R.id.item_delete).setTypeface(MApplication.typeface);
 
     }
 }
