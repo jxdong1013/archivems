@@ -6,67 +6,41 @@ import java.util.List;
  * Created by Administrator on 2016/2/15.
  */
 public class InventoryBean {
-    private String floorrfid;
-    private String floorname;
-    //private String boxrfid;
-    //private String boxname;
-    private int boxcount;
-    private int inventorycount;
-    private List<ScanBean> boxs;
+    private String title;
+    private int operateid;
+    private String operatename;
+    private List<InventoryRecord> records;
 
-    public String getFloorrfid() {
-        return floorrfid;
+    public String getTitle() {
+        return title;
     }
 
-    public void setFloorrfid(String floorrfid) {
-        this.floorrfid = floorrfid;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getFloorname() {
-        return floorname;
+    public int getOperateid() {
+        return operateid;
     }
 
-    public void setFloorname(String floorname) {
-        this.floorname = floorname;
+    public void setOperateid(int operateid) {
+        this.operateid = operateid;
     }
 
-//    public String getBoxrfid() {
-//        return boxrfid;
-//    }
-//
-//    public void setBoxrfid(String boxrfid) {
-//        this.boxrfid = boxrfid;
-//    }
-//
-//    public String getBoxname() {
-//        return boxname;
-//    }
-
-//    public void setBoxname(String boxname) {
-//        this.boxname = boxname;
-//    }
-
-    public int getBoxcount() {
-        return boxcount;
+    public String getOperatename() {
+        return operatename;
     }
 
-    public void setBoxcount(int boxcount) {
-        this.boxcount = boxcount;
+    public void setOperatename(String operatename) {
+        this.operatename = operatename;
     }
 
-    public int getInventorycount() {
-        return inventorycount;
+    public List<InventoryRecord> getRecords() {
+        return records;
     }
 
-    public void setInventorycount(int inventorycount) {
-        this.inventorycount = inventorycount;
+    public void setRecords(List<InventoryRecord> records) {
+        this.records = records;
     }
 
-    public List<ScanBean> getBoxs() {
-        return boxs;
-    }
-
-    public void setBoxs(List<ScanBean> boxs) {
-        this.boxs = boxs;
-    }
 }

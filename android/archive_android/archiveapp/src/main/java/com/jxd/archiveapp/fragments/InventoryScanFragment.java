@@ -16,7 +16,6 @@ import com.jxd.archiveapp.R;
 import com.jxd.archiveapp.adapters.InventoryAdapter;
 import com.jxd.archiveapp.adapters.ScanAdapter;
 import com.jxd.archiveapp.bean.BaseBean;
-import com.jxd.archiveapp.bean.InventoryBean;
 import com.jxd.archiveapp.bean.InventoryLabelInfoResult;
 import com.jxd.archiveapp.bean.LabelResult;
 import com.jxd.archiveapp.bean.ScanBean;
@@ -115,20 +114,20 @@ public class InventoryScanFragment extends BaseFragment implements Handler.Callb
     }
 
     private boolean queryLabelInfoByLocal(String rfid){
-        if(MApplication.getApplication().inventoryData ==null || MApplication.getApplication().inventoryData.size()<1){
-            return  false;
-        }
+//        if(MApplication.getApplication().inventoryData ==null || MApplication.getApplication().inventoryData.size()<1){
+//            return  false;
+//        }
 
-        for(InventoryBean bean : MApplication.getApplication().inventoryData){
-            if( bean.getFloorrfid().equals( rfid)) {
-                tvFloor.setText(bean.getFloorname());
-                tvFloor.setTag(bean);
-                adapter = new ScanAdapter(recyclerView);
-                recyclerView.setAdapter(adapter);
-                adapter.addNewDatas( bean.getBoxs() );
-                return true;
-            }
-        }
+//        for(InventoryBean bean : MApplication.getApplication().inventoryData){
+//            if( bean.getFloorrfid().equals( rfid)) {
+//                tvFloor.setText(bean.getFloorname());
+//                tvFloor.setTag(bean);
+//                adapter = new ScanAdapter(recyclerView);
+//                recyclerView.setAdapter(adapter);
+//                adapter.addNewDatas( bean.getBoxs() );
+//                return true;
+//            }
+//        }
         return false;
     }
 

@@ -573,5 +573,43 @@ namespace ContractMvcWeb.Models
             return null;
 
         }
+
+
+        public bool UploadInventoryInfo(InventoryList data)
+        {
+            string sql = "insert into t_inventory( title,operateid,operatename) values( @title,@operateid,@operatename);select LAST_INSERT_ID();";
+            MySqlParameter[] parameters = {
+					new MySqlParameter("@title", MySqlDbType.VarChar,255),
+					new MySqlParameter("@operateid", MySqlDbType.Int32),
+					new MySqlParameter("@operatename", MySqlDbType.VarChar,50)
+                };
+            parameters[0].Value = data.title;
+            parameters[1].Value = data.operateid;
+            parameters[2].Value = data.operatename;
+
+            int id = MySqlHelper.ExecuteSqlReturnId(sql, parameters);
+
+            foreach (InventoryRecord item in data.records)
+            {
+                string sql2 = "insert into t_inventorydetail(mid,floorrfid,boxrfid,status) values(@mid,@floorrfid,@boxrfid,@status)";
+
+                MySqlParameter[] parameters2 = {
+					new MySqlParameter("@mid", MySqlDbType.Int32),
+					new MySqlParameter("@floorrfid", MySqlDbType.VarChar,100),
+					new MySqlParameter("@boxrfid", MySqlDbType.VarChar,100),
+                    new MySqlParameter("@status", MySqlDbType.VarChar,50)
+                };
+                parameters2[0].Value = id;
+                parameters2[1].Value = item.floorrfid;
+                parameters2[2].Value = item.boxrfid;
+                parameters2[3].Value = item.status;
+
+                MySqlHelper.ExecuteSql(sql2, parameters2);
+            }
+
+            return true;
+
+        }
+    
     }
 }

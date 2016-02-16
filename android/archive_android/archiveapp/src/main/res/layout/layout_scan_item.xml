@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"/>
         <RadioButton
             android:id="@+id/scan_item_damage"
-            android:text="损害"
+            android:text="损坏"
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

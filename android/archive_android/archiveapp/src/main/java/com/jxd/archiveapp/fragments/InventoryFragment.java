@@ -13,9 +13,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.jxd.archiveapp.Constant;
 import com.jxd.archiveapp.GsonResponseHandler;
 import com.jxd.archiveapp.MApplication;
@@ -24,24 +26,29 @@ import com.jxd.archiveapp.adapters.InventoryAdapter;
 import com.jxd.archiveapp.adapters.ScanAdapter;
 import com.jxd.archiveapp.bean.BaseBean;
 import com.jxd.archiveapp.bean.InventoryBean;
+import com.jxd.archiveapp.bean.InventoryLabelInfoBean;
 import com.jxd.archiveapp.bean.InventoryLabelInfoResult;
+import com.jxd.archiveapp.bean.InventoryRecord;
 import com.jxd.archiveapp.bean.ScanBean;
 import com.jxd.archiveapp.utils.AsyncHttpUtil;
+import com.jxd.archiveapp.utils.Divider;
 import com.jxd.archiveapp.utils.JSONUtil;
 import com.jxd.archiveapp.utils.PreferenceHelper;
 import com.loopj.android.http.RequestParams;
-
+import org.apache.http.conn.ConnectTimeoutException;
+import java.lang.reflect.Type;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildCheckedChangeListener;
+import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 
 /**
  * 盘点
  */
-public class InventoryFragment extends BaseFragment implements Handler.Callback{
+public class InventoryFragment extends BaseFragment implements Handler.Callback , BGAOnItemChildClickListener , BGAOnItemChildCheckedChangeListener {
     RecyclerView recyclerViewList;
-    InventoryAdapter adapter;
+    InventoryAdapter inventoryAdapter;
     RelativeLayout rlNoData;
     TextView tvNoDataPic;
     RelativeLayout rlContain;
@@ -52,9 +59,50 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback{
     Handler handler;
     ScanAdapter scanAdapter;
     GsonResponseHandler<InventoryLabelInfoResult > inventoryLabelResponeseHandler;
+    List<InventoryLabelInfoBean> data;
+    String split="_";
+    GsonResponseHandler<BaseBean> uploadInventoryResponseHandler;
 
     public InventoryFragment() {
         // Required empty public constructor
+    }
+
+    public boolean isScanUI(){
+        return rlScan.getVisibility()==View.VISIBLE;
+    }
+    public void backInventoryUI(){
+        rlScan.setVisibility(View.GONE);
+        rlContain.setVisibility(View.VISIBLE);
+        if( data==null||data.size()<1 ) {
+            rlNoData.setVisibility(View.VISIBLE);
+        }else{
+            rlNoData.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onItemChildClick(ViewGroup viewGroup, View view, int i) {
+        //Snackbar.make(mContentView , String.valueOf( i ), Snackbar.LENGTH_LONG).show();
+        InventoryLabelInfoBean bean = inventoryAdapter.getItem(i);
+        rlContain.setVisibility(View.GONE);
+        rlScan.setVisibility(View.VISIBLE);
+        setScanData(bean);
+    }
+
+    @Override
+    public void onItemChildCheckedChanged(ViewGroup viewGroup, CompoundButton compoundButton, int i, boolean b) {
+        if( b==false ) return;
+        scanAdapter.getDatas().get(i).setStatus(compoundButton.getText().toString());
+
+        List<ScanBean> boxes = scanAdapter.getDatas();
+        String floorname = tvScanFloor.getText().toString();
+        String floorrfid = ((InventoryLabelInfoBean)tvScanFloor.getTag()).getRfid();
+        String key = floorrfid+ split +floorname;
+        JSONUtil<List<ScanBean>> jsonUtil = new JSONUtil<>();
+        String json = jsonUtil.toJson(boxes);
+        PreferenceHelper.writeString(getActivity(), Constant.INVENTORY_INFO_FILE, key, json);
+
+        inventoryAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -66,11 +114,86 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback{
             }
 
         }else if(msg.what==GsonResponseHandler.FAILTURE){
-            BaseBean result = (BaseBean)msg.obj;
-            String error = result.getMessage();
-            Snackbar.make(mContentView, error, Snackbar.LENGTH_LONG).show();
+            if( msg.obj instanceof SocketTimeoutException || msg.obj instanceof ConnectTimeoutException){
+                Snackbar.make(this.mContentView , "连接超时，请重试", Snackbar.LENGTH_LONG).show();
+                return true;
+            }else {
+                Snackbar.make(mContentView, "请求失败", Snackbar.LENGTH_LONG).show();
+                return true;
+            }
         }
         return false;
+    }
+
+    private void setScanData( InventoryLabelInfoBean bean ){
+        tvScanFloor.setText(bean.getName());
+        tvScanFloor.setTag(bean);
+        if( scanAdapter == null ){
+            scanAdapter=new ScanAdapter(recyclerViewScanBox);
+            scanAdapter.setOnItemChildCheckedChangeListener(this);
+            recyclerViewScanBox.setAdapter(scanAdapter);
+        }else {
+            scanAdapter.clear();
+        }
+        if( bean.getBoxs()!=null ) {
+            scanAdapter.addNewDatas(bean.getBoxs());
+        }
+
+        String floorrfid = bean.getRfid();
+        String floorname = bean.getName();
+        String rfid_name = floorrfid+ split +floorname;
+        JSONUtil<List<ScanBean>> jsonUtil = new JSONUtil<>();
+        String json = jsonUtil.toJson(bean.getBoxs());
+        PreferenceHelper.writeString(getActivity(), Constant.INVENTORY_INFO_FILE, rfid_name, json);
+
+
+        String floors = PreferenceHelper.readString(getActivity(), Constant.INVENTORY_INFO_FILE, Constant.INVENTORY_Floor);
+
+        //Set<String> floors = PreferenceHelper.readStringSet(getActivity(), Constant.INVENTORY_INFO_FILE, Constant.INVENTORY_Floor);
+        if( TextUtils.isEmpty(floors)){
+            //floors = new HashSet<>();
+            //floors.add(rfid_name);
+            floors = rfid_name;
+        }else{
+            //if( !floors.contains(rfid_name)) {
+            //    floors.add(rfid_name);
+            //}
+            boolean isexist = false;
+            String[] items = floors.split(",");
+            if( items!=null && items.length>0 ){
+                for(int i=0;i<items.length;i++){
+                    if( items[i].equals( rfid_name )){
+                        isexist= true;
+                        break;
+                    }
+                }
+            }
+            if( !isexist ){
+                if( !TextUtils.isEmpty(floors)){
+                    floors+=",";
+                }
+                floors+= rfid_name;
+            }
+        }
+
+
+
+        //PreferenceHelper.writeStringSet(getActivity(), Constant.INVENTORY_INFO_FILE, Constant.INVENTORY_Floor, floors);
+        PreferenceHelper.writeString(getActivity(),Constant.INVENTORY_INFO_FILE,Constant.INVENTORY_Floor,floors);
+
+        String temp = PreferenceHelper.readString(getActivity(), Constant.INVENTORY_INFO_FILE, Constant.INVENTORY_Floor);
+
+        boolean exist=false;
+        for(InventoryLabelInfoBean item : data){
+            if( item.getRfid().equals( floorrfid )){
+                exist=true;break;
+            }
+        }
+        if( !exist){
+            data.add(bean);
+            inventoryAdapter.clear();
+            inventoryAdapter.addNewDatas(data);
+        }
     }
 
     private void deal_data( Object obj ){
@@ -78,38 +201,47 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback{
         if( result==null)return;
         if( result.getCode()== Constant.REQUEST_SCUESS){
             if( result.getData().getType().equals("floor")) {
-                tvScanFloor.setText(result.getData().getName());
-                tvScanFloor.setTag(result.getData());
-                if( scanAdapter ==null ){
-                    scanAdapter=new ScanAdapter(recyclerViewScanBox);
-                    recyclerViewScanBox.setAdapter(scanAdapter);
-                }
-                scanAdapter.addNewDatas(result.getData().getBoxs());
-
-                String key = result.getData().getRfid();
-                JSONUtil<List<ScanBean>> jsonUtil = new JSONUtil<>();
-                String json = jsonUtil.toJson( result.getData().getBoxs() );
-                PreferenceHelper.writeString(getActivity(), Constant.INVENTORY_INFO_FILE, key, json);
-
-                Set<String> floors = PreferenceHelper.readStringSet(getActivity(), Constant.INVENTORY_INFO_FILE, Constant.INVENTORY_Floor);
-                if( floors==null){
-                    floors= new HashSet<>();
-                    floors.add(key);
+                setScanData( result.getData() );
+            }else if( result.getData().getType().equals("box")){
+                if( TextUtils.isEmpty( tvScanFloor.getText()) ) {
+                    Snackbar.make(mContentView, "请先扫描层架标签", Snackbar.LENGTH_LONG).show();
+                    return;
                 }else{
-                    if( !floors.contains(key)) {
-                        floors.add(key);
-                    }
+                    findBoxLabel(result.getData().getRfid());
                 }
-
-                PreferenceHelper.writeStringSet(getActivity(),Constant.INVENTORY_INFO_FILE, Constant.INVENTORY_Floor, floors);
             }
-
         }else if(result.getCode() == Constant.REQUEST_FAILED ) {
             String msg = result.getMessage();
             Snackbar.make(mContentView, msg, Snackbar.LENGTH_LONG).show();
         }
     }
 
+    private void findBoxLabel( String rfid ){
+        List<ScanBean> boxes = scanAdapter.getDatas();
+        if( boxes==null || boxes.size()<1){
+            Snackbar.make(mContentView,"无法找到层架下的档案盒信息",Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        boolean isExist = false;
+        for( ScanBean bean :  boxes){
+            if( bean.getRfid().equals(rfid) ){
+                bean.setStatus(Constant.LABEL_NORMAL);
+                scanAdapter.notifyDataSetChanged();
+
+                String floorname = tvScanFloor.getText().toString();
+                String floorrfid = ((InventoryLabelInfoBean)tvScanFloor.getTag()).getRfid();
+                String key = floorrfid+ split +floorname;
+                JSONUtil<List<ScanBean>> jsonUtil = new JSONUtil<>();
+                String json = jsonUtil.toJson( boxes );
+                PreferenceHelper.writeString(getActivity(), Constant.INVENTORY_INFO_FILE , key ,  json );
+                isExist=true;
+                break;
+            }
+        }
+        if( !isExist){
+            Snackbar.make(mContentView,"无法找到层架下的档案盒信息",Snackbar.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -132,30 +264,37 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback{
     }
 
     protected void loadLocalData(){
-        //List<InventoryBean> data=new ArrayList<>();
-        MApplication.getApplication().inventoryData = new ArrayList<>();
-        Set<String> set = PreferenceHelper.readStringSet(this.getActivity(), Constant.INVENTORY_INFO_FILE , Constant.INVENTORY_Floor );
-        if( set!=null){
+        data = new ArrayList<>();
+        //Set<String> set = PreferenceHelper.readStringSet(this.getActivity(), Constant.INVENTORY_INFO_FILE , Constant.INVENTORY_Floor );
+        String set = PreferenceHelper.readString(getActivity(),Constant.INVENTORY_INFO_FILE,Constant.INVENTORY_Floor);
 
-            JSONUtil<ScanBean> jsonUtil =new JSONUtil<>();
-            for(String item : set){
-                InventoryBean inventoryBean = new InventoryBean();
-                //inventoryBean.setFloorname(item);
-                inventoryBean.setFloorrfid(item);
+        if( !TextUtils.isEmpty(set) ){
+            String[] items= set.split(",");
+            JSONUtil<List<ScanBean>> jsonUtil =new JSONUtil<>();
+            for(String item : items){
+                String[] rfid_name = item.split( split );
+                if( rfid_name==null || rfid_name.length<2 ) continue;
+                InventoryLabelInfoBean inventoryBean = new InventoryLabelInfoBean();
+                inventoryBean.setName( rfid_name[1] );
+                inventoryBean.setRfid(rfid_name[0]);
+                inventoryBean.setType("floor");
 
                 String json = PreferenceHelper.readString(getActivity(), Constant.INVENTORY_INFO_FILE, item );
                 List<ScanBean> boxs = new ArrayList<>();
-                boxs = jsonUtil.toListBean(json , boxs.getClass() );
+                Type type = new TypeToken<ArrayList<ScanBean>>(){}.getType();
+                boxs = jsonUtil.toListBean(json , type );
                 inventoryBean.setBoxs(boxs);
-                MApplication.getApplication().inventoryData.add(inventoryBean);
+                data.add(inventoryBean);
             }
         }
 
-        adapter = new InventoryAdapter(recyclerViewList);
-        recyclerViewList.setAdapter(adapter);
-        adapter.addNewDatas(MApplication.getApplication().inventoryData);
+        inventoryAdapter = new InventoryAdapter(recyclerViewList);
+        inventoryAdapter.setOnItemChildClickListener(this);
+        recyclerViewList.setAdapter(inventoryAdapter);
+        inventoryAdapter.addNewDatas(data);
 
-        if( MApplication.getApplication().inventoryData.size()<1 ){
+
+        if( data.size()<1 ){
             rlNoData.setVisibility(View.VISIBLE);
         }else{
             rlNoData.setVisibility(View.GONE);
@@ -189,6 +328,8 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback{
         recyclerViewList = getViewById(R.id.inventory_list);
         LinearLayoutManager manager = new LinearLayoutManager(this.getActivity());
         recyclerViewList.setLayoutManager(manager);
+        recyclerViewList.addItemDecoration(new Divider(this.getActivity()));
+
 
         rlNoData = getViewById(R.id.inventory_nodata);
         tvNoDataPic = getViewById(R.id.inventory_nodata_pic);
@@ -200,34 +341,41 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback{
         recyclerViewScanBox.setLayoutManager(manager);
         tvScanFloor = getViewById(R.id.scan_floor);
         inventoryLabelResponeseHandler =new GsonResponseHandler<>(getContext(),handler, InventoryLabelInfoResult.class);
+
+        uploadInventoryResponseHandler = new GsonResponseHandler<>(getContext(),handler, BaseBean.class);
     }
 
     @Override
     public void setRFID(String rfid) {
         if(TextUtils.isEmpty(rfid))return;
 
-        //TODO
-        Snackbar.make(mContentView,rfid,Snackbar.LENGTH_LONG).show();
-
         rlContain.setVisibility(View.GONE);
         rlScan.setVisibility(View.VISIBLE);
 
-        if( !queryLabelInfoByLocal(rfid) ) {
-            queryLabelInfoByRFID(rfid);
+        if( !queryFloorLabelInfoByLocal(rfid) ) {
+            queryFloorLabelInfoByRFID(rfid);
         }
     }
 
-    private boolean queryLabelInfoByLocal(String rfid){
-        if(MApplication.getApplication().inventoryData ==null || MApplication.getApplication().inventoryData.size()<1){
-            return  false;
+    private boolean queryFloorLabelInfoByLocal(String rfid){
+        if( data ==null || data.size()<1){
+            return false;
+        }
+        //如果rfid 等于 同一个标签，则返回 true
+        if( !TextUtils.isEmpty( tvScanFloor.getText()) ){
+            InventoryLabelInfoBean floor = (InventoryLabelInfoBean)tvScanFloor.getTag();
+            if( floor.getRfid().equals(rfid) ) return true;
         }
 
-        for(InventoryBean bean : MApplication.getApplication().inventoryData){
-            if( bean.getFloorrfid().equals( rfid)) {
-                tvScanFloor.setText(bean.getFloorname());
+        for(InventoryLabelInfoBean bean : data ){
+            if( bean.getRfid().equals(rfid)) {
+                tvScanFloor.setText(bean.getName());
                 tvScanFloor.setTag(bean);
-                scanAdapter = new ScanAdapter(recyclerViewScanBox);
-                recyclerViewScanBox.setAdapter(adapter);
+                if( scanAdapter==null) {
+                    scanAdapter = new ScanAdapter(recyclerViewScanBox);
+                    scanAdapter.setOnItemChildCheckedChangeListener(this);
+                    recyclerViewScanBox.setAdapter(scanAdapter);
+                }
                 scanAdapter.addNewDatas( bean.getBoxs() );
                 return true;
             }
@@ -235,8 +383,8 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback{
         return false;
     }
 
-    protected void queryLabelInfoByRFID(String rfid){
-        this.showProgressDialog("", "正在查询标签信息，请稍等...");
+    protected void queryFloorLabelInfoByRFID(String rfid){
+        this.showProgressDialog("", "正在查询信息,请稍等...");
 
         String url = Constant.GET_INVENTORY_LABELINFO_URL;
         RequestParams params =new RequestParams();
@@ -246,9 +394,57 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback{
     }
 
     public void Upload(){
-        Snackbar.make(mContentView, "upload", Snackbar.LENGTH_LONG).show();
-
         setRFID("1");
 
+        setRFID("213");
+
+        setRFID("217");
+
+        setRFID("300");
+
+        //setRFID("2");
+
+        setRFID("3");
+    }
+
+    protected  void UploadInventory(){
+        if( data==null|| data.size()<1 ) {
+            Snackbar.make(mContentView,"请盘点，再上传",Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        InventoryBean list = new InventoryBean();
+        String name = PreferenceHelper.readString( getActivity() , Constant.USER_INFO_FILE , Constant.USER_NAME );
+        int id = PreferenceHelper.readInt( getActivity(),Constant.USER_INFO_FILE,Constant.USER_USERID);
+        list.setOperateid( id );
+        list.setOperatename(name);
+        String title= name + "盘点记录";
+        list.setTitle(title);
+
+        List<InventoryRecord> records = new ArrayList<>();
+
+        for( InventoryLabelInfoBean bean : data) {
+            if( bean.getBoxs()==null|| bean.getBoxs().size()<1 ) continue;
+            for(ScanBean child : bean.getBoxs()) {
+                InventoryRecord record = new InventoryRecord();
+                record.setBoxrfid(child.getRfid());
+                record.setFloorrfid(bean.getRfid());
+                record.setStatus(child.getStatus());
+                records.add(record);
+            }
+        }
+
+        list.setRecords(records);
+
+        JSONUtil<InventoryBean> jsonUtil = new JSONUtil<>();
+        String json = jsonUtil.toJson(list);
+
+        this.showProgressDialog("", "正在上传盘点信息,请稍等...");
+
+        String url = Constant.UPLOAD_INVENTORY_URL;
+        RequestParams params =new RequestParams();
+        params.add("data", json );
+
+        AsyncHttpUtil.post(url, params, uploadInventoryResponseHandler);
     }
 }

@@ -10,8 +10,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
 import com.jxd.archiveapp.adapters.MyFragmentViewAdapter;
 import com.jxd.archiveapp.fragments.BaseFragment;
 import com.jxd.archiveapp.fragments.InventoryFragment;
@@ -23,14 +26,10 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements SearchView.OnQueryTextListener{
-
+public class MainActivity extends BaseActivity implements SearchView.OnQueryTextListener , View.OnClickListener{
+    private long exitTime = 0l;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    //@Bind(R.id.nav_view)
-    //NavigationView navigationView;
-    //@Bind(R.id.main)
-    //RelativeLayout rlmain;
     @Bind(R.id.mainviewPager)
     ViewPager viewPager;
     @Bind(R.id.tab)
@@ -50,6 +49,23 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
     PendingIntent mPendingIntent;
 
     @Override
+    public void onClick(View v) {
+        backInventory();
+    }
+
+    private void backInventory(){
+        int idx = viewPager.getCurrentItem();
+        if(fragmentList.get(idx).getTitle().equals(Constant.FRAGMENT_INVENTORY)) {
+            if (inventoryFragment.isScanUI()) {
+                inventoryFragment.backInventoryUI();
+                return;
+            }
+        }
+
+        MainActivity.this.finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_bar_main);
@@ -61,11 +77,12 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
         setSupportActionBar(toolbar);
 
         toolbar.setLogo(R.mipmap.ic_launcher);
-
-        //navigationView.setNavigationItemSelectedListener(this);
+        toolbar.setNavigationIcon(R.mipmap.arrowleft);
+        toolbar.setNavigationContentDescription("返回");
+        toolbar.setNavigationOnClickListener(this);
 
         searchFragment = new SearchFragment();
-        inventoryFragment =new InventoryFragment();
+        inventoryFragment = new InventoryFragment();
         locationFragment = new LocationFragment();
 
         fragmentList = new ArrayList<>();
@@ -82,14 +99,14 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
             @Override
             public void onPageSelected(int position) {
                 toolbar.setSubtitle(fragmentList.get(position).getTitle());
-                if( fragmentList.get(position).getTitle().equals(Constant.FRAGMENT_INVENTORY) ) {
+                if (fragmentList.get(position).getTitle().equals(Constant.FRAGMENT_INVENTORY)) {
                     MenuItem item = toolbar.getMenu().findItem(R.id.action_inventory);
-                    if(item!=null) {
+                    if (item != null) {
                         item.setVisible(true);
                     }
-                }else{
+                } else {
                     MenuItem item = toolbar.getMenu().findItem(R.id.action_inventory);
-                    if(item!=null) {
+                    if (item != null) {
                         item.setVisible(false);
                     }
                 }
@@ -103,7 +120,7 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
         viewPager.setAdapter(fragmentViewAdapter);
         tab.setupWithViewPager(viewPager);
 
-        toolbar.setSubtitle( fragmentList.get(0).getTitle() );
+        toolbar.setSubtitle(fragmentList.get(0).getTitle());
         //tab.setOnTabSelectedListener();
 
         initNFC();
@@ -115,7 +132,7 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
 
         if (nfcAdapter != null) {
             if (!nfcAdapter.isEnabled()) {
-                Snackbar.make( getWindow().getDecorView(), "请打开NFC功能。", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(getWindow().getDecorView(), "请打开NFC功能。", Snackbar.LENGTH_LONG).show();
                 return;
             }
             nfcAdapter.enableForegroundDispatch(this, mPendingIntent, null, null);
@@ -139,12 +156,37 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
         //this.setIntent( intent);
         String rfid = resolveIntent(intent);
 
-        int idx =viewPager.getCurrentItem();
-        if( fragmentList.get(idx).getTitle().equals(Constant.FRAGMENT_LOCATION )){
+        int idx = viewPager.getCurrentItem();
+        if (fragmentList.get(idx).getTitle().equals(Constant.FRAGMENT_LOCATION)) {
             fragmentList.get(idx).setRFID(rfid);
-        }else if( fragmentList.get(idx).getTitle().equals( Constant.FRAGMENT_INVENTORY )){
+        } else if (fragmentList.get(idx).getTitle().equals(Constant.FRAGMENT_INVENTORY)) {
             fragmentList.get(idx).setRFID(rfid);
         }
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        //return super.dispatchKeyEvent(event);
+
+        // 2秒以内按两次推出程序
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Snackbar.make( getWindow().getDecorView() , "再按一次退出程序",Snackbar.LENGTH_LONG).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                try {
+                    MainActivity.this.finish();
+                    Runtime.getRuntime().exit(0);
+                } catch (Exception e) {
+                    Runtime.getRuntime().exit(-1);
+                }
+            }
+            return true;
+        }
+
+        return super.dispatchKeyEvent(event);
     }
 
     private String resolveIntent(Intent intent) {

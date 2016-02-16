@@ -235,5 +235,30 @@ namespace ContractMvcWeb.Controllers
             return jsonResult;
 
         }
+    
+    
+        [HttpPost]
+        public JsonResult UploadInventoryInfo(Models.Beans.InventoryList data)
+        {
+            try
+            {
+                ContractMvcWeb.Models.LabelContext db = new LabelContext();
+                bool isok = db.UploadInventoryInfo(data);
+                JsonResult jsonResult = new JsonResult();
+                jsonResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                Result result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ? "上传盘点信息成功" : "上传盘点信息失败", null);
+                jsonResult.Data = result;
+                return jsonResult;
+            }
+            catch (Exception ex)
+            {                
+                JsonResult jsonResult = new JsonResult();
+                jsonResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                Result result = new Result( (int)ResultCodeEnum.Error, "服务端发生错误",null);
+                jsonResult.Data = result;
+                return jsonResult;
+            }
+
+        }
     }
 }

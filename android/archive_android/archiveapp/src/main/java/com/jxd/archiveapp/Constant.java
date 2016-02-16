@@ -12,6 +12,7 @@ public class Constant {
     public static String UPLOAD_BOX_URL="LabelRestfull/UploadBoxListOfFloor";
     public static String GETLABELINF_URL="LabelRestfull/GetLabelInfoByRFID";
     public static String GET_INVENTORY_LABELINFO_URL="LabelRestfull/GetInventoryLabelInfo";
+    public static String UPLOAD_INVENTORY_URL ="LabelRestfull/UploadInventoryInfo";
 
     public static int REQUEST_SCUESS = 1;
     public static int REQUEST_FAILED = 0;

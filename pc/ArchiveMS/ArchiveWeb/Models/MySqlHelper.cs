@@ -760,5 +760,42 @@ namespace ContractMvcWeb.Models
                 throw new Exception("转换出错出错!", ex);
             }
         }
+
+
+        /// <summary>
+        /// 执行SQL语句，返回自增列值
+        /// </summary>
+        /// <param name="SQLString"></param>
+        /// <param name="cmdParams"></param>
+        /// <returns></returns>
+        public static int ExecuteSqlReturnId(string SQLString, params object[] cmdParams)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    try
+                    {
+                        PrepareCommand(cmd, connection, null, SQLString, cmdParams);
+                        object obj = cmd.ExecuteScalar();
+
+                        cmd.Parameters.Clear();
+                        if (obj == null) return 0;
+                        else
+                            return Convert.ToInt32(obj);
+                    }
+                    catch (MySqlException E)
+                    {
+                        throw new Exception(E.Message);
+                    }
+                    finally
+                    {
+                        cmd.Dispose();
+                        connection.Close();
+                    }
+                }
+            }
+        }
+
     }
 }

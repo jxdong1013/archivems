@@ -96,7 +96,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     temp +="/";
                 }
                 if( !temp.startsWith("http://") ){
-                    temp +="http://";
+                    temp ="http://"+temp;
                 }
                 PreferenceHelper.writeString(LoginActivity.this, Constant.URL_FILE, Constant.URL_API, temp);
             }

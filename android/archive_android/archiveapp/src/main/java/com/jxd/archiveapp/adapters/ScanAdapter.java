@@ -7,7 +7,6 @@ import android.widget.CompoundButton;
 import com.jxd.archiveapp.Constant;
 import com.jxd.archiveapp.MApplication;
 import com.jxd.archiveapp.R;
-import com.jxd.archiveapp.bean.InventoryBean;
 import com.jxd.archiveapp.bean.ScanBean;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildCheckedChangeListener;
@@ -24,6 +23,15 @@ public class ScanAdapter extends BGARecyclerViewAdapter<ScanBean> {
     }
 
     @Override
+    protected void setItemChildListener(BGAViewHolderHelper viewHolderHelper) {
+        super.setItemChildListener(viewHolderHelper);
+
+        viewHolderHelper.setItemChildCheckedChangeListener(R.id.scan_item_normal);
+        viewHolderHelper.setItemChildCheckedChangeListener(R.id.scan_item_damage);
+        viewHolderHelper.setItemChildCheckedChangeListener(R.id.scan_item_miss);
+    }
+
+    @Override
     protected void fillData(BGAViewHolderHelper bgaViewHolderHelper, int i, ScanBean scanBean ) {
         bgaViewHolderHelper.setText( R.id.scan_item_name , scanBean.getName() );
         bgaViewHolderHelper.setText(R.id.scan_item_rfid, scanBean.getRfid());
@@ -35,11 +43,6 @@ public class ScanAdapter extends BGARecyclerViewAdapter<ScanBean> {
         }else if(scanBean.getStatus() !=null && scanBean.getStatus().equals(Constant.LABEL_MISS)){
             bgaViewHolderHelper.setChecked(R.id.scan_item_miss,true);
         }
-        bgaViewHolderHelper.setOnItemChildCheckedChangeListener(new BGAOnItemChildCheckedChangeListener() {
-            @Override
-            public void onItemChildCheckedChanged(ViewGroup viewGroup, CompoundButton compoundButton, int i, boolean b) {
-                String msg = "sss";
-            }
-        });
+
     }
 }
