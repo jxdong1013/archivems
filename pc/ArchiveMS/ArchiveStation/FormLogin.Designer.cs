@@ -48,6 +48,7 @@
             this.btnSetCancel = new UILibrary.SkinButtom();
             this.txtIP = new UILibrary.SkinTextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.panelLoading.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -56,7 +57,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Font = new System.Drawing.Font("SimSun", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label1.Location = new System.Drawing.Point(103, 81);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 14);
@@ -66,7 +67,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Font = new System.Drawing.Font("SimSun", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.Location = new System.Drawing.Point(103, 27);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 14);
@@ -170,7 +171,7 @@
             this.tcCheckBox1.Checked = true;
             this.tcCheckBox1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.tcCheckBox1.ControlState = UILibrary.ControlState.Normal;
-            this.tcCheckBox1.Font = new System.Drawing.Font("宋体", 10F);
+            this.tcCheckBox1.Font = new System.Drawing.Font("SimSun", 10F);
             this.tcCheckBox1.Location = new System.Drawing.Point(104, 133);
             this.tcCheckBox1.Name = "tcCheckBox1";
             this.tcCheckBox1.Size = new System.Drawing.Size(96, 18);
@@ -344,6 +345,11 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "服务器地址配置";
             // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
             // FormLogin
             // 
             this.AcceptButton = this.btnOk;
@@ -399,5 +405,6 @@
         private System.Windows.Forms.Label lblTipDBPort;
         private System.Windows.Forms.Label lblTipDBPassword;
         private System.Windows.Forms.Label lblTipDBUserName;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

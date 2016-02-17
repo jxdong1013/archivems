@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -26,7 +27,7 @@ import de.greenrobot.event.EventBus;
  * 搜索组件一
  * Created by jinxiangdong on 2016/1/14.
  */
-public class SearchWidget  extends LinearLayout {
+public class SearchWidget  extends LinearLayout implements ViewGroup.OnClickListener{
 //    public SearchConfig getConfig() {
 //        return config;
 //    }
@@ -80,6 +81,7 @@ public class SearchWidget  extends LinearLayout {
         tvName=(TextView)findViewById(R.id.search_one_text);
 
         tvSearch.setTypeface(MApplication.typeface);
+        tvSearch.setOnClickListener(this);
 
         etKey = (android.widget.EditText) findViewById(R.id.search_one_text);
         etKey.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -87,42 +89,20 @@ public class SearchWidget  extends LinearLayout {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH
                         || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    if (TextUtils.isEmpty(etKey.getText())) {
-                        etKey.requestFocus();
-                        etKey.setError("搜索条件不能为空");
-                    } else {
-//                        key = etKey.getText().toString();
-//                        key = key.trim();
-//                        key = key.replace(",", "");
-//                        key = key.replace("，", "");
-//                        if (searchKeysList != null && !searchKeysList.contains(key)) {
-//                            String temp = "";
-//                            for (String item : searchKeysList) {
-//                                if (!TextUtils.isEmpty(temp)) temp += ",";
-//                                temp += item;
-//                            }
-//                            if (temp != "") temp = "," + temp;
-//                            temp = key + temp;
-//                            AddGoodsActivity.this.searchKeysList.add(0, key);
-//                            keysAdapter.notifyDataSetChanged();
-//                            PreferenceHelper.writeString(AddGoodsActivity.this, PRE_SEARCHKEY_FILE, PRE_SEARCHKEY_NAME, temp);
-//                        }
-
-                        EventBus.getDefault().post( new SearchEvent());
-
-//                        handler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                goodListView.setRefreshing(true);
-//                            }
-//                        });
-                    }
+                    EventBus.getDefault().post(new SearchEvent());
                     return true;
                 }
 
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId()==R.id.search_one_search){
+            EventBus.getDefault().post( new SearchEvent());
+        }
     }
 
     protected void setStyle2(){

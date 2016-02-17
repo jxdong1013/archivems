@@ -17,5 +17,14 @@ namespace ContractMvcWeb.Models.Beans
         public string remark { get; set; }
         public string operateman { get; set; }
         public DateTime operatetime { get; set; }
+
+        public string floorrfid { get; set; }
+        public string boxrfid { get; set; }
+
+        public string position { get; set; }
+        /// <summary>
+        /// 是否显示未归盒的档案
+        /// </summary>
+        public bool shownoposition { get; set; }
     }
 }

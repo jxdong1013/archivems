@@ -36,6 +36,16 @@ namespace ArchiveStation
             }
         }
 
+
+        public void setFloorRfid(string floorrfid)
+        {
+            txtKey.Text = floorrfid;
+
+            String key = txtKey.Text.Trim();
+            Go(0, Bean.Constant.PAGESIZE, key);
+        }        
+
+
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             Page<BoxBean> p = e.Argument as Page<BoxBean>;
@@ -250,6 +260,16 @@ namespace ArchiveStation
                 if (result != System.Windows.Forms.DialogResult.OK) return;
                 DeleteBoxLabel(bean);
             }
+            else if (dataGridView1.Columns[e.ColumnIndex].Name.ToLower().Trim().Equals("lblseearchive"))
+            { 
+                Bean.BoxBean bean = dataGridView1.Rows[e.RowIndex].DataBoundItem as Bean.BoxBean;
+                if (bean == null) return;
+                FormList form = new FormList();
+                form.SetBoxRfid(bean.rfid);
+                form.WindowState = FormWindowState.Normal;
+                form.StartPosition = FormStartPosition.CenterParent;
+                form.ShowDialog();
+            }
         }
 
 
@@ -309,6 +329,29 @@ namespace ArchiveStation
                 LogHelper.WriteException(ex);
                 panelLoading.Visible = false;
             }
+        }
+
+        private void FormBoxList_Shown(object sender, EventArgs e)
+        {
+            changeBarLocation();
+        }
+
+        private void FormBoxList_SizeChanged(object sender, EventArgs e)
+        {
+            changeBarLocation();
+        }
+
+        protected void changeBarLocation()
+        {
+            int x = (panel1.Width - txtKey.Width - btnGo.Width - btnAdd.Width - 8 - 8) / 2;
+            txtKey.Location = new Point(x, txtKey.Location.Y);
+
+            x = x + txtKey.Width + 8;
+            btnGo.Location = new Point(x, txtKey.Location.Y);
+
+            x = x + btnGo.Width + 8;
+            btnAdd.Location = new Point(x, txtKey.Location.Y);
+
         }
 
     }

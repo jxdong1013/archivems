@@ -228,6 +228,16 @@ namespace ArchiveStation
                   if (result != System.Windows.Forms.DialogResult.OK) return;
                   DeleteFloorLabel(bean);
               }
+              else if (dataGridView1.Columns[e.ColumnIndex].Name.ToLower().Trim().Equals("lblseeboxs"))
+              {
+                  Bean.FloorBean bean = dataGridView1.Rows[e.RowIndex].DataBoundItem as Bean.FloorBean;
+                  if( bean==null) return;
+                  FormBoxList form = new FormBoxList();
+                  form.WindowState = FormWindowState.Normal;
+                  form.StartPosition = FormStartPosition.CenterScreen;
+                  form.setFloorRfid(bean.rfid);
+                  form.ShowDialog();
+              }
         }
 
         protected void DeleteFloorLabel( Bean.FloorBean bean )
@@ -286,6 +296,32 @@ namespace ArchiveStation
                 LogHelper.WriteException(ex);
                 panelLoading.Visible = false;
             }
+        }
+
+        private void FormFloorList_SizeChanged(object sender, EventArgs e)
+        {
+            changeBarLocation();
+        }
+
+        protected void changeBarLocation()
+        {
+            int x = (panel1.Width - txtKey.Width - btnGo.Width - btnAdd.Width- 8 - 8) / 2;
+            txtKey.Location = new Point(x, txtKey.Location.Y);
+
+            x = x + txtKey.Width + 8;
+            btnGo.Location = new Point(x, txtKey.Location.Y);
+
+            x = x + btnGo.Width + 8;
+            btnAdd.Location = new Point(x, txtKey.Location.Y);
+
+            x= (panel2.Width - pageControl1.Width )/2;
+            pageControl1.Location = new Point(x, pageControl1.Location.Y);
+
+        }
+
+        private void FormFloorList_Shown(object sender, EventArgs e)
+        {
+            changeBarLocation();
         }
     }
 }

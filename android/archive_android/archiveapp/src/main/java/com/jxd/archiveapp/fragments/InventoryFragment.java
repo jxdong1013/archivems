@@ -10,9 +10,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,19 +31,27 @@ import com.jxd.archiveapp.bean.InventoryBean;
 import com.jxd.archiveapp.bean.InventoryLabelInfoBean;
 import com.jxd.archiveapp.bean.InventoryLabelInfoResult;
 import com.jxd.archiveapp.bean.InventoryRecord;
+import com.jxd.archiveapp.bean.LoginEvent;
 import com.jxd.archiveapp.bean.ScanBean;
+import com.jxd.archiveapp.bean.SwitchFragmentEvent;
 import com.jxd.archiveapp.utils.AsyncHttpUtil;
 import com.jxd.archiveapp.utils.Divider;
 import com.jxd.archiveapp.utils.JSONUtil;
 import com.jxd.archiveapp.utils.PreferenceHelper;
 import com.loopj.android.http.RequestParams;
 import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.entity.StringEntity;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.SocketTimeoutException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildCheckedChangeListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
+import de.greenrobot.event.EventBus;
 
 /**
  * 盘点
@@ -89,6 +99,9 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
            rlContain.setVisibility(View.GONE);
            rlScan.setVisibility(View.VISIBLE);
            setScanData(bean);
+            //发送消息，显示 “返回”按钮
+           EventBus.getDefault().post(new SwitchFragmentEvent(Constant.FRAGMENT_INVENTORY));
+
        }else if(view.getId()==R.id.item_delete){
            InventoryLabelInfoBean bean = inventoryAdapter.getItem(i);
            String rfid_name = bean.getRfid()+split+bean.getName();
@@ -107,6 +120,12 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
 
            inventoryAdapter.removeItem(i);
 
+           if( data.size()==0){
+               rlNoData.setVisibility(View.VISIBLE);
+           }else{
+               rlNoData.setVisibility(View.GONE);
+           }
+
            if( !TextUtils.isEmpty( tvScanFloor.getText().toString() )){
                InventoryLabelInfoBean model = (InventoryLabelInfoBean)tvScanFloor.getTag();
                if( bean.getRfid().equals( model.getRfid())){
@@ -122,6 +141,12 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
     @Override
     public void onItemChildCheckedChanged(ViewGroup viewGroup, CompoundButton compoundButton, int i, boolean b) {
         if( b==false ) return;
+
+        if( scanAdapter.getDatas().get(i).getStatus() !=null &&
+            scanAdapter.getDatas().get(i).getStatus().equals( compoundButton.getText().toString() ) ) {
+            return;
+        }
+
         scanAdapter.getDatas().get(i).setStatus(compoundButton.getText().toString());
 
         List<ScanBean> boxes = scanAdapter.getDatas();
@@ -141,8 +166,9 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
         if( msg.what== GsonResponseHandler.SUCCESS ){
             if( msg.obj instanceof InventoryLabelInfoResult ) {
                 deal_data(msg.obj);
+            }else {
+               deal_inventory(msg.obj);
             }
-
         }else if(msg.what==GsonResponseHandler.FAILTURE){
             if( msg.obj instanceof SocketTimeoutException || msg.obj instanceof ConnectTimeoutException){
                 Snackbar.make(this.mContentView , "连接超时，请重试", Snackbar.LENGTH_LONG).show();
@@ -153,6 +179,28 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
             }
         }
         return false;
+    }
+
+    private void deal_inventory(Object obj){
+        BaseBean bean = (BaseBean)obj;
+        if( bean==null){
+            Snackbar.make(mContentView,"请求失败",Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        if( bean.getCode()==Constant.REQUEST_LOGIN ){
+            EventBus.getDefault().post(new LoginEvent());
+            return;
+        }else if(bean.getCode()==Constant.REQUEST_FAILED){
+            Snackbar.make(mContentView, bean.getMessage() ,Snackbar.LENGTH_LONG).show();
+            return;
+        }else if(bean.getCode()==Constant.REQUEST_SCUESS){
+            Snackbar.make(mContentView,bean.getMessage(),Snackbar.LENGTH_LONG).show();
+            PreferenceHelper.clean(getActivity(),Constant.INVENTORY_INFO_FILE);
+            inventoryAdapter.clear();
+            scanAdapter.clear();
+            data.clear();
+            return;
+        }
     }
 
     private void setScanData( InventoryLabelInfoBean bean ){
@@ -210,8 +258,6 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
 
         //PreferenceHelper.writeStringSet(getActivity(), Constant.INVENTORY_INFO_FILE, Constant.INVENTORY_Floor, floors);
         PreferenceHelper.writeString(getActivity(),Constant.INVENTORY_INFO_FILE,Constant.INVENTORY_Floor,floors);
-
-        String temp = PreferenceHelper.readString(getActivity(), Constant.INVENTORY_INFO_FILE, Constant.INVENTORY_Floor);
 
         boolean exist=false;
         for(InventoryLabelInfoBean item : data){
@@ -382,6 +428,7 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
 
         rlContain.setVisibility(View.GONE);
         rlScan.setVisibility(View.VISIBLE);
+        EventBus.getDefault().post(new SwitchFragmentEvent(Constant.FRAGMENT_INVENTORY));
 
         if( !queryFloorLabelInfoByLocal(rfid) ) {
             queryFloorLabelInfoByRFID(rfid);
@@ -429,42 +476,64 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
 
     public void Upload(){
         setRFID("1");
-
         setRFID("213");
-
+        setRFID("216");
         setRFID("217");
+        setRFID("218");
+        setRFID("219");
 
-        setRFID("300");
+//        setRFID("3");
+//        setRFID("300");
+//        setRFID("301");
+//        setRFID("302");
+//        setRFID("303");
+//        setRFID("304");
+//        setRFID("305");
+//        setRFID("306");
+//        setRFID("307");
+//        setRFID("308");
+        //setRFID("3");
 
-        //setRFID("2");
+        //UploadInventory();
 
-        setRFID("3");
     }
 
-    protected  void UploadInventory(){
+    protected void UploadInventory(){
         if( data==null|| data.size()<1 ) {
-            Snackbar.make(mContentView,"请盘点，再上传",Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mContentView,"请先盘点，再上传数据",Snackbar.LENGTH_LONG).show();
             return;
         }
 
+        this.showProgressDialog("", "正在上传盘点信息,请稍等...");
+
         InventoryBean list = new InventoryBean();
-        String name = PreferenceHelper.readString( getActivity() , Constant.USER_INFO_FILE , Constant.USER_NAME );
-        int id = PreferenceHelper.readInt( getActivity(),Constant.USER_INFO_FILE,Constant.USER_USERID);
-        list.setOperateid( id );
-        list.setOperatename(name);
-        String title= name + "盘点记录";
+        String username = PreferenceHelper.readString( getActivity() , Constant.USER_INFO_FILE , Constant.USER_NAME );
+        int userid = PreferenceHelper.readInt( getActivity(),Constant.USER_INFO_FILE,Constant.USER_USERID);
+        list.setOperateid(userid);
+        list.setOperatename(username);
+        SimpleDateFormat format = new SimpleDateFormat("yyy-MM-dd-HH-mm-ss", Locale.CHINA);
+        String datetime =  format.format(System.currentTimeMillis());
+        String title= username + "_"+datetime+"_盘点记录";
         list.setTitle(title);
 
         List<InventoryRecord> records = new ArrayList<>();
 
         for( InventoryLabelInfoBean bean : data) {
-            if( bean.getBoxs()==null|| bean.getBoxs().size()<1 ) continue;
-            for(ScanBean child : bean.getBoxs()) {
+
+            if( bean.getBoxs()==null|| bean.getBoxs().size()<1 ){
                 InventoryRecord record = new InventoryRecord();
-                record.setBoxrfid(child.getRfid());
-                record.setFloorrfid(bean.getRfid());
-                record.setStatus(child.getStatus());
+                record.setFloorrfid( bean.getRfid());
+                record.setStatus("");
+                record.setBoxrfid("");
                 records.add(record);
+            }else {
+                for (ScanBean child : bean.getBoxs()) {
+                    InventoryRecord record = new InventoryRecord();
+                    record.setBoxrfid(child.getRfid());
+                    record.setFloorrfid(bean.getRfid());
+                    record.setStatus(child.getStatus());
+                    records.add(record);
+                }
             }
         }
 
@@ -473,12 +542,17 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
         JSONUtil<InventoryBean> jsonUtil = new JSONUtil<>();
         String json = jsonUtil.toJson(list);
 
-        this.showProgressDialog("", "正在上传盘点信息,请稍等...");
 
         String url = Constant.UPLOAD_INVENTORY_URL;
-        RequestParams params =new RequestParams();
-        params.add("data", json );
-
-        AsyncHttpUtil.post(url, params, uploadInventoryResponseHandler);
+        //RequestParams params =new RequestParams();
+        //params.add("data", json);
+        try {
+            String para = "{data:"+json+"}";
+            StringEntity stringEntity = new StringEntity(para,"UTF-8");
+            //stringEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE,));
+            AsyncHttpUtil.post(url, stringEntity, "application/json" ,uploadInventoryResponseHandler);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 }

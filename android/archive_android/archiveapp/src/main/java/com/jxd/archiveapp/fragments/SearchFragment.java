@@ -19,6 +19,7 @@ import com.jxd.archiveapp.R;
 import com.jxd.archiveapp.adapters.ArchiveAdapter;
 import com.jxd.archiveapp.bean.ArchiveBean;
 import com.jxd.archiveapp.bean.ArchiveResult;
+import com.jxd.archiveapp.bean.LoginEvent;
 import com.jxd.archiveapp.bean.PageArchive;
 import com.jxd.archiveapp.bean.SearchEvent;
 import com.jxd.archiveapp.utils.AsyncHttpUtil;
@@ -26,12 +27,16 @@ import com.jxd.archiveapp.utils.Divider;
 import com.jxd.archiveapp.utils.EventManager;
 import com.loopj.android.http.RequestParams;
 
+import org.apache.http.conn.ConnectTimeoutException;
+
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
+import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 
 /**
@@ -42,27 +47,19 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
     private RecyclerView recyclerView;
     private ArchiveAdapter adapter;
     private int pageIdx = 0;
-    //private int mMorePageNumber = 0;
     private TextView search_nodata_pic;
     private RelativeLayout search_nodata;
     private EditText etKey;
     private GsonResponseHandler<ArchiveResult> gsonResponseHandler;
     private Handler handler;
-    //private List<ArchiveBean> archiveBeanList;
     private EventManager eventManager;
 
     public SearchFragment() {
     }
 
-    public static SearchFragment newInstance() {
-        SearchFragment fragment = new SearchFragment();
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         eventManager = new EventManager(this);
         eventManager.Register();
     }
@@ -70,7 +67,6 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         eventManager.UnRegister();
     }
 
@@ -89,7 +85,6 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
 
         handler = new Handler(this);
         gsonResponseHandler = new GsonResponseHandler<>(this.getContext(), handler , ArchiveResult.class);
-        //archiveBeanList =new ArrayList<>();
     }
 
     @Override
@@ -102,7 +97,10 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
                 Snackbar.make(mContentView,"请求失败，请重试",Snackbar.LENGTH_LONG).show();
                 return true;
             }
-            if( result.getCode() == Constant.REQUEST_FAILED ){
+            if( result.getCode()== Constant.REQUEST_LOGIN){//重新登录
+                EventBus.getDefault().post(new LoginEvent());
+                return true;
+            }else if( result.getCode() == Constant.REQUEST_FAILED ){
                 String errorMsg = result.getMessage();
                 if(TextUtils.isEmpty(errorMsg)) errorMsg="请求失败";
                 Snackbar.make(mContentView , errorMsg , Snackbar.LENGTH_LONG).show();
@@ -121,6 +119,13 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
         }else if(msg.what==GsonResponseHandler.FAILTURE){
             refreshLayout.endLoadingMore();
             refreshLayout.endRefreshing();
+            if( msg.obj instanceof SocketTimeoutException || msg.obj instanceof ConnectTimeoutException){
+                Snackbar.make( mContentView , "连接超时，请重试", Snackbar.LENGTH_LONG).show();
+                return  true;
+            }else{
+                Snackbar.make( mContentView , "请求失败", Snackbar.LENGTH_LONG).show();
+                return  true;
+            }
         }
         return false;
     }
@@ -158,6 +163,8 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
 //            public void onFailure(Throwable t) {
 //            }
 //        });
+
+
     }
 
     @Override
@@ -169,6 +176,14 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
+
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.beginRefreshing();
+            }
+        });
     }
 
     @Override
@@ -178,14 +193,13 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
     }
 
     protected void go(int index){
-        etKey.setError("");
-
         String key = etKey.getText().toString().trim();
         RequestParams params = new RequestParams();
-        //manager={0}&title={1}&number={2}&pageidx={3}&pagesize={4}
         params.add("manager", key);
         params.add("title", key);
         params.add("number",key);
+        params.add("floorrfid", key);
+        params.add("boxrfid", key);
         params.add("pageidx", String.valueOf( pageIdx ) );
         params.add("pagesize", String.valueOf( Constant.PAGESIZE));
         AsyncHttpUtil.get(Constant.QUERY_ARCHIVE_URL, params, gsonResponseHandler);
@@ -203,12 +217,10 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
         return Constant.FRAGMENT_SEARCH;
     }
 
-
     @Subscribe
     public void refreshData(SearchEvent event){
         refreshLayout.beginRefreshing();
     }
-
 
     @Override
     public void setRFID(String rfid) {
@@ -216,5 +228,9 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
 
         Snackbar.make(mContentView,rfid,Snackbar.LENGTH_LONG).show();
 
+        //scanedRfid=rfid;
+        etKey.setText(rfid);
+
+        refreshLayout.beginRefreshing();
     }
 }

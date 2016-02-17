@@ -231,5 +231,29 @@ namespace ArchiveStation
                 RefreshData(0, Bean.Constant.PAGESIZE, key);
             }
         }
+
+        private void FormUserList_SizeChanged(object sender, EventArgs e)
+        {
+            changeBarLocation();
+        }
+
+        private void FormUserList_Shown(object sender, EventArgs e)
+        {
+            changeBarLocation();
+
+        }
+
+        protected void changeBarLocation()
+        {
+            int x = (panel1.Width - txtKey.Width - btnGo.Width - lblAdd.Width - 8 - 8) / 2;
+            txtKey.Location = new Point(x, txtKey.Location.Y);
+
+            x = x + txtKey.Width + 8;
+            btnGo.Location = new Point(x, txtKey.Location.Y);
+
+            x = x + btnGo.Width + 8;
+            lblAdd.Location = new Point(x, lblAdd.Location.Y);
+
+        }
     }
 }

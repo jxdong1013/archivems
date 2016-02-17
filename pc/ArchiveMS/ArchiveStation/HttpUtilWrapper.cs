@@ -87,7 +87,7 @@ namespace ArchiveStation
             try
             {
                 string url = Bean.Variable.RootUrl() + "/ArchiveRestfull/GetArchiveList";
-                String paramsStr = String.Format("?manager={0}&title={1}&number={2}&pageidx={3}&pagesize={4}", page.Key, page.Key,page.Key, page.PageIdx,page.PageSize);
+                String paramsStr = String.Format("?manager={0}&title={1}&number={2}&boxrfid={3}&shownoposition={4}&pageidx={5}&pagesize={6}", page.Key, page.Key, page.Key, page.Key, page.showNoPosition , page.PageIdx, page.PageSize);
                 url += paramsStr;
                 HttpUtil util = new HttpUtil();
                 String responseContent = "";
@@ -204,7 +204,7 @@ namespace ArchiveStation
             try
             {
                 string url = Bean.Variable.RootUrl() + "/LabelRestfull/GetBoxLabelList";
-                String paramsStr = String.Format("?name={0}&rfid={1}&pageidx={2}&pagesize={3}", page.Key, page.Key, page.PageIdx, page.PageSize);
+                String paramsStr = String.Format("?name={0}&rfid={1}&floorrfid={2}&pageidx={3}&pagesize={4}", page.Key, page.Key, page.Key , page.PageIdx, page.PageSize);
                 url += paramsStr;
                 HttpUtil util = new HttpUtil();
                 String responseContent = "";

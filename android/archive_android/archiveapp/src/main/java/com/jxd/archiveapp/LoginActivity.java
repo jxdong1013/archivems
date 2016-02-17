@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.jxd.archiveapp.bean.CloseEvnt;
+import com.jxd.archiveapp.bean.CloseEvent;
 import com.jxd.archiveapp.bean.UserBean;
 import com.jxd.archiveapp.bean.UserResult;
 import com.jxd.archiveapp.utils.AsyncHttpUtil;
@@ -206,7 +206,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
             break;
             case R.id.header_back: {
-                EventBus.getDefault().post(new CloseEvnt());
+                EventBus.getDefault().post(new CloseEvent());
                 finish();
             }
             break;
@@ -231,7 +231,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public boolean onKeyDown(int keyCode, KeyEvent event){
         if (keyCode == KeyEvent.KEYCODE_BACK
                 && event.getAction() == KeyEvent.ACTION_DOWN){
-            EventBus.getDefault().post(new CloseEvnt());
+            EventBus.getDefault().post(new CloseEvent());
             // finish自身
             LoginActivity.this.finish();
             return true;

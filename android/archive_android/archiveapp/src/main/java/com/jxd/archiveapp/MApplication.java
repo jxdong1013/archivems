@@ -10,7 +10,6 @@ import com.jxd.archiveapp.utils.CrashHandler;
 public class MApplication extends Application {
     private static MApplication application;
     public static Typeface typeface;
-    //public List<InventoryBean> inventoryData;
 
     public static MApplication getApplication(){
         return  application;

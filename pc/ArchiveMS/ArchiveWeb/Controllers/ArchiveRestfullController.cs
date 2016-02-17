@@ -67,13 +67,17 @@ namespace ContractMvcWeb.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetArchiveList( String manager , String title , String number , int pageidx = 0, int pagesize = 20 )
+        public JsonResult GetArchiveList( String manager , String title , String number , String floorrfid , string boxrfid , bool shownoposition = false ,  int pageidx = 0, int pagesize = 20 )
         {
             ContractMvcWeb.Models.ArchiveContext db = new Models.ArchiveContext();
             ContractMvcWeb.Models.Beans.Archive query = new Models.Beans.Archive();
             query.manager = manager;
             query.title = title;
             query.number = number;
+            query.floorrfid = floorrfid;
+            query.boxrfid = boxrfid;
+            query.shownoposition = shownoposition;
+
             Models.Beans.Page<ContractMvcWeb.Models.Beans.Archive> list = db.QueryByPage(query, pageidx, pagesize);
 
             Models.Result result = new Result((int)ResultCodeEnum.Success, "", list);

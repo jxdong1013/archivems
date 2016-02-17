@@ -8,7 +8,6 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -16,17 +15,26 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.jxd.archiveapp.adapters.MyFragmentViewAdapter;
+import com.jxd.archiveapp.bean.CloseEvent;
+import com.jxd.archiveapp.bean.LoginEvent;
+import com.jxd.archiveapp.bean.SwitchFragmentEvent;
 import com.jxd.archiveapp.fragments.BaseFragment;
 import com.jxd.archiveapp.fragments.InventoryFragment;
 import com.jxd.archiveapp.fragments.LocationFragment;
 import com.jxd.archiveapp.fragments.SearchFragment;
 import com.jxd.archiveapp.utils.ByteUtil;
+import com.jxd.archiveapp.utils.EventManager;
+import com.jxd.archiveapp.utils.PreferenceHelper;
+import com.loopj.android.http.PersistentCookieStore;
+
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
-public class MainActivity extends BaseActivity implements SearchView.OnQueryTextListener , View.OnClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener{
     private long exitTime = 0l;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -38,7 +46,6 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
     String[] searchKeys;
 
     InventoryFragment inventoryFragment;
-
     FragmentManager fragmentManager;
     SearchFragment searchFragment;
     LocationFragment locationFragment;
@@ -48,6 +55,9 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
     NfcAdapter nfcAdapter;
     PendingIntent mPendingIntent;
 
+    EventManager eventManager;
+
+
     @Override
     public void onClick(View v) {
         backInventory();
@@ -56,18 +66,25 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
     private void backInventory(){
         int idx = viewPager.getCurrentItem();
         if(fragmentList.get(idx).getTitle().equals(Constant.FRAGMENT_INVENTORY)) {
+            MenuItem item = toolbar.getMenu().findItem(R.id.action_inventory);
             if (inventoryFragment.isScanUI()) {
                 inventoryFragment.backInventoryUI();
-                return;
+                item.setVisible(true);
+            }else{
+                item.setVisible(false);
             }
         }
 
-        MainActivity.this.finish();
+        toolbar.setNavigationIcon(null);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        eventManager = new EventManager(this);
+        eventManager.Register();
+
         setContentView(R.layout.app_bar_main);
 
         ButterKnife.bind(this);
@@ -77,8 +94,6 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
         setSupportActionBar(toolbar);
 
         toolbar.setLogo(R.mipmap.ic_launcher);
-        toolbar.setNavigationIcon(R.mipmap.arrowleft);
-        toolbar.setNavigationContentDescription("返回");
         toolbar.setNavigationOnClickListener(this);
 
         searchFragment = new SearchFragment();
@@ -98,11 +113,21 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
 
             @Override
             public void onPageSelected(int position) {
+                //设置标题栏子标题
                 toolbar.setSubtitle(fragmentList.get(position).getTitle());
+
+                EventBus.getDefault().post( new SwitchFragmentEvent(fragmentList.get(position).getTitle()));
+
                 if (fragmentList.get(position).getTitle().equals(Constant.FRAGMENT_INVENTORY)) {
+
                     MenuItem item = toolbar.getMenu().findItem(R.id.action_inventory);
+
                     if (item != null) {
-                        item.setVisible(true);
+                        if( inventoryFragment.isScanUI() ) {
+                            item.setVisible(false);
+                        }else{
+                            item.setVisible(true);
+                        }
                     }
                 } else {
                     MenuItem item = toolbar.getMenu().findItem(R.id.action_inventory);
@@ -151,8 +176,6 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
-
         //this.setIntent( intent);
         String rfid = resolveIntent(intent);
 
@@ -160,6 +183,8 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
         if (fragmentList.get(idx).getTitle().equals(Constant.FRAGMENT_LOCATION)) {
             fragmentList.get(idx).setRFID(rfid);
         } else if (fragmentList.get(idx).getTitle().equals(Constant.FRAGMENT_INVENTORY)) {
+            fragmentList.get(idx).setRFID(rfid);
+        }else if( fragmentList.get(idx).getTitle().equals(Constant.FRAGMENT_SEARCH)){
             fragmentList.get(idx).setRFID(rfid);
         }
     }
@@ -226,7 +251,6 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
         return null;
     }
 
-
     protected void initNFC(){
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) {
@@ -240,17 +264,6 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
         //        "Message from NFC Reader :-)", Locale.ENGLISH, true) });
     }
 
-//    @Override
-//    protected void onNewIntent(Intent intent) {
-//        super.onNewIntent(intent);
-//
-//
-//        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-//            String query = intent.getStringExtra(SearchManager.QUERY);
-//            //doMySearch(query);
-//        }
-//    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -260,11 +273,6 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-
-        //MenuItem item= menu.findItem(R.id.action_search);
-        //searchView = (SearchView)MenuItemCompat.getActionView( item);
-        //searchView.setOnQueryTextListener(this);
-
         return true;
     }
 
@@ -276,13 +284,20 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
         int id = item.getItemId();
 
         if( id == R.id.action_inventory){
-            int idx=  viewPager.getCurrentItem();
+            int idx = viewPager.getCurrentItem();
             ((InventoryFragment)fragmentViewAdapter.getItem(idx)).Upload();
-
+        }else if(id==R.id.action_quit){
+            quit();
         }
 
-
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void quit(){
+        PreferenceHelper.clean(MainActivity.this, Constant.USER_INFO_FILE);
+        PersistentCookieStore cookieStore = new PersistentCookieStore(MApplication.getApplication());
+        cookieStore.clear();
+        this.finish();
     }
 
     @Override
@@ -290,19 +305,32 @@ public class MainActivity extends BaseActivity implements SearchView.OnQueryText
         super.onDestroy();
 
         ButterKnife.unbind(this);
+        eventManager.UnRegister();
     }
 
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        //searchView.setSuggestionsAdapter();
-        return false;
+    @Subscribe
+    public void onEventMainThread( LoginEvent event) {
+        this.skipActivity(MainActivity.this, LoginActivity.class);
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-
-        Snackbar.make( this.getWindow().getDecorView(), query, Snackbar.LENGTH_LONG).show();
-
-        return false;
+    @Subscribe
+    public void onEventMainThread(SwitchFragmentEvent event){
+        if(  event.getName().equals( Constant.FRAGMENT_INVENTORY )){
+            if( inventoryFragment.isScanUI() ) {
+                toolbar.setNavigationIcon(R.mipmap.arrowleft);
+                MenuItem item = toolbar.getMenu().findItem(R.id.action_inventory);
+                if( item !=null){
+                    item.setVisible(false);
+                }
+                return;
+            }else{
+                MenuItem item = toolbar.getMenu().findItem(R.id.action_inventory);
+                if( item !=null){
+                    item.setVisible(true);
+                }
+            }
+        }
+        toolbar.setNavigationIcon(null);
     }
+
 }

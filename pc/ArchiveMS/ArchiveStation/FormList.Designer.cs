@@ -34,6 +34,15 @@
             this.txtKey = new UILibrary.SkinTextBox();
             this.btnGo = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.ckbSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.idx = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.manager = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.title = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pages = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.number = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Position = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.remark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblTotal = new System.Windows.Forms.Label();
@@ -45,15 +54,6 @@
             this.btnPre = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.label1 = new System.Windows.Forms.Label();
-            this.ckbSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.idx = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.manager = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.title = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pages = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.number = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.remark = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Position = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelLoading.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -94,7 +94,7 @@
             // 
             this.btnGo.Location = new System.Drawing.Point(463, 13);
             this.btnGo.Name = "btnGo";
-            this.btnGo.Size = new System.Drawing.Size(75, 30);
+            this.btnGo.Size = new System.Drawing.Size(75, 28);
             this.btnGo.TabIndex = 4;
             this.btnGo.Text = "检索";
             this.btnGo.UseVisualStyleBackColor = true;
@@ -109,7 +109,7 @@
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -124,16 +124,84 @@
             this.title,
             this.pages,
             this.number,
-            this.remark,
-            this.Position});
+            this.Position,
+            this.remark});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(3, 83);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.ShowCellErrors = false;
-            this.dataGridView1.Size = new System.Drawing.Size(773, 288);
+            this.dataGridView1.Size = new System.Drawing.Size(773, 271);
             this.dataGridView1.TabIndex = 5;
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
+            // 
+            // ckbSelect
+            // 
+            this.ckbSelect.HeaderText = "选择";
+            this.ckbSelect.Name = "ckbSelect";
+            this.ckbSelect.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ckbSelect.ToolTipText = "选择";
+            this.ckbSelect.Visible = false;
+            this.ckbSelect.Width = 60;
+            // 
+            // idx
+            // 
+            this.idx.DataPropertyName = "idx";
+            this.idx.HeaderText = "序号";
+            this.idx.Name = "idx";
+            // 
+            // id
+            // 
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "id";
+            this.id.Name = "id";
+            this.id.Visible = false;
+            // 
+            // manager
+            // 
+            this.manager.DataPropertyName = "manager";
+            this.manager.HeaderText = "责任人";
+            this.manager.Name = "manager";
+            this.manager.Width = 150;
+            // 
+            // title
+            // 
+            this.title.DataPropertyName = "title";
+            this.title.HeaderText = "文件题目";
+            this.title.MinimumWidth = 100;
+            this.title.Name = "title";
+            this.title.Width = 250;
+            // 
+            // pages
+            // 
+            this.pages.DataPropertyName = "pages";
+            this.pages.HeaderText = "页数";
+            this.pages.Name = "pages";
+            // 
+            // number
+            // 
+            this.number.DataPropertyName = "number";
+            this.number.HeaderText = "编号";
+            this.number.Name = "number";
+            this.number.Width = 180;
+            // 
+            // Position
+            // 
+            this.Position.DataPropertyName = "position";
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Position.DefaultCellStyle = dataGridViewCellStyle6;
+            this.Position.HeaderText = "位置信息";
+            this.Position.Name = "Position";
+            this.Position.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Position.Width = 180;
+            // 
+            // remark
+            // 
+            this.remark.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.remark.DataPropertyName = "remark";
+            this.remark.HeaderText = "备注";
+            this.remark.MinimumWidth = 80;
+            this.remark.Name = "remark";
             // 
             // panel1
             // 
@@ -155,9 +223,9 @@
             this.panel2.Controls.Add(this.btnNext);
             this.panel2.Controls.Add(this.btnPre);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(3, 371);
+            this.panel2.Location = new System.Drawing.Point(3, 354);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(773, 33);
+            this.panel2.Size = new System.Drawing.Size(773, 50);
             this.panel2.TabIndex = 7;
             // 
             // lblTotal
@@ -266,73 +334,6 @@
             this.label1.Text = "正在查询数据,请稍等......";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // ckbSelect
-            // 
-            this.ckbSelect.HeaderText = "选择";
-            this.ckbSelect.Name = "ckbSelect";
-            this.ckbSelect.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ckbSelect.ToolTipText = "选择";
-            this.ckbSelect.Visible = false;
-            this.ckbSelect.Width = 60;
-            // 
-            // idx
-            // 
-            this.idx.DataPropertyName = "idx";
-            this.idx.HeaderText = "序号";
-            this.idx.Name = "idx";
-            // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "id";
-            this.id.Name = "id";
-            this.id.Visible = false;
-            // 
-            // manager
-            // 
-            this.manager.DataPropertyName = "manager";
-            this.manager.HeaderText = "责任人";
-            this.manager.Name = "manager";
-            this.manager.Width = 150;
-            // 
-            // title
-            // 
-            this.title.DataPropertyName = "title";
-            this.title.HeaderText = "文件题目";
-            this.title.MinimumWidth = 100;
-            this.title.Name = "title";
-            this.title.Width = 250;
-            // 
-            // pages
-            // 
-            this.pages.DataPropertyName = "pages";
-            this.pages.HeaderText = "页数";
-            this.pages.Name = "pages";
-            // 
-            // number
-            // 
-            this.number.DataPropertyName = "number";
-            this.number.HeaderText = "编号";
-            this.number.Name = "number";
-            this.number.Width = 180;
-            // 
-            // remark
-            // 
-            this.remark.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.remark.DataPropertyName = "remark";
-            this.remark.HeaderText = "备注";
-            this.remark.MinimumWidth = 80;
-            this.remark.Name = "remark";
-            // 
-            // Position
-            // 
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Position.DefaultCellStyle = dataGridViewCellStyle6;
-            this.Position.HeaderText = "位置信息";
-            this.Position.Name = "Position";
-            this.Position.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Position.Width = 150;
-            // 
             // FormList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -346,6 +347,9 @@
             this.RoundStyle = SkinForm.RoundStyle.All;
             this.Text = "检索档案";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.FormList_Load);
+            this.Shown += new System.EventHandler(this.FormList_Shown);
+            this.SizeChanged += new System.EventHandler(this.FormList_SizeChanged);
             this.Controls.SetChildIndex(this.panel2, 0);
             this.Controls.SetChildIndex(this.panel1, 0);
             this.Controls.SetChildIndex(this.dataGridView1, 0);
@@ -382,7 +386,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn title;
         private System.Windows.Forms.DataGridViewTextBoxColumn pages;
         private System.Windows.Forms.DataGridViewTextBoxColumn number;
-        private System.Windows.Forms.DataGridViewTextBoxColumn remark;
         private System.Windows.Forms.DataGridViewTextBoxColumn Position;
+        private System.Windows.Forms.DataGridViewTextBoxColumn remark;
     }
 }

@@ -11,6 +11,8 @@ namespace ArchiveStation.Bean
         //public int TotalRecords { get; set; }
         //public int TotalPages { get; set; }
         public string Key { get; set; }
+
+        public bool showNoPosition { get; set; }
         public List<T> Data { get; set; }
     }
 

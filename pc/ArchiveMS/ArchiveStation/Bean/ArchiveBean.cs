@@ -31,5 +31,7 @@ namespace ArchiveStation.Bean
         public string remark { get; set; }
         public string operateman { get; set; }
         public DateTime operatetime { get; set; }
+
+        public String position { get; set; }
     }
 }

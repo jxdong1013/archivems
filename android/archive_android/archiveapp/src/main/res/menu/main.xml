@@ -14,4 +14,9 @@
         android:visible="false"
         app:showAsAction="ifRoom"
         />
+    <item android:id="@+id/action_quit"
+          android:title="退出"
+          android:icon="@mipmap/quit"
+          app:showAsAction="ifRoom"
+          />
 </menu>

@@ -21,10 +21,11 @@ namespace ArchiveStation
         private void btnGo_Click(object sender, EventArgs e)
         {
             String key = txtKey.Text.Trim();
-            Go(0, pagesize, key);
+            bool showNoPosition = ckbNoPosition.Checked;
+            Go(0, pagesize, key , showNoPosition );
         }
 
-        protected void Go(int pageidx, int pagesize, string key)
+        protected void Go(int pageidx, int pagesize, string key , bool showNoPosition )
         {
             if (backgroundWorker1.IsBusy) return;
 
@@ -33,6 +34,7 @@ namespace ArchiveStation
             p.PageIdx = pageidx;
             p.PageSize = pagesize;
             p.Key = key;
+            p.showNoPosition = showNoPosition;
 
 
             panelLoading.Visible = true;
@@ -182,7 +184,8 @@ namespace ArchiveStation
             if (e.KeyCode == Keys.Enter)
             {
                 String key = txtKey.Text.Trim();
-                Go(0, pagesize, key);
+                bool showNoPosition = ckbNoPosition.Checked;
+                Go(0, pagesize, key , showNoPosition );
             }
         }
 
@@ -274,7 +277,8 @@ namespace ArchiveStation
                 }
 
                 String key = txtKey.Text.Trim();
-                Go(0, pagesize, key);
+                bool showNoposition = ckbNoPosition.Checked;
+                Go(0, pagesize, key, showNoposition );
 
             }
             catch (Exception ex)
@@ -307,6 +311,32 @@ namespace ArchiveStation
         {
             public List<int> ArchiveIds { get; set; }
             public int BoxId { get; set; }
+        }
+
+        private void FormLabelConfig_Shown(object sender, EventArgs e)
+        {
+            changeBarLocation();
+        }
+
+        private void FormLabelConfig_SizeChanged(object sender, EventArgs e)
+        {
+            changeBarLocation();
+        }
+
+        protected void changeBarLocation()
+        {
+            int x = (panel1.Width - txtKey.Width - btnGo.Width - btnConfig.Width - 8 - 8) / 2;
+            txtKey.Location = new Point(x, txtKey.Location.Y);
+
+
+            x = x + txtKey.Width + 8;
+            btnGo.Location = new Point(x, txtKey.Location.Y);
+
+            x = x + btnGo.Width + 8;
+            btnConfig.Location = new Point(x, txtKey.Location.Y);
+
+            x = txtKey.Location.X + 8;
+            ckbNoPosition.Location = new Point(x, ckbNoPosition.Location.Y);
         }
     }
 }

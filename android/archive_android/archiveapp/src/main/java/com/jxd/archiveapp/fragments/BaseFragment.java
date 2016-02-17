@@ -1,6 +1,7 @@
 package com.jxd.archiveapp.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 import com.avast.android.dialogs.fragment.ProgressDialogFragment;
 import com.jxd.archiveapp.BaseActivity;
 import com.jxd.archiveapp.MApplication;
+import com.jxd.archiveapp.R;
+import com.jxd.archiveapp.utils.Logger;
 
 /**
  * Created by 向东 on 2016-1-31.
@@ -22,6 +25,7 @@ public abstract class BaseFragment extends Fragment {
     protected View mContentView;
     protected BaseActivity mActivity;
     protected ProgressDialogFragment _progressDialog=null;
+    protected ProgressDialog progressDialog;
 
     @Override
     public void onAttach(Context context) {
@@ -95,23 +99,41 @@ public abstract class BaseFragment extends Fragment {
 
 
     protected void showProgressDialog( String title , String message ){
-        if( _progressDialog !=null ) {
-            _progressDialog.dismiss();
-            _progressDialog=null;
-        }
+//        if( _progressDialog !=null ) {
+//            _progressDialog.dismiss();
+//            _progressDialog=null;
+//        }
+//
+//        ProgressDialogFragment.ProgressDialogBuilder builder = ProgressDialogFragment.createBuilder(this.getActivity() , this.getFragmentManager())
+//                .setTitle(title)
+//                .setMessage( message )
+//                        //.setCancelable(false);
+//                .setCancelableOnTouchOutside(false);
+//        _progressDialog = (ProgressDialogFragment) builder.show();
 
-        ProgressDialogFragment.ProgressDialogBuilder builder = ProgressDialogFragment.createBuilder(this.getActivity() , this.getFragmentManager())
-                .setTitle(title)
-                .setMessage( message )
-                        //.setCancelable(false);
-                .setCancelableOnTouchOutside(false);
-        _progressDialog = (ProgressDialogFragment) builder.show();
+        if( progressDialog !=null){
+            progressDialog.dismiss();
+            progressDialog=null;
+        }
+        progressDialog = new ProgressDialog(this.getActivity());
+        progressDialog.setTitle(title);
+        progressDialog.setMessage(message);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
     }
 
     protected  void closeProgressDialog(){
-        if(_progressDialog!=null){
-            _progressDialog.dismiss();
-            _progressDialog=null;
+//        if(_progressDialog!=null){
+//            _progressDialog.dismiss();
+//            _progressDialog=null;
+//        }
+        try {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception ex){
+            Logger.e(ex.getMessage(),ex);
         }
     }
 }

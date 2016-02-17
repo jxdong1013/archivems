@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.avast.android.dialogs.fragment.ProgressDialogFragment;
-import com.jxd.archiveapp.bean.CloseEvnt;
+import com.jxd.archiveapp.bean.CloseEvent;
 import com.jxd.archiveapp.utils.NetworkUtil;
 
 import java.io.Serializable;
@@ -72,7 +72,7 @@ public class BaseActivity extends AppCompatActivity {
      * 关闭 事件
      * @param event
      */
-    public void onEventMainThread( CloseEvnt event) {
+    public void onEventMainThread( CloseEvent event) {
         this.finish();
     }
 

@@ -46,6 +46,7 @@
             this.number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblSeeBoxs = new System.Windows.Forms.DataGridViewLinkColumn();
             this.lblDelete = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.panelLoading.SuspendLayout();
@@ -73,9 +74,9 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(643, 22);
+            this.btnAdd.Location = new System.Drawing.Point(643, 21);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnAdd.Size = new System.Drawing.Size(75, 28);
             this.btnAdd.TabIndex = 7;
             this.btnAdd.Text = "新增";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -92,7 +93,7 @@
             this.txtKey.IsSystemPasswordChar = false;
             this.txtKey.LeftIcon = null;
             this.txtKey.Lines = new string[0];
-            this.txtKey.Location = new System.Drawing.Point(142, 19);
+            this.txtKey.Location = new System.Drawing.Point(142, 21);
             this.txtKey.Margin = new System.Windows.Forms.Padding(0);
             this.txtKey.MaxLength = 32767;
             this.txtKey.MinimumSize = new System.Drawing.Size(0, 28);
@@ -113,9 +114,9 @@
             // 
             // btnGo
             // 
-            this.btnGo.Location = new System.Drawing.Point(550, 22);
+            this.btnGo.Location = new System.Drawing.Point(550, 21);
             this.btnGo.Name = "btnGo";
-            this.btnGo.Size = new System.Drawing.Size(75, 23);
+            this.btnGo.Size = new System.Drawing.Size(75, 28);
             this.btnGo.TabIndex = 6;
             this.btnGo.Text = "检索";
             this.btnGo.UseVisualStyleBackColor = true;
@@ -125,17 +126,16 @@
             // 
             this.panel2.Controls.Add(this.pageControl1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(3, 455);
+            this.panel2.Location = new System.Drawing.Point(3, 451);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(766, 46);
+            this.panel2.Size = new System.Drawing.Size(766, 50);
             this.panel2.TabIndex = 1;
             // 
             // pageControl1
             // 
-            this.pageControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pageControl1.Location = new System.Drawing.Point(0, 0);
+            this.pageControl1.Location = new System.Drawing.Point(120, 4);
             this.pageControl1.Name = "pageControl1";
-            this.pageControl1.Size = new System.Drawing.Size(766, 46);
+            this.pageControl1.Size = new System.Drawing.Size(505, 35);
             this.pageControl1.TabIndex = 0;
             this.pageControl1.onFirst += new System.EventHandler(this.pageControl1_onFirst);
             this.pageControl1.onPre += new System.EventHandler<ArchiveStation.PageEventArgs>(this.pageControl1_onPre);
@@ -153,7 +153,7 @@
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -166,13 +166,14 @@
             this.rfid,
             this.number,
             this.lblSeeBoxs,
-            this.lblDelete});
+            this.lblDelete,
+            this.Column1});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(3, 96);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(766, 359);
+            this.dataGridView1.Size = new System.Drawing.Size(766, 355);
             this.dataGridView1.TabIndex = 6;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
@@ -191,7 +192,7 @@
             this.name.HeaderText = "名称";
             this.name.Name = "name";
             this.name.ReadOnly = true;
-            this.name.Width = 180;
+            this.name.Width = 200;
             // 
             // rfid
             // 
@@ -237,6 +238,13 @@
             this.lblDelete.UseColumnTextForLinkValue = true;
             this.lblDelete.Width = 70;
             // 
+            // Column1
+            // 
+            this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column1.HeaderText = "";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
             // label1
             // 
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -264,6 +272,8 @@
             this.Controls.Add(this.panel1);
             this.Name = "FormFloorList";
             this.Text = "层架标签";
+            this.Shown += new System.EventHandler(this.FormFloorList_Shown);
+            this.SizeChanged += new System.EventHandler(this.FormFloorList_SizeChanged);
             this.Controls.SetChildIndex(this.panelLoading, 0);
             this.Controls.SetChildIndex(this.panel1, 0);
             this.Controls.SetChildIndex(this.panel2, 0);
@@ -295,5 +305,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn number;
         private System.Windows.Forms.DataGridViewLinkColumn lblSeeBoxs;
         private System.Windows.Forms.DataGridViewLinkColumn lblDelete;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
     }
 }

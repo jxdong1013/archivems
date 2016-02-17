@@ -39,8 +39,6 @@
             this.ckbAll = new System.Windows.Forms.CheckBox();
             this.pageControl1 = new ArchiveStation.PageControl();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.ckbSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.idx = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -48,8 +46,10 @@
             this.title = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pages = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.number = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.remark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.position = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.remark = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.panelLoading.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -64,14 +64,16 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 30);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(764, 65);
+            this.panel1.Size = new System.Drawing.Size(764, 70);
             this.panel1.TabIndex = 11;
             // 
             // ckbNoPosition
             // 
             this.ckbNoPosition.AutoSize = true;
+            this.ckbNoPosition.Checked = true;
+            this.ckbNoPosition.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ckbNoPosition.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.ckbNoPosition.Location = new System.Drawing.Point(93, 44);
+            this.ckbNoPosition.Location = new System.Drawing.Point(93, 46);
             this.ckbNoPosition.Name = "ckbNoPosition";
             this.ckbNoPosition.Size = new System.Drawing.Size(120, 16);
             this.ckbNoPosition.TabIndex = 5;
@@ -80,9 +82,9 @@
             // 
             // btnConfig
             // 
-            this.btnConfig.Location = new System.Drawing.Point(568, 14);
+            this.btnConfig.Location = new System.Drawing.Point(568, 12);
             this.btnConfig.Name = "btnConfig";
-            this.btnConfig.Size = new System.Drawing.Size(75, 30);
+            this.btnConfig.Size = new System.Drawing.Size(75, 28);
             this.btnConfig.TabIndex = 0;
             this.btnConfig.Text = "档案归盒";
             this.btnConfig.UseVisualStyleBackColor = true;
@@ -99,7 +101,7 @@
             this.txtKey.IsSystemPasswordChar = false;
             this.txtKey.LeftIcon = null;
             this.txtKey.Lines = new string[0];
-            this.txtKey.Location = new System.Drawing.Point(55, 14);
+            this.txtKey.Location = new System.Drawing.Point(55, 12);
             this.txtKey.Margin = new System.Windows.Forms.Padding(0);
             this.txtKey.MaxLength = 32767;
             this.txtKey.MinimumSize = new System.Drawing.Size(0, 28);
@@ -120,9 +122,9 @@
             // 
             // btnGo
             // 
-            this.btnGo.Location = new System.Drawing.Point(476, 13);
+            this.btnGo.Location = new System.Drawing.Point(476, 12);
             this.btnGo.Name = "btnGo";
-            this.btnGo.Size = new System.Drawing.Size(75, 30);
+            this.btnGo.Size = new System.Drawing.Size(75, 28);
             this.btnGo.TabIndex = 4;
             this.btnGo.Text = "检索";
             this.btnGo.UseVisualStyleBackColor = true;
@@ -161,7 +163,7 @@
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -176,27 +178,15 @@
             this.title,
             this.pages,
             this.number,
-            this.remark,
-            this.position});
+            this.position,
+            this.remark});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 95);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 100);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.ShowCellErrors = false;
-            this.dataGridView1.Size = new System.Drawing.Size(764, 374);
+            this.dataGridView1.Size = new System.Drawing.Size(764, 369);
             this.dataGridView1.TabIndex = 14;
-            // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.WorkerReportsProgress = true;
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
-            // 
-            // backgroundWorker2
-            // 
-            this.backgroundWorker2.WorkerReportsProgress = true;
-            this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
-            this.backgroundWorker2.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker2_RunWorkerCompleted);
             // 
             // ckbSelect
             // 
@@ -248,6 +238,17 @@
             this.number.Name = "number";
             this.number.Width = 180;
             // 
+            // position
+            // 
+            this.position.DataPropertyName = "position";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.position.DefaultCellStyle = dataGridViewCellStyle3;
+            this.position.HeaderText = "位置信息";
+            this.position.Name = "position";
+            this.position.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.position.ToolTipText = "位置信息";
+            this.position.Width = 180;
+            // 
             // remark
             // 
             this.remark.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -256,14 +257,17 @@
             this.remark.MinimumWidth = 80;
             this.remark.Name = "remark";
             // 
-            // position
+            // backgroundWorker1
             // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.position.DefaultCellStyle = dataGridViewCellStyle3;
-            this.position.HeaderText = "位置信息";
-            this.position.Name = "position";
-            this.position.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.position.ToolTipText = "位置信息";
+            this.backgroundWorker1.WorkerReportsProgress = true;
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
+            // backgroundWorker2
+            // 
+            this.backgroundWorker2.WorkerReportsProgress = true;
+            this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
+            this.backgroundWorker2.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker2_RunWorkerCompleted);
             // 
             // FormLabelConfig
             // 
@@ -279,6 +283,8 @@
             this.RoundStyle = SkinForm.RoundStyle.All;
             this.Text = "档案归盒";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Shown += new System.EventHandler(this.FormLabelConfig_Shown);
+            this.SizeChanged += new System.EventHandler(this.FormLabelConfig_SizeChanged);
             this.Controls.SetChildIndex(this.panelLoading, 0);
             this.Controls.SetChildIndex(this.panel1, 0);
             this.Controls.SetChildIndex(this.pageControl1, 0);
@@ -312,7 +318,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn title;
         private System.Windows.Forms.DataGridViewTextBoxColumn pages;
         private System.Windows.Forms.DataGridViewTextBoxColumn number;
-        private System.Windows.Forms.DataGridViewTextBoxColumn remark;
         private System.Windows.Forms.DataGridViewTextBoxColumn position;
+        private System.Windows.Forms.DataGridViewTextBoxColumn remark;
     }
 }

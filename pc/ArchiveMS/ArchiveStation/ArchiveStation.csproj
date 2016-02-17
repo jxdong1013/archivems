@@ -46,6 +46,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\Dll\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -259,6 +262,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\bg.jpg" />
+    <Content Include="logo.ico" />
+    <Content Include="logo2.ico" />
     <Content Include="RFIDRD201H.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

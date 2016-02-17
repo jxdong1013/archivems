@@ -31,8 +31,8 @@
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/inventory_nodata_tip"
-            android:text="请扫描层架标签"
-            android:hint="请扫描层架标签"
+            android:text="请扫描标签,进行盘点"
+            android:hint="请扫描标签,进行盘点"
             android:textSize="22sp"
             android:textColor="@color/mediumpurple"
             android:layout_centerHorizontal="true"

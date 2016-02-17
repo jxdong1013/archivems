@@ -155,12 +155,13 @@ namespace ContractMvcWeb.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetBoxLabelList(String name, String rfid, int pageidx = 0, int pagesize = 20)
+        public JsonResult GetBoxLabelList(String name, String boxrfid, string  floorrfid, int pageidx = 0, int pagesize = 20)
         {
             ContractMvcWeb.Models.LabelContext db = new Models.LabelContext();
             ContractMvcWeb.Models.Beans.BoxLabel query = new Models.Beans.BoxLabel();
             query.name = name;
-            query.rfid = rfid;
+            query.rfid = boxrfid;
+            query.floorrfid = floorrfid;
 
             Models.Beans.Page<ContractMvcWeb.Models.Beans.BoxLabel> list = db.QueryBoxByPage(query, pageidx, pagesize);
 
@@ -242,11 +243,22 @@ namespace ContractMvcWeb.Controllers
         {
             try
             {
-                ContractMvcWeb.Models.LabelContext db = new LabelContext();
-                bool isok = db.UploadInventoryInfo(data);
                 JsonResult jsonResult = new JsonResult();
+                Result result;
+                if (data == null)
+                {
+                    jsonResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                    result = new Result( (int)ResultCodeEnum.Error, "参数空",null);
+                    jsonResult.Data = result;
+                    return jsonResult;                    
+                }
+                
+
+
+                ContractMvcWeb.Models.LabelContext db = new LabelContext();
+                bool isok = db.UploadInventoryInfo(data);               
                 jsonResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-                Result result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ? "上传盘点信息成功" : "上传盘点信息失败", null);
+                result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ? "上传盘点信息成功" : "上传盘点信息失败", null);
                 jsonResult.Data = result;
                 return jsonResult;
             }

@@ -76,6 +76,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(314, 504);
             this.Controls.Add(this.panelLoading);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormBase";
             this.Text = "FormBase";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormBase_FormClosing);

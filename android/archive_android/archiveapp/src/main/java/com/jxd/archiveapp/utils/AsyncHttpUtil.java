@@ -7,6 +7,8 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
+import org.apache.http.entity.StringEntity;
+
 /**
  * Created by Administrator on 2016/1/27.
  */
@@ -39,7 +41,14 @@ public class AsyncHttpUtil {
         String urlStr = ROOTURL() + url;
 
         //getInstance().post( MApplication.getApplication() , urlStr , null ,params ,"application/x-www-form-urlencoded", responseHandler);
-        getInstance().post( urlStr , params , responseHandler);
+        getInstance().post(urlStr, params, responseHandler);
+    }
+
+    public static void post( String url , StringEntity params , String contentType ,AsyncHttpResponseHandler responseHandler){
+        String urlStr = ROOTURL() + url;
+
+        //getInstance().addHeader("Content-Type","charset=utf-8");
+        getInstance().post( MApplication.getApplication(),  urlStr , null , params , contentType, responseHandler);
     }
 
 }

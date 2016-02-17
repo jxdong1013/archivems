@@ -289,6 +289,7 @@ namespace ContractMvcWeb.Models
         {
             query.name = FilterSpecial(query.name);
             query.rfid = FilterSpecial(query.rfid);
+            query.floorrfid = FilterSpecial(query.floorrfid);
 
             string where = " 1=1 ";
             if (string.IsNullOrEmpty(query.name) == false)
@@ -298,6 +299,10 @@ namespace ContractMvcWeb.Models
             if (string.IsNullOrEmpty(query.rfid) == false)
             {
                 where += string.Format(" and rfid like '%{0}%'", query.rfid);
+            }
+            if (string.IsNullOrEmpty(query.floorrfid) == false)
+            {
+                where += string.Format(" and floorrfid = '{0}'", query.floorrfid);
             }
 
             return where;
@@ -314,6 +319,11 @@ namespace ContractMvcWeb.Models
             model.rfid = row["rfid"].ToString();
             model.number = row["number"].ToString();
 
+            if (row.Table.Columns.Contains("floorrfid"))
+            {
+                model.floorrfid = row["floorrfid"].ToString();
+            }
+
             return model;
         }
 
@@ -326,7 +336,7 @@ namespace ContractMvcWeb.Models
             string where = GetWhere(query);
             string limit = string.Format(" limit {0} , {1}", pageidx < 0 ? 0 : pageidx * pagesize, pagesize);
             string orderby = "";//"order by operatetime desc , id desc";
-            string sql = string.Format("select count(1) from t_boxlabel where {0} ", where);
+            string sql = string.Format("select count(1) from v_box where {0} ", where);
             int totalrecord = 0;
             object obj = MySqlHelper.GetSingle(sql);
             if (obj == null) totalrecord = 0;
@@ -336,7 +346,7 @@ namespace ContractMvcWeb.Models
             totalPages += totalrecord % pagesize == 0 ? 0 : 1;
             page.TotalPages = totalPages;
             page.TotalRecords = totalrecord;
-            sql = string.Format(" select * from t_boxlabel where {0} {1} {2}", where, orderby, limit);
+            sql = string.Format(" select * from v_box where {0} {1} {2}", where, orderby, limit);
             DataSet ds = MySqlHelper.Query(sql);
             if (ds == null || ds.Tables.Count < 1 || ds.Tables[0].Rows.Count < 1) return page;
             int count = ds.Tables[0].Rows.Count;

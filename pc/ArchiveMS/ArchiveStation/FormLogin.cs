@@ -73,6 +73,18 @@ namespace ArchiveStation
             string username = txtUserName.Text.Trim ();
             string password = txtPassword.Text;
             string pwdMD5 = DesEncryptUtil.EncryptMD5( password );
+
+
+            if (backgroundWorker1.IsBusy) return;
+            panelLoading.Visible = true;
+            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
+            UserBean user = new UserBean();
+            user.username = username;
+            user.password = password;
+            backgroundWorker1.RunWorkerAsync(user);
+            this.DialogResult = System.Windows.Forms.DialogResult.None;
+            return;
+
              
 
             UserResult entity = new HttpUtilWrapper().Login<UserResult>(username, password);
@@ -210,6 +222,92 @@ namespace ArchiveStation
             //txtPort.Text = string.IsNullOrEmpty ( port)? "80": port ;
             //txtDBUserName.Text = user;
             //txtDBPassword.Text = passwordEx;
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            UserResult result;
+            UserBean bean = e.Argument as UserBean;
+            if (bean == null)
+            {
+                result = new UserResult();
+                result.Code = (int)Constant.ResultCodeEnum.Error;
+                result.Message = "参数错误";
+                e.Result = result;
+                return;
+            }
+
+            UserResult entity = new HttpUtilWrapper().Login<UserResult>(bean.username , bean.password);
+
+            if (entity == null)
+            {
+                result = new UserResult();
+                result.Code = (int)Constant.ResultCodeEnum.Error;
+                result.Message = "登录失败，用户名或密码错误";
+                //this.DialogResult = System.Windows.Forms.DialogResult.None;
+                //lblTipInfo.Text = "登录失败，用户名或密码错误";
+                //lblTipInfo.Visible = true;
+                e.Result = result;
+                return;
+            }
+            else if (entity.Code == (int)Constant.ResultCodeEnum.Error)
+            {
+                //this.DialogResult = System.Windows.Forms.DialogResult.None;
+                //lblTipInfo.Text = entity.Message; // "登录失败，用户名或密码错误";
+                //blTipInfo.Visible = true;
+                result = new UserResult();
+                result.Code = (int)Constant.ResultCodeEnum.Error;
+                result.Message = entity.Message;
+                e.Result = result;
+                return;
+            }
+
+            Variable.User = entity.Data;
+
+            //SaveUser(Variable.User);
+
+            result = entity;
+            e.Result = result;
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            try
+            {
+                UserResult result = e.Result as UserResult;
+                if (result == null)
+                {
+                    this.DialogResult = System.Windows.Forms.DialogResult.None;
+                    lblTipInfo.Text = "登录失败,请重试！";
+                    lblTipInfo.Visible = true;
+                    //MessageBox.Show("登录失败,请重试！");
+                    return;
+                }
+                if (result.Code == (int)Constant.ResultCodeEnum.Error)
+                {
+                    this.DialogResult = System.Windows.Forms.DialogResult.None;
+                    lblTipInfo.Text = result.Message;
+                    lblTipInfo.Visible = true;
+                    return;
+                }
+
+
+                SaveUser(result.Data);
+
+                this.DialogResult = System.Windows.Forms.DialogResult.OK;
+
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                this.DialogResult = System.Windows.Forms.DialogResult.None;
+                lblTipInfo.Text = "登录失败,请重试！";
+                lblTipInfo.Visible = true;
+            }
+            finally
+            {
+                panelLoading.Visible = false;
+            }
         }
 
 

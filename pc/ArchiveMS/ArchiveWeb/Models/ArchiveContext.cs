@@ -20,7 +20,7 @@ namespace ContractMvcWeb.Models
             string where = GetWhere(query);
             string limit = string.Format( " limit {0} , {1}" , pageidx <0 ? 0 : pageidx* pagesize , pagesize );
             string orderby = "order by operatetime desc , id desc";
-            string sql = string.Format( "select count(1) from t_archive where {0} " , where );
+            string sql = string.Format( "select count(1) from v_archive where {0} " , where );
             int totalrecord = 0;
             object obj = MySqlHelper.GetSingle( sql );
             if( obj ==null ) totalrecord =0;
@@ -30,7 +30,7 @@ namespace ContractMvcWeb.Models
             totalPages += totalrecord% pagesize == 0? 0: 1;
             page.TotalPages = totalPages;
             page.TotalRecords = totalrecord;
-            sql = string.Format ( " select * from t_archive where {0} {1} {2}", where , orderby , limit );
+            sql = string.Format ( " select * from v_archive where {0} {1} {2}", where , orderby , limit );
             DataSet ds = MySqlHelper.Query(sql);
             if (ds == null || ds.Tables.Count < 1 || ds.Tables[0].Rows.Count < 1) return page;
             int count = ds.Tables[0].Rows.Count;
@@ -61,6 +61,20 @@ namespace ContractMvcWeb.Models
             model.operateman = row["operateman"].ToString();
             model.operatetime = DateTime.Parse(row["operatetime"].ToString());
 
+            if (row.Table.Columns.Contains("position"))
+            {
+                model.position = row["position"].ToString();
+            }
+
+            if (row.Table.Columns.Contains("floorrfid"))
+            {
+                model.floorrfid = row["floorrfid"].ToString();
+            }
+            if (row.Table.Columns.Contains("boxrfid"))
+            {
+                model.boxrfid = row["boxrfid"].ToString();
+            }
+
             return model;
         }
 
@@ -87,6 +101,8 @@ namespace ContractMvcWeb.Models
             query.manager = FilterSpecial(query.manager);
             query.title = FilterSpecial(query.title);
             query.number = FilterSpecial(query.number);
+            query.floorrfid = FilterSpecial(query.floorrfid);
+            query.boxrfid = FilterSpecial(query.boxrfid);
 
             string where = "";
             if (string.IsNullOrEmpty(query.manager) == false)
@@ -104,6 +120,31 @@ namespace ContractMvcWeb.Models
                 if (string.IsNullOrEmpty(where) == false) where += " or ";
                 where += string.Format(" number like '%{0}%' ", query.number);
             }
+
+            if (string.IsNullOrEmpty(query.floorrfid) == false)
+            {
+                if (string.IsNullOrEmpty(where) == false) where += " or ";
+                where += string.Format(" floorrfid = '{0}' ", query.floorrfid);
+            }
+
+            if (string.IsNullOrEmpty(query.boxrfid) == false)
+            {
+                if (string.IsNullOrEmpty(where) == false) where += " or ";
+                where += string.Format(" boxrfid = '{0}' ", query.boxrfid);
+            }
+
+            if (query.shownoposition)
+            {
+                if (string.IsNullOrEmpty(where) == false)
+                {
+                    where = " boxid = 0 and ( " + where + " )";
+                }
+                else
+                {
+                    where = " boxid=0 ";
+                }
+            }
+
 
             if (string.IsNullOrEmpty(where))
             {

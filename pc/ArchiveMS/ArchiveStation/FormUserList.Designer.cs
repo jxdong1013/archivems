@@ -38,6 +38,9 @@
             this.txtKey = new UILibrary.SkinTextBox();
             this.btnGo = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.pageControl1 = new ArchiveStation.PageControl();
+            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.userid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.username = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.realname = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,9 +50,7 @@
             this.roletype = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lbledit = new System.Windows.Forms.DataGridViewLinkColumn();
             this.lblDelete = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.pageControl1 = new ArchiveStation.PageControl();
-            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelLoading.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -111,9 +112,9 @@
             // 
             // btnGo
             // 
-            this.btnGo.Location = new System.Drawing.Point(463, 14);
+            this.btnGo.Location = new System.Drawing.Point(463, 11);
             this.btnGo.Name = "btnGo";
-            this.btnGo.Size = new System.Drawing.Size(75, 23);
+            this.btnGo.Size = new System.Drawing.Size(75, 28);
             this.btnGo.TabIndex = 4;
             this.btnGo.Text = "检索";
             this.btnGo.UseVisualStyleBackColor = true;
@@ -126,7 +127,7 @@
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -142,7 +143,8 @@
             this.enable,
             this.roletype,
             this.lbledit,
-            this.lblDelete});
+            this.lblDelete,
+            this.Column1});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(3, 83);
             this.dataGridView1.Name = "dataGridView1";
@@ -154,6 +156,26 @@
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
             this.dataGridView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseDoubleClick);
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.WorkerReportsProgress = true;
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
+            // pageControl1
+            // 
+            this.pageControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pageControl1.Location = new System.Drawing.Point(3, 469);
+            this.pageControl1.Name = "pageControl1";
+            this.pageControl1.Size = new System.Drawing.Size(784, 46);
+            this.pageControl1.TabIndex = 14;
+            // 
+            // backgroundWorker2
+            // 
+            this.backgroundWorker2.WorkerReportsProgress = true;
+            this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
+            this.backgroundWorker2.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker2_RunWorkerCompleted);
             // 
             // userid
             // 
@@ -242,25 +264,12 @@
             this.lblDelete.UseColumnTextForLinkValue = true;
             this.lblDelete.Width = 70;
             // 
-            // backgroundWorker1
+            // Column1
             // 
-            this.backgroundWorker1.WorkerReportsProgress = true;
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
-            // 
-            // pageControl1
-            // 
-            this.pageControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pageControl1.Location = new System.Drawing.Point(3, 469);
-            this.pageControl1.Name = "pageControl1";
-            this.pageControl1.Size = new System.Drawing.Size(784, 46);
-            this.pageControl1.TabIndex = 14;
-            // 
-            // backgroundWorker2
-            // 
-            this.backgroundWorker2.WorkerReportsProgress = true;
-            this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
-            this.backgroundWorker2.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker2_RunWorkerCompleted);
+            this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column1.HeaderText = "";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
             // 
             // FormUserList
             // 
@@ -273,6 +282,8 @@
             this.Name = "FormUserList";
             this.Text = "人员管理";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Shown += new System.EventHandler(this.FormUserList_Shown);
+            this.SizeChanged += new System.EventHandler(this.FormUserList_SizeChanged);
             this.Controls.SetChildIndex(this.pageControl1, 0);
             this.Controls.SetChildIndex(this.panel1, 0);
             this.Controls.SetChildIndex(this.dataGridView1, 0);
@@ -304,5 +315,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn roletype;
         private System.Windows.Forms.DataGridViewLinkColumn lbledit;
         private System.Windows.Forms.DataGridViewLinkColumn lblDelete;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
     }
 }

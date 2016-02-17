@@ -24,6 +24,13 @@ namespace ArchiveStation
             Go(0, pagesize , key);
         }
 
+        public void SetBoxRfid(string rfid)
+        {
+            txtKey.Text = rfid;
+            String key = txtKey.Text.Trim();
+            Go(0, pagesize, key);
+        }
+
         protected void Go( int pageidx , int pagesize , string key)
         {
             if (backgroundWorker1.IsBusy) return;
@@ -137,8 +144,7 @@ namespace ArchiveStation
                 panelLoading.Visible = false;
             }
         }
-
-
+        
 
         private void btnFirst_Click(object sender, EventArgs e)
         {
@@ -302,6 +308,31 @@ namespace ArchiveStation
                 String key = txtKey.Text.Trim();
                 Go(0, pagesize, key);
             }
+        }
+
+        private void FormList_SizeChanged(object sender, EventArgs e)
+        {
+            changeBarLocation();
+        }
+
+        protected void changeBarLocation()
+        {
+            int x = (panel1.Width - txtKey.Width - btnGo.Width - 8) / 2;
+            txtKey.Location = new Point(x, txtKey.Location.Y);
+
+            x = x + txtKey.Width + 8;
+            btnGo.Location = new Point(x, txtKey.Location.Y);          
+
+        }
+
+        private void FormList_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void FormList_Shown(object sender, EventArgs e)
+        {
+            changeBarLocation();
         }
 
         //private void btnConfig_Click(object sender, EventArgs e)
