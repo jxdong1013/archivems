@@ -69,7 +69,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 30);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(766, 66);
+            this.panel1.Size = new System.Drawing.Size(873, 66);
             this.panel1.TabIndex = 0;
             // 
             // btnAdd
@@ -126,16 +126,16 @@
             // 
             this.panel2.Controls.Add(this.pageControl1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(3, 451);
+            this.panel2.Location = new System.Drawing.Point(3, 449);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(766, 50);
+            this.panel2.Size = new System.Drawing.Size(873, 52);
             this.panel2.TabIndex = 1;
             // 
             // pageControl1
             // 
             this.pageControl1.Location = new System.Drawing.Point(120, 4);
             this.pageControl1.Name = "pageControl1";
-            this.pageControl1.Size = new System.Drawing.Size(505, 35);
+            this.pageControl1.Size = new System.Drawing.Size(573, 35);
             this.pageControl1.TabIndex = 0;
             this.pageControl1.onFirst += new System.EventHandler(this.pageControl1_onFirst);
             this.pageControl1.onPre += new System.EventHandler<ArchiveStation.PageEventArgs>(this.pageControl1_onPre);
@@ -173,7 +173,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(766, 355);
+            this.dataGridView1.Size = new System.Drawing.Size(873, 353);
             this.dataGridView1.TabIndex = 6;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
@@ -266,7 +266,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(772, 504);
+            this.ClientSize = new System.Drawing.Size(879, 504);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);

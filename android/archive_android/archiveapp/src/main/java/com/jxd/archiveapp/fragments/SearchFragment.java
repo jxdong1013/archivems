@@ -1,23 +1,31 @@
 package com.jxd.archiveapp.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.jxd.archiveapp.Constant;
 import com.jxd.archiveapp.GsonResponseHandler;
 import com.jxd.archiveapp.MApplication;
 import com.jxd.archiveapp.R;
 import com.jxd.archiveapp.adapters.ArchiveAdapter;
-import com.jxd.archiveapp.bean.ArchiveBean;
+import com.jxd.archiveapp.adapters.SearchAdapter;
 import com.jxd.archiveapp.bean.ArchiveResult;
 import com.jxd.archiveapp.bean.LoginEvent;
 import com.jxd.archiveapp.bean.PageArchive;
@@ -25,14 +33,19 @@ import com.jxd.archiveapp.bean.SearchEvent;
 import com.jxd.archiveapp.utils.AsyncHttpUtil;
 import com.jxd.archiveapp.utils.Divider;
 import com.jxd.archiveapp.utils.EventManager;
+import com.jxd.archiveapp.utils.JSONUtil;
+import com.jxd.archiveapp.utils.PreferenceHelper;
 import com.loopj.android.http.RequestParams;
-
 import org.apache.http.conn.ConnectTimeoutException;
+import org.w3c.dom.Text;
 
 import java.net.SocketTimeoutException;
+import java.security.spec.KeySpec;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
@@ -42,7 +55,7 @@ import de.greenrobot.event.Subscribe;
 /**
  * 标签检索
  */
-public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate , Handler.Callback{
+public class SearchFragment extends BaseFragment implements  BGARefreshLayout.BGARefreshLayoutDelegate , Handler.Callback{
     private BGARefreshLayout refreshLayout;
     private RecyclerView recyclerView;
     private ArchiveAdapter adapter;
@@ -53,6 +66,9 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
     private GsonResponseHandler<ArchiveResult> gsonResponseHandler;
     private Handler handler;
     private EventManager eventManager;
+//    private RecyclerView recyclerViewSearchList;
+//    private List<String> keys;
+//    private SearchAdapter searchAdapter;
 
     public SearchFragment() {
     }
@@ -85,6 +101,12 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
 
         handler = new Handler(this);
         gsonResponseHandler = new GsonResponseHandler<>(this.getContext(), handler , ArchiveResult.class);
+
+        //recyclerViewSearchList = getViewById(R.id.searchlist);
+
+        //readKeys();
+
+        //setTextView();
     }
 
     @Override
@@ -151,20 +173,6 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
 
     @Override
     protected void onUserVisible() {
-        //mNewPageNumber = 0;
-        //mMorePageNumber = 0;
-//        mEngine.loadInitDatas().enqueue(new Callback<List<RefreshModel>>() {
-//            @Override
-//            public void onResponse(Response<List<RefreshModel>> response) {
-//                mAdapter.setDatas(response.body());
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable t) {
-//            }
-//        });
-
-
     }
 
     @Override
@@ -176,7 +184,6 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
-
 
         handler.post(new Runnable() {
             @Override
@@ -193,6 +200,12 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
     }
 
     protected void go(int index){
+        if(!canConnect()){
+            refreshLayout.endRefreshing();
+            refreshLayout.endLoadingMore();
+            return;
+        }
+
         String key = etKey.getText().toString().trim();
         RequestParams params = new RequestParams();
         params.add("manager", key);
@@ -202,6 +215,7 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
         params.add("boxrfid", key);
         params.add("pageidx", String.valueOf( pageIdx ) );
         params.add("pagesize", String.valueOf( Constant.PAGESIZE));
+
         AsyncHttpUtil.get(Constant.QUERY_ARCHIVE_URL, params, gsonResponseHandler);
     }
 
@@ -219,16 +233,14 @@ public class SearchFragment extends BaseFragment implements BGARefreshLayout.BGA
 
     @Subscribe
     public void refreshData(SearchEvent event){
+
         refreshLayout.beginRefreshing();
     }
 
     @Override
     public void setRFID(String rfid) {
         if(TextUtils.isEmpty(rfid))return;
-
         Snackbar.make(mContentView,rfid,Snackbar.LENGTH_LONG).show();
-
-        //scanedRfid=rfid;
         etKey.setText(rfid);
 
         refreshLayout.beginRefreshing();

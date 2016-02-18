@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cy="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
@@ -9,9 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:orientation="horizontal" >
-
         <include layout="@layout/layout_header"/>
-
     </RelativeLayout>
 
     <ScrollView
@@ -141,6 +140,5 @@
 
         </RelativeLayout>
     </ScrollView>
-
 
 </RelativeLayout>

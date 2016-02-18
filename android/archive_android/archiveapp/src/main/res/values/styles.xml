@@ -21,6 +21,11 @@
     <style name="CyEditTextStyle" parent="android:Theme.Light"></style>
 
 
+    <style name="LoginTheme" parent="AppTheme.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 
 
 </resources>

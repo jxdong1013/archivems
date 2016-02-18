@@ -1,12 +1,11 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-                android:paddingLeft="3dp"
-                android:paddingRight="3dp"
-    tools:context="com.jxd.archiveapp.fragments.SearchFragment">
-
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        tools:context="com.jxd.archiveapp.fragments.SearchFragment">
     <RelativeLayout
         android:id="@+id/search_header"
         android:layout_width="match_parent"
@@ -17,7 +16,6 @@
             android:layout_centerVertical="true"
             android:layout_width="match_parent"
             android:layout_height="45dp" />
-
     </RelativeLayout>
 
     <cn.bingoogolapple.refreshlayout.BGARefreshLayout
@@ -30,7 +28,7 @@
             android:scrollbars="none"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="0dp"></android.support.v7.widget.RecyclerView>
+            android:layout_height="0dp"/>
     </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
 
     <RelativeLayout
@@ -61,5 +59,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </RelativeLayout>
+
 
 </RelativeLayout>

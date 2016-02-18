@@ -137,6 +137,7 @@ namespace ArchiveStation
 
             if (backgroundWorker1.IsBusy) return;
 
+            listBox1.Items.Clear();
             panelLoading.Visible = true;
             panelLoading.BringToFront();
             lblLoadingText.Text = "正在导入数据，请稍等......";
@@ -148,7 +149,6 @@ namespace ArchiveStation
         private void pictureBox2_Click(object sender, EventArgs e)
         {
             Export();
-
         }
 
         private void label1_Click(object sender, EventArgs e)

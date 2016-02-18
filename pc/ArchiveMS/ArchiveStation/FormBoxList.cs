@@ -352,6 +352,9 @@ namespace ArchiveStation
             x = x + btnGo.Width + 8;
             btnAdd.Location = new Point(x, txtKey.Location.Y);
 
+            x = (panel2.Width - pageControl1.Width) / 2;
+            pageControl1.Location = new Point(x, pageControl1.Location.Y);
+
         }
 
     }

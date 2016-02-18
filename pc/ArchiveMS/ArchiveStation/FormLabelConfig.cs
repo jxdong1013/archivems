@@ -107,6 +107,7 @@ namespace ArchiveStation
             p.PageIdx = pageidx;
             p.PageSize = Bean.Constant.PAGESIZE;
             p.Key = key;
+            p.showNoPosition = ckbNoPosition.Checked;
 
             backgroundWorker1.RunWorkerAsync(p);
 
@@ -125,6 +126,7 @@ namespace ArchiveStation
             p.PageIdx = e.pageidx;
             p.PageSize = Bean.Constant.PAGESIZE;
             p.Key = key;
+            p.showNoPosition = ckbNoPosition.Checked;
 
             backgroundWorker1.RunWorkerAsync(p);
         }
@@ -142,6 +144,7 @@ namespace ArchiveStation
             p.PageIdx = e.pageidx;
             p.PageSize = Bean.Constant.PAGESIZE;
             p.Key = key;
+            p.showNoPosition = ckbNoPosition.Checked;
 
             backgroundWorker1.RunWorkerAsync(p);
         }
@@ -157,6 +160,7 @@ namespace ArchiveStation
             p.PageIdx = e.pageidx;
             p.PageSize = Bean.Constant.PAGESIZE;
             p.Key = key;
+            p.showNoPosition = ckbNoPosition.Checked;
 
             backgroundWorker1.RunWorkerAsync(p);
         }
@@ -174,6 +178,7 @@ namespace ArchiveStation
             p.PageIdx = e.pageidx;
             p.PageSize = Bean.Constant.PAGESIZE;
             p.Key = key;
+            p.showNoPosition = ckbNoPosition.Checked;
 
             backgroundWorker1.RunWorkerAsync(p);
 
@@ -337,6 +342,9 @@ namespace ArchiveStation
 
             x = txtKey.Location.X + 8;
             ckbNoPosition.Location = new Point(x, ckbNoPosition.Location.Y);
+
+            x = (panel2.Width - pageControl1.Width) / 2;
+            pageControl1.Location = new Point(x, pageControl1.Location.Y);
         }
     }
 }

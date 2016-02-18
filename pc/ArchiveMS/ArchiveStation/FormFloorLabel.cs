@@ -206,6 +206,7 @@ namespace ArchiveStation
             }
             catch (Exception ex)
             {
+                LogHelper.WriteException(ex);
                 //MessageBox.Show(ex.Message);
             }            
         }

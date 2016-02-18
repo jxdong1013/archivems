@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Material Colors-->
+    <color name="primary_text">#212121</color>
     <color name="theme_color">#ffffffff</color>
     <!--<color name="white">#FFFFFFFF</color>-->
     <color name="main_header_bg">#FE3C00</color>

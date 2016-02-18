@@ -34,6 +34,9 @@ public class Constant {
     public static String INVENTORY_INFO_FILE="inventory_info_file";
     public static String INVENTORY_Floor = "inventory_floor";
 
+    public static String SEARCH_INFO_FILE ="search_info_file";
+    public static String SEARCH_KEY ="search_key";
+
     public static String URL_FILE="url_file";
     public static String URL_API ="url_api";
 

@@ -88,51 +88,55 @@ namespace ArchiveStation
                 dataGridView1.AutoGenerateColumns = false;
                 dataGridView1.DataSource = result.Data.Data;
 
-                btnFirst.Tag = 0;
-                btnPre.Tag = result.Data.PageIdx - 1;
-                btnNext.Tag = result.Data.PageIdx + 1;
-                btnLast.Tag = result.Data.TotalPages - 1;
-                txtPage.Text =  (result.Data.PageIdx+1) >= result.Data.TotalPages ?  result.Data.TotalPages.ToString(): (result.Data.PageIdx + 1).ToString();
 
-                lblTotal.Text = "共"+result.Data.TotalPages + "页/" + result.Data.TotalRecords + "条";
+                pageControl1.SetPage(result.Data);
 
 
-                if (result.Data.PageIdx == 0)
-                {
-                    btnFirst.Enabled = false;
-                }
-                else
-                {
-                    btnFirst.Enabled = true;
-                }
+                //btnFirst.Tag = 0;
+                //btnPre.Tag = result.Data.PageIdx - 1;
+                //btnNext.Tag = result.Data.PageIdx + 1;
+                //btnLast.Tag = result.Data.TotalPages - 1;
+                //txtPage.Text =  (result.Data.PageIdx+1) >= result.Data.TotalPages ?  result.Data.TotalPages.ToString(): (result.Data.PageIdx + 1).ToString();
 
-                if (result.Data.PageIdx > 0)
-                {
-                    btnPre.Enabled = true;
-                }
-                else 
-                {
-                    btnPre.Enabled = false;
-                }
+                //lblTotal.Text = "共"+result.Data.TotalPages + "页/" + result.Data.TotalRecords + "条";
 
 
-                if (result.Data.TotalPages > 0 && result.Data.PageIdx + 1 < result.Data.TotalPages)
-                {
-                    btnNext.Enabled = true;
-                }
-                else
-                {
-                    btnNext.Enabled = false;
-                }
+                //if (result.Data.PageIdx == 0)
+                //{
+                //    btnFirst.Enabled = false;
+                //}
+                //else
+                //{
+                //    btnFirst.Enabled = true;
+                //}
 
-                if (result.Data.PageIdx == result.Data.TotalPages - 1)
-                {
-                    btnLast.Enabled = false;
-                }
-                else
-                {
-                    btnLast.Enabled = true;
-                }
+                //if (result.Data.PageIdx > 0)
+                //{
+                //    btnPre.Enabled = true;
+                //}
+                //else 
+                //{
+                //    btnPre.Enabled = false;
+                //}
+
+
+                //if (result.Data.TotalPages > 0 && result.Data.PageIdx + 1 < result.Data.TotalPages)
+                //{
+                //    btnNext.Enabled = true;
+                //}
+                //else
+                //{
+                //    btnNext.Enabled = false;
+                //}
+
+                //if (result.Data.PageIdx == result.Data.TotalPages - 1)
+                //{
+                //    btnLast.Enabled = false;
+                //}
+                //else
+                //{
+                //    btnLast.Enabled = true;
+                //}
 
             }
             catch (Exception ex)
@@ -145,147 +149,7 @@ namespace ArchiveStation
             }
         }
         
-
-        private void btnFirst_Click(object sender, EventArgs e)
-        {
-            panelLoading.Visible = true;
-            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
-
-            int pageidx = 0;           
-
-            String key = txtKey.Text.Trim();
-
-            Page<ArchiveBean> p = new Page<ArchiveBean>();
-            p.PageIdx = pageidx;
-            p.PageSize = pagesize;
-            p.Key = key;
-            if (backgroundWorker1.IsBusy) return;
-            backgroundWorker1.RunWorkerAsync(p);
-
-        }
-
-        private void btnPre_Click(object sender, EventArgs e)
-        {
-            panelLoading.Visible = true;
-            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
-
-            int pageidx = 0;
-            if (btnPre.Tag == null)
-            {
-                pageidx = 0;
-            }
-            else
-            {
-                int.TryParse(btnPre.Tag.ToString(), out pageidx);
-            }
-
-            String key = txtKey.Text.Trim();
-
-            Page<ArchiveBean> p = new Page<ArchiveBean>();
-            p.PageIdx = pageidx;
-            p.PageSize = pagesize;
-            p.Key = key;
-            if (backgroundWorker1.IsBusy) return;
-            backgroundWorker1.RunWorkerAsync(p);
-
-        }
-
-        private void btnPage_Click(object sender, EventArgs e)
-        {
-            go();
-        }
-
-        private void btnNext_Click(object sender, EventArgs e)
-        {
-            panelLoading.Visible = true;
-            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
-
-            int pageidx = 0;
-            if (btnNext.Tag == null)
-            {
-                pageidx = 0;
-            }
-            else
-            {
-                int.TryParse(btnNext.Tag.ToString(), out pageidx);
-            }
-
-            String key =txtKey.Text.Trim();
-
-            Page<ArchiveBean> p = new Page<ArchiveBean>();
-            p.PageIdx = pageidx;
-            p.PageSize = pagesize;
-            p.Key = key;
-            if (backgroundWorker1.IsBusy) return;
-            backgroundWorker1.RunWorkerAsync(p);
-
-        }
-
-        private void btnLast_Click(object sender, EventArgs e)
-        {
-            panelLoading.Visible = true;
-            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
-
-            int pageidx = 0;
-            if (btnLast.Tag == null)
-            {
-                pageidx = 0;
-            }
-            else
-            {
-                int.TryParse(btnLast.Tag.ToString(), out pageidx);
-            }
-
-            String key = txtKey.Text.Trim();
-
-            Page<ArchiveBean> p = new Page<ArchiveBean>();
-            p.PageIdx = pageidx;
-            p.PageSize = pagesize;
-            p.Key = key;
-            if (backgroundWorker1.IsBusy) return;
-            backgroundWorker1.RunWorkerAsync(p);
-
-        }
-
-        private void txtPage_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                go();
-            }
-        }
-
-        protected void go()
-        {
-            panelLoading.Visible = true;
-            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
-
-            int pageidx = 0;
-            if (txtPage.Text == null)
-            {
-                txtPage.Text = "1";
-                pageidx = 1;
-            }
-            else
-            {
-                int.TryParse(txtPage.Text.ToString(), out pageidx);
-            }
-            pageidx--;
-            if (pageidx < 0) pageidx = 0;
-            
-
-            String key = txtKey.Text.Trim();
-            Page<ArchiveBean> p = new Page<ArchiveBean>();
-            p.PageIdx = pageidx;
-            p.PageSize = pagesize;
-            p.Key = key;
-
-
-            if (backgroundWorker1.IsBusy) return;
-            backgroundWorker1.RunWorkerAsync(p);
-
-        }
-
+    
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.ColumnIndex < 0 || e.RowIndex < 0) return;
@@ -321,7 +185,10 @@ namespace ArchiveStation
             txtKey.Location = new Point(x, txtKey.Location.Y);
 
             x = x + txtKey.Width + 8;
-            btnGo.Location = new Point(x, txtKey.Location.Y);          
+            btnGo.Location = new Point(x, txtKey.Location.Y);
+
+            x = (panel2.Width - pageControl1.Width) / 2;
+            pageControl1.Location = new Point(x, pageControl1.Location.Y);
 
         }
 
@@ -335,27 +202,137 @@ namespace ArchiveStation
             changeBarLocation();
         }
 
-        //private void btnConfig_Click(object sender, EventArgs e)
-        //{
-        //    btnConfigOk.Visible = btnConfigCancel.Visible = true;
-        //    btnConfig.Visible = false;
-        //    dataGridView1.Columns["ckbselect"].Visible = true;    
-        //}
+        private void pageControl1_onFirst(object sender, EventArgs e)
+        {
+            if (backgroundWorker1.IsBusy) return;
 
-        //private void btnConfigCancel_Click(object sender, EventArgs e)
-        //{
-        //    btnConfigOk.Visible = btnConfigCancel.Visible = false;
-        //    btnConfig.Visible = true;
-        //    dataGridView1.Columns["ckbselect"].Visible = false;
-                
-        //}
+            panelLoading.Visible = true;
+            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
 
-        //private void btnConfigOk_Click(object sender, EventArgs e)
-        //{
-        //    FormBoxList form = new FormBoxList();
-        //    form.WindowState = FormWindowState.Normal;
-        //    form.StartPosition = FormStartPosition.CenterParent;
-        //    form.ShowDialog();
-        //}
+            int pageidx = 0;
+
+            String key = txtKey.Text.Trim();
+
+            Page<ArchiveBean> p = new Page<ArchiveBean>();
+            p.PageIdx = pageidx;
+            p.PageSize = pagesize;
+            p.Key = key;
+           
+            backgroundWorker1.RunWorkerAsync(p);
+        }
+
+        private void pageControl1_onGo(object sender, PageEventArgs e)
+        {
+            if (backgroundWorker1.IsBusy) return;
+
+            panelLoading.Visible = true;
+            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
+
+            //int pageidx = 0;
+            //if (txtPage.Text == null)
+            //{
+            //    txtPage.Text = "1";
+            //    pageidx = 1;
+            //}
+            //else
+            //{
+            //    int.TryParse(txtPage.Text.ToString(), out pageidx);
+            //}
+            //pageidx--;
+            //if (pageidx < 0) pageidx = 0;
+            
+
+            String key = txtKey.Text.Trim();
+            Page<ArchiveBean> p = new Page<ArchiveBean>();
+            p.PageIdx = e.pageidx; //pageidx;
+            p.PageSize = pagesize;
+            p.Key = key;
+            
+          
+            backgroundWorker1.RunWorkerAsync(p);
+        }
+
+        private void pageControl1_onLast(object sender, PageEventArgs e)
+        {
+            if (backgroundWorker1.IsBusy) return;
+
+            panelLoading.Visible = true;
+            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
+
+            //int pageidx = 0;
+            //if (btnLast.Tag == null)
+            //{
+            //    pageidx = 0;
+            //}
+            //else
+            //{
+            //    int.TryParse(btnLast.Tag.ToString(), out pageidx);
+            //}
+
+            String key = txtKey.Text.Trim();
+
+            Page<ArchiveBean> p = new Page<ArchiveBean>();
+            p.PageIdx = e.pageidx;// pageidx;
+            p.PageSize = pagesize;
+            p.Key = key;
+           
+            backgroundWorker1.RunWorkerAsync(p);
+        }
+
+        private void pageControl1_onNext(object sender, PageEventArgs e)
+        {
+            if (backgroundWorker1.IsBusy) return;
+
+            panelLoading.Visible = true;
+            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
+
+            //int pageidx = 0;
+            //if (btnNext.Tag == null)
+            //{
+            //    pageidx = 0;
+            //}
+            //else
+            //{
+            //    int.TryParse(btnNext.Tag.ToString(), out pageidx);
+            //}
+
+            String key = txtKey.Text.Trim();
+
+            Page<ArchiveBean> p = new Page<ArchiveBean>();
+            p.PageIdx = e.pageidx; // pageidx;
+            p.PageSize = pagesize;
+            p.Key = key;
+          
+            backgroundWorker1.RunWorkerAsync(p);
+        }
+
+        private void pageControl1_onPre(object sender, PageEventArgs e)
+        {
+            if (backgroundWorker1.IsBusy) return;
+
+            panelLoading.Visible = true;
+            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
+
+            //int pageidx = 0;
+            //if (btnPre.Tag == null)
+            //{
+            //    pageidx = 0;
+            //}
+            //else
+            //{
+            //    int.TryParse(btnPre.Tag.ToString(), out pageidx);
+            //}
+
+            String key = txtKey.Text.Trim();
+
+            Page<ArchiveBean> p = new Page<ArchiveBean>();
+            p.PageIdx = e.pageidx;//pageidx;
+            p.PageSize = pagesize;
+            p.Key = key;
+            
+            backgroundWorker1.RunWorkerAsync(p);
+        }
+
+
     }
 }

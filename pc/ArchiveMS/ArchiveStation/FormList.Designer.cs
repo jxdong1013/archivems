@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtKey = new UILibrary.SkinTextBox();
             this.btnGo = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -45,13 +45,7 @@
             this.remark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.lblTotal = new System.Windows.Forms.Label();
-            this.btnPage = new System.Windows.Forms.Button();
-            this.txtPage = new UILibrary.SkinTextBox();
-            this.btnLast = new System.Windows.Forms.Button();
-            this.btnFirst = new System.Windows.Forms.Button();
-            this.btnNext = new System.Windows.Forms.Button();
-            this.btnPre = new System.Windows.Forms.Button();
+            this.pageControl1 = new ArchiveStation.PageControl();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.label1 = new System.Windows.Forms.Label();
             this.panelLoading.SuspendLayout();
@@ -104,17 +98,17 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ckbSelect,
@@ -131,7 +125,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.ShowCellErrors = false;
-            this.dataGridView1.Size = new System.Drawing.Size(773, 271);
+            this.dataGridView1.Size = new System.Drawing.Size(773, 266);
             this.dataGridView1.TabIndex = 5;
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
             // 
@@ -188,8 +182,8 @@
             // Position
             // 
             this.Position.DataPropertyName = "position";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Position.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Position.DefaultCellStyle = dataGridViewCellStyle3;
             this.Position.HeaderText = "位置信息";
             this.Position.Name = "Position";
             this.Position.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -215,106 +209,24 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.lblTotal);
-            this.panel2.Controls.Add(this.btnPage);
-            this.panel2.Controls.Add(this.txtPage);
-            this.panel2.Controls.Add(this.btnLast);
-            this.panel2.Controls.Add(this.btnFirst);
-            this.panel2.Controls.Add(this.btnNext);
-            this.panel2.Controls.Add(this.btnPre);
+            this.panel2.Controls.Add(this.pageControl1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(3, 354);
+            this.panel2.Location = new System.Drawing.Point(3, 349);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(773, 50);
+            this.panel2.Size = new System.Drawing.Size(773, 55);
             this.panel2.TabIndex = 7;
             // 
-            // lblTotal
+            // pageControl1
             // 
-            this.lblTotal.AutoSize = true;
-            this.lblTotal.Location = new System.Drawing.Point(581, 10);
-            this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(0, 12);
-            this.lblTotal.TabIndex = 6;
-            // 
-            // btnPage
-            // 
-            this.btnPage.Location = new System.Drawing.Point(354, 5);
-            this.btnPage.Name = "btnPage";
-            this.btnPage.Size = new System.Drawing.Size(38, 23);
-            this.btnPage.TabIndex = 5;
-            this.btnPage.Text = "GO";
-            this.btnPage.UseVisualStyleBackColor = true;
-            this.btnPage.Click += new System.EventHandler(this.btnPage_Click);
-            // 
-            // txtPage
-            // 
-            this.txtPage.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.txtPage.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
-            this.txtPage.BackColor = System.Drawing.Color.Transparent;
-            this.txtPage.Icon = null;
-            this.txtPage.IconIsButton = false;
-            this.txtPage.IsPasswordChat = '\0';
-            this.txtPage.IsSystemPasswordChar = false;
-            this.txtPage.LeftIcon = null;
-            this.txtPage.Lines = new string[0];
-            this.txtPage.Location = new System.Drawing.Point(289, 2);
-            this.txtPage.Margin = new System.Windows.Forms.Padding(0);
-            this.txtPage.MaxLength = 32767;
-            this.txtPage.MinimumSize = new System.Drawing.Size(0, 28);
-            this.txtPage.MouseBack = null;
-            this.txtPage.Multiline = false;
-            this.txtPage.Name = "txtPage";
-            this.txtPage.NormlBack = null;
-            this.txtPage.Padding = new System.Windows.Forms.Padding(5);
-            this.txtPage.ReadOnly = false;
-            this.txtPage.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.txtPage.Size = new System.Drawing.Size(49, 28);
-            this.txtPage.TabIndex = 4;
-            this.txtPage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtPage.WaterColor = System.Drawing.Color.DarkGray;
-            this.txtPage.WaterText = "页号";
-            this.txtPage.WordWrap = true;
-            this.txtPage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPage_KeyDown);
-            // 
-            // btnLast
-            // 
-            this.btnLast.Location = new System.Drawing.Point(500, 5);
-            this.btnLast.Name = "btnLast";
-            this.btnLast.Size = new System.Drawing.Size(75, 23);
-            this.btnLast.TabIndex = 3;
-            this.btnLast.Text = "末页";
-            this.btnLast.UseVisualStyleBackColor = true;
-            this.btnLast.Click += new System.EventHandler(this.btnLast_Click);
-            // 
-            // btnFirst
-            // 
-            this.btnFirst.Location = new System.Drawing.Point(119, 5);
-            this.btnFirst.Name = "btnFirst";
-            this.btnFirst.Size = new System.Drawing.Size(75, 23);
-            this.btnFirst.TabIndex = 2;
-            this.btnFirst.Text = "首页";
-            this.btnFirst.UseVisualStyleBackColor = true;
-            this.btnFirst.Click += new System.EventHandler(this.btnFirst_Click);
-            // 
-            // btnNext
-            // 
-            this.btnNext.Location = new System.Drawing.Point(419, 5);
-            this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(75, 23);
-            this.btnNext.TabIndex = 1;
-            this.btnNext.Text = "下一页";
-            this.btnNext.UseVisualStyleBackColor = true;
-            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
-            // 
-            // btnPre
-            // 
-            this.btnPre.Location = new System.Drawing.Point(200, 5);
-            this.btnPre.Name = "btnPre";
-            this.btnPre.Size = new System.Drawing.Size(75, 23);
-            this.btnPre.TabIndex = 0;
-            this.btnPre.Text = "上一页";
-            this.btnPre.UseVisualStyleBackColor = true;
-            this.btnPre.Click += new System.EventHandler(this.btnPre_Click);
+            this.pageControl1.Location = new System.Drawing.Point(127, 3);
+            this.pageControl1.Name = "pageControl1";
+            this.pageControl1.Size = new System.Drawing.Size(559, 39);
+            this.pageControl1.TabIndex = 7;
+            this.pageControl1.onFirst += new System.EventHandler(this.pageControl1_onFirst);
+            this.pageControl1.onPre += new System.EventHandler<ArchiveStation.PageEventArgs>(this.pageControl1_onPre);
+            this.pageControl1.onNext += new System.EventHandler<ArchiveStation.PageEventArgs>(this.pageControl1_onNext);
+            this.pageControl1.onLast += new System.EventHandler<ArchiveStation.PageEventArgs>(this.pageControl1_onLast);
+            this.pageControl1.onGo += new System.EventHandler<ArchiveStation.PageEventArgs>(this.pageControl1_onGo);
             // 
             // backgroundWorker1
             // 
@@ -358,7 +270,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -370,15 +281,8 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button btnNext;
-        private System.Windows.Forms.Button btnPre;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.Button btnPage;
-        private UILibrary.SkinTextBox txtPage;
-        private System.Windows.Forms.Button btnLast;
-        private System.Windows.Forms.Button btnFirst;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ckbSelect;
         private System.Windows.Forms.DataGridViewTextBoxColumn idx;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
@@ -388,5 +292,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn number;
         private System.Windows.Forms.DataGridViewTextBoxColumn Position;
         private System.Windows.Forms.DataGridViewTextBoxColumn remark;
+        private PageControl pageControl1;
     }
 }

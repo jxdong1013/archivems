@@ -50,9 +50,11 @@
             this.remark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.panelLoading.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -143,10 +145,9 @@
             // 
             // pageControl1
             // 
-            this.pageControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pageControl1.Location = new System.Drawing.Point(3, 469);
+            this.pageControl1.Location = new System.Drawing.Point(66, 3);
             this.pageControl1.Name = "pageControl1";
-            this.pageControl1.Size = new System.Drawing.Size(764, 46);
+            this.pageControl1.Size = new System.Drawing.Size(551, 46);
             this.pageControl1.TabIndex = 13;
             this.pageControl1.onFirst += new System.EventHandler(this.pageControl1_onFirst);
             this.pageControl1.onPre += new System.EventHandler<ArchiveStation.PageEventArgs>(this.pageControl1_onPre);
@@ -185,7 +186,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.ShowCellErrors = false;
-            this.dataGridView1.Size = new System.Drawing.Size(764, 369);
+            this.dataGridView1.Size = new System.Drawing.Size(764, 360);
             this.dataGridView1.TabIndex = 14;
             // 
             // ckbSelect
@@ -269,14 +270,23 @@
             this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
             this.backgroundWorker2.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker2_RunWorkerCompleted);
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.pageControl1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(3, 460);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(764, 55);
+            this.panel2.TabIndex = 15;
+            // 
             // FormLabelConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(770, 518);
-            this.Controls.Add(this.ckbAll);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.pageControl1);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.ckbAll);
             this.Controls.Add(this.panel1);
             this.Name = "FormLabelConfig";
             this.Radius = 10;
@@ -287,13 +297,14 @@
             this.SizeChanged += new System.EventHandler(this.FormLabelConfig_SizeChanged);
             this.Controls.SetChildIndex(this.panelLoading, 0);
             this.Controls.SetChildIndex(this.panel1, 0);
-            this.Controls.SetChildIndex(this.pageControl1, 0);
-            this.Controls.SetChildIndex(this.dataGridView1, 0);
             this.Controls.SetChildIndex(this.ckbAll, 0);
+            this.Controls.SetChildIndex(this.panel2, 0);
+            this.Controls.SetChildIndex(this.dataGridView1, 0);
             this.panelLoading.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -320,5 +331,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn number;
         private System.Windows.Forms.DataGridViewTextBoxColumn position;
         private System.Windows.Forms.DataGridViewTextBoxColumn remark;
+        private System.Windows.Forms.Panel panel2;
     }
 }

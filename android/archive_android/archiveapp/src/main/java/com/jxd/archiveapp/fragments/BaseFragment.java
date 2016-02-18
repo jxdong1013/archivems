@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +17,17 @@ import com.jxd.archiveapp.BaseActivity;
 import com.jxd.archiveapp.MApplication;
 import com.jxd.archiveapp.R;
 import com.jxd.archiveapp.utils.Logger;
+import com.jxd.archiveapp.utils.NetworkUtil;
 
 /**
  * Created by 向东 on 2016-1-31.
  */
 public abstract class BaseFragment extends Fragment {
     protected String TAG;
+    protected static final String NULL_NETWORK = "无网络或当前网络不可用!";
     protected View mContentView;
     protected BaseActivity mActivity;
-    protected ProgressDialogFragment _progressDialog=null;
+    //protected ProgressDialogFragment _progressDialog=null;
     protected ProgressDialog progressDialog;
 
     @Override
@@ -97,7 +100,6 @@ public abstract class BaseFragment extends Fragment {
 
     public abstract void setRFID(String rfid);
 
-
     protected void showProgressDialog( String title , String message ){
 //        if( _progressDialog !=null ) {
 //            _progressDialog.dismiss();
@@ -135,5 +137,15 @@ public abstract class BaseFragment extends Fragment {
         }catch (Exception ex){
             Logger.e(ex.getMessage(),ex);
         }
+    }
+
+    protected boolean canConnect(){
+        //网络访问前先检测网络是否可用
+        if(!NetworkUtil.isConnect(getContext())){
+            Snackbar.make( getActivity().getWindow().getDecorView()  , NULL_NETWORK, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            //ToastUtils.showLongToast(this, NULL_NETWORK);
+            return false;
+        }
+        return true;
     }
 }

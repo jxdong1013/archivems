@@ -26,6 +26,9 @@
     <TextView
         android:id="@+id/item_info"
         android:text="判断信息"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:textColor="@color/mediumpurple"
         android:layout_below="@id/item_floorname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

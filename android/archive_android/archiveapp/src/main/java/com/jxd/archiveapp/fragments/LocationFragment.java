@@ -1,5 +1,6 @@
 package com.jxd.archiveapp.fragments;
 
+import android.util.Log;
 import android.view.View;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,14 +27,21 @@ import com.jxd.archiveapp.bean.BaseBean;
 import com.jxd.archiveapp.bean.LabelInfoBean;
 import com.jxd.archiveapp.bean.LabelResult;
 import com.jxd.archiveapp.bean.LocationBean;
+import com.jxd.archiveapp.bean.LoginEvent;
 import com.jxd.archiveapp.utils.AsyncHttpUtil;
 import com.jxd.archiveapp.utils.JSONUtil;
 import com.jxd.archiveapp.utils.Logger;
 import com.jxd.archiveapp.utils.PreferenceHelper;
 import com.loopj.android.http.RequestParams;
+
+import org.apache.http.conn.ConnectTimeoutException;
+
 import java.lang.reflect.Type;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * 标签定位
@@ -56,11 +64,6 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     public LocationFragment() {
     }
 
-    public static LocationFragment newInstance() {
-        LocationFragment fragment = new LocationFragment();
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +79,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 deal_upload(msg.obj);
             }
         }else if(msg.what==GsonResponseHandler.FAILTURE){
-            if( msg.obj instanceof  LabelResult ){
+            if( msg.obj instanceof LabelResult ){
                 LabelResult result= (LabelResult)msg.obj;
                 String erro = result.getMessage();
                 Snackbar.make(mContentView,erro,Snackbar.LENGTH_LONG).show();
@@ -84,6 +87,9 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
                 BaseBean result = (BaseBean)msg.obj;
                 String error = result.getMessage();
                 Snackbar.make(mContentView,error,Snackbar.LENGTH_LONG).show();
+            }else if( msg.obj instanceof SocketTimeoutException || msg.obj instanceof ConnectTimeoutException){
+                Snackbar.make( mContentView , "连接超时，请重试", Snackbar.LENGTH_LONG).show();
+                return true;
             }else{
                 Snackbar.make(mContentView,"请求失败",Snackbar.LENGTH_LONG).show();
             }
@@ -93,7 +99,11 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
 
     protected void deal_scan(Object obj){
         LabelResult result = (LabelResult)obj;
-        if( result.getCode() == Constant.RESULT_SUCCESS) {
+        if( result==null)return;
+        if( result.getCode() == Constant.REQUEST_LOGIN ){
+            EventBus.getDefault().post(new LoginEvent());
+            return;
+        }else if( result.getCode() == Constant.RESULT_SUCCESS) {
             if( result.getData().getType().equals("floor")) {
 
                 tvFloorName.setText(result.getData().getName());
@@ -119,13 +129,17 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             }
         }else {
             String msg = result.getMessage();
-            Snackbar.make(mContentView,  msg, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mContentView, msg, Snackbar.LENGTH_LONG).show();
         }
     }
 
     protected void deal_upload( Object obj){
         BaseBean result = (BaseBean)obj;
-        if( result.getCode() == Constant.RESULT_SUCCESS) {
+        if(result==null) return;
+        if( result.getCode()==Constant.REQUEST_LOGIN ){
+            EventBus.getDefault().post(new LoginEvent());
+            return;
+        }else if( result.getCode() == Constant.RESULT_SUCCESS) {
             PreferenceHelper.writeString(getActivity(), Constant.LOCATION_INFO_FILE, Constant.LOCATION_FLOORRFID, "");
             PreferenceHelper.writeString(getActivity(), Constant.LOCATION_INFO_FILE, Constant.LOCATION_FLOORNAME, "");
             PreferenceHelper.writeString(getActivity(), Constant.LOCATION_INFO_FILE, Constant.LOCATION_BOXDATA, "");
@@ -188,6 +202,10 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     }
 
     protected void upload(){
+        if( !canConnect()){
+            return;
+        }
+
         String floorname = tvFloorName.getText().toString().trim();
         LabelInfoBean floor = (LabelInfoBean)tvFloorName.getTag();
         if(TextUtils.isEmpty(floorname) || floor==null ){
@@ -273,7 +291,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     public void OnRCItemClick(View view, int postion) {
         if( postion<0 || postion >= data.size() )return;
 
-        Toast.makeText(getContext(), "position="+ String.valueOf( postion ),Toast.LENGTH_LONG).show();
+        //Toast.makeText(getContext(), "position="+ String.valueOf( postion ),Toast.LENGTH_LONG).show();
 
         data.remove(postion);
         adapter.notifyDataSetChanged();
@@ -298,6 +316,10 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
     }
 
     protected  void queryLabelInfoByRFID(String rfid){
+        if( !canConnect()){
+            return;
+        }
+
         this.showProgressDialog("", "正在查询标签信息，请稍等...");
         String url = Constant.GETLABELINF_URL;
         RequestParams params =new RequestParams();

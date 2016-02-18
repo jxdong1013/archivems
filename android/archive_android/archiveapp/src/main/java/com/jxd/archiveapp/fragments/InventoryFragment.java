@@ -1,20 +1,15 @@
 package com.jxd.archiveapp.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -94,14 +89,12 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
     public void onItemChildClick(ViewGroup viewGroup, View view, int i) {
         //Snackbar.make(mContentView , String.valueOf( i ), Snackbar.LENGTH_LONG).show();
        if(view.getId()== R.id.item_panel) {
-
            InventoryLabelInfoBean bean = inventoryAdapter.getItem(i);
            rlContain.setVisibility(View.GONE);
            rlScan.setVisibility(View.VISIBLE);
            setScanData(bean);
             //发送消息，显示 “返回”按钮
            EventBus.getDefault().post(new SwitchFragmentEvent(Constant.FRAGMENT_INVENTORY));
-
        }else if(view.getId()==R.id.item_delete){
            InventoryLabelInfoBean bean = inventoryAdapter.getItem(i);
            String rfid_name = bean.getRfid()+split+bean.getName();
@@ -134,7 +127,6 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
                    scanAdapter.clear();
                }
            }
-
        }
     }
 
@@ -195,10 +187,14 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
             return;
         }else if(bean.getCode()==Constant.REQUEST_SCUESS){
             Snackbar.make(mContentView,bean.getMessage(),Snackbar.LENGTH_LONG).show();
-            PreferenceHelper.clean(getActivity(),Constant.INVENTORY_INFO_FILE);
+            PreferenceHelper.clean(getActivity(), Constant.INVENTORY_INFO_FILE);
             inventoryAdapter.clear();
-            scanAdapter.clear();
-            data.clear();
+            if (scanAdapter != null) {
+                scanAdapter.clear();
+            }
+            if(data!=null) {
+                data.clear();
+            }
             return;
         }
     }
@@ -223,7 +219,6 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
         JSONUtil<List<ScanBean>> jsonUtil = new JSONUtil<>();
         String json = jsonUtil.toJson(bean.getBoxs());
         PreferenceHelper.writeString(getActivity(), Constant.INVENTORY_INFO_FILE, rfid_name, json);
-
 
         String floors = PreferenceHelper.readString(getActivity(), Constant.INVENTORY_INFO_FILE, Constant.INVENTORY_Floor);
 
@@ -254,8 +249,6 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
             }
         }
 
-
-
         //PreferenceHelper.writeStringSet(getActivity(), Constant.INVENTORY_INFO_FILE, Constant.INVENTORY_Floor, floors);
         PreferenceHelper.writeString(getActivity(),Constant.INVENTORY_INFO_FILE,Constant.INVENTORY_Floor,floors);
 
@@ -275,7 +268,10 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
     private void deal_data( Object obj ){
         InventoryLabelInfoResult result = (InventoryLabelInfoResult)obj;
         if( result==null)return;
-        if( result.getCode()== Constant.REQUEST_SCUESS){
+        if(result.getCode()==Constant.REQUEST_LOGIN){
+            EventBus.getDefault().post(new LoginEvent());
+            return;
+        }else if( result.getCode()== Constant.REQUEST_SCUESS){
             if( result.getData().getType().equals("floor")) {
                 setScanData( result.getData() );
             }else if( result.getData().getType().equals("box")){
@@ -465,6 +461,10 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
     }
 
     protected void queryFloorLabelInfoByRFID(String rfid){
+        if( !canConnect()){
+            return;
+        }
+
         this.showProgressDialog("", "正在查询信息,请稍等...");
 
         String url = Constant.GET_INVENTORY_LABELINFO_URL;
@@ -475,14 +475,14 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
     }
 
     public void Upload(){
-        setRFID("1");
-        setRFID("213");
-        setRFID("216");
-        setRFID("217");
-        setRFID("218");
-        setRFID("219");
+//        setRFID("200000001");
+//        setRFID("213");
+//        setRFID("216");
+//        setRFID("217");
+//        setRFID("218");
+//        setRFID("219");
 
-//        setRFID("3");
+//        setRFID("200000003");
 //        setRFID("300");
 //        setRFID("301");
 //        setRFID("302");
@@ -492,13 +492,17 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
 //        setRFID("306");
 //        setRFID("307");
 //        setRFID("308");
-        //setRFID("3");
+//        setRFID("3");
 
-        //UploadInventory();
+        UploadInventory();
 
     }
 
     protected void UploadInventory(){
+        if( !canConnect()){
+            return;
+        }
+
         if( data==null|| data.size()<1 ) {
             Snackbar.make(mContentView,"请先盘点，再上传数据",Snackbar.LENGTH_LONG).show();
             return;
@@ -541,7 +545,6 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
 
         JSONUtil<InventoryBean> jsonUtil = new JSONUtil<>();
         String json = jsonUtil.toJson(list);
-
 
         String url = Constant.UPLOAD_INVENTORY_URL;
         //RequestParams params =new RequestParams();

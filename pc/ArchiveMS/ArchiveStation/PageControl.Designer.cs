@@ -162,7 +162,7 @@
             this.Controls.Add(this.btnNext);
             this.Controls.Add(this.btnPre);
             this.Name = "PageControl";
-            this.Size = new System.Drawing.Size(519, 39);
+            this.Size = new System.Drawing.Size(544, 39);
             this.ResumeLayout(false);
             this.PerformLayout();
 

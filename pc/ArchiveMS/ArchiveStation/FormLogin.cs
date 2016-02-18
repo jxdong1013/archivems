@@ -182,6 +182,10 @@ namespace ArchiveStation
 
             string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Config.ini";
             string ip = txtIP.Text.Trim();
+            if (ip.ToLower().Trim().StartsWith("http://") == false)
+            {
+                ip = "http://" + ip;
+            }
             //string port = txtPort.Text.Trim();
             //string dbusername = txtDBUserName.Text.Trim();
            // string dbpassword = txtDBPassword.Text.Trim();

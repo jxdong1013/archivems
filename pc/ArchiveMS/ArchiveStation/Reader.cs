@@ -126,6 +126,7 @@ namespace ArchiveStation
             catch (Exception ex)
             {
                 //MessageBox.Show(ex.Message);
+                LogHelper.WriteException(ex);
 
                 return 9999;
             }         
@@ -163,6 +164,7 @@ namespace ArchiveStation
             }
             catch (Exception ex)
             {
+                LogHelper.WriteException(ex);
                 //MessageBox.Show(ex.Message);
             }
         }

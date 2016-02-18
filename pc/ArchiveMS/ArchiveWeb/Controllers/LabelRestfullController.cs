@@ -17,9 +17,19 @@ namespace ContractMvcWeb.Controllers
         {
             ContractMvcWeb.Models.LabelContext db = new Models.LabelContext();
             Result result = null;
+            JsonResult json = null;
+            bool isExist = db.ExistBoxLabel(model.rfid);
+            if (isExist)
+            {
+                result = new Result((int)ResultCodeEnum.Error, "标签已经被注册为档案盒标签，请使用其他标签", null);
+                json = new JsonResult();
+                json.Data = result;
+                return json;
+            }
+
             if (model.id > 0)
             {
-                bool isExist = db.ExistFloorLabel(model.rfid, model.id);
+                isExist = db.ExistFloorLabel(model.rfid, model.id);
                 if (isExist)
                 {
                     result = new Result((int)ResultCodeEnum.Error, "标签已经被注册，请使用其他标签", null);
@@ -31,9 +41,8 @@ namespace ContractMvcWeb.Controllers
                 }
             }
             else
-            {
-               
-                bool isExist = db.ExistFloorLabel(model.rfid);
+            {               
+                isExist = db.ExistFloorLabel(model.rfid);
                 if (isExist)
                 {
                     result = new Result((int)ResultCodeEnum.Error, "标签已经被注册，请使用其他标签", null);
@@ -45,9 +54,8 @@ namespace ContractMvcWeb.Controllers
                 }
             }
 
-            JsonResult json = new JsonResult();
+            json = new JsonResult();
             json.Data = result;
-
             return json;
         }
 
@@ -97,9 +105,20 @@ namespace ContractMvcWeb.Controllers
         {
             ContractMvcWeb.Models.LabelContext db = new Models.LabelContext();
             Result result = null;
+            JsonResult json = null;
+
+            bool isExist = db.ExistFloorLabel(model.rfid);
+            if (isExist)
+            {
+                result = new Result((int)ResultCodeEnum.Error, "标签已经被注册为层架标签，请使用其他标签", null);
+                json = new JsonResult();
+                json.Data = result;
+                return json;
+            }
+
             if (model.id > 0)
             {
-                bool isExist = db.ExistBoxLabel(model.rfid, model.id);
+                isExist = db.ExistBoxLabel(model.rfid, model.id);
                 if (isExist)
                 {
                     result = new Result((int)ResultCodeEnum.Error, "标签已经被注册，请使用其他标签", null);
@@ -112,7 +131,7 @@ namespace ContractMvcWeb.Controllers
             }
             else
             {
-                bool isExist = db.ExistBoxLabel(model.rfid);
+                isExist = db.ExistBoxLabel(model.rfid);
                 if (isExist)
                 {
                     result = new Result((int)ResultCodeEnum.Error, "标签已经被注册，请使用其他标签", null);
@@ -124,7 +143,7 @@ namespace ContractMvcWeb.Controllers
                 }
             }
 
-            JsonResult json = new JsonResult();
+            json = new JsonResult();
             json.Data = result;
 
             return json;
