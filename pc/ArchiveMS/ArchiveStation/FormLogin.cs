@@ -76,6 +76,7 @@ namespace ArchiveStation
 
 
             if (backgroundWorker1.IsBusy) return;
+            lblLoadingText.Text = "正在登录，请稍等...";
             panelLoading.Visible = true;
             panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
             UserBean user = new UserBean();

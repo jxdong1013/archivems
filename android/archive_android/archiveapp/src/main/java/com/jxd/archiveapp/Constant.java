@@ -47,7 +47,7 @@ public class Constant {
 
     public static String FRAGMENT_SEARCH="档案检索";
     public static String FRAGMENT_LOCATION="标签定位";
-    public static String FRAGMENT_INVENTORY="档案盘定";
+    public static String FRAGMENT_INVENTORY="档案盘点";
     public static String FRAGMENT_INVENTORYSCAN="盘点扫描";
 
     public static String LABEL_NORMAL="正常";

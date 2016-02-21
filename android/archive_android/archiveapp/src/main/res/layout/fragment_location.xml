@@ -73,6 +73,7 @@
        android:id="@+id/location_info"
        android:background="@color/white"
        android:padding="6dp"
+       android:visibility="gone"
        android:layout_alignParentBottom="true"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"/>

@@ -67,6 +67,7 @@ namespace ContractMvcWeb.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public JsonResult GetArchiveList( String manager , String title , String number , String floorrfid , string boxrfid , bool shownoposition = false ,  int pageidx = 0, int pagesize = 20 )
         {
             ContractMvcWeb.Models.ArchiveContext db = new Models.ArchiveContext();

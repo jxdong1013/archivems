@@ -67,7 +67,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             tvDelete = (TextView)itemView.findViewById(R.id.location_item_delete);
             tvDelete.setTypeface(MApplication.typeface);
 
-            itemView.setOnClickListener(this);
+            tvDelete.setOnClickListener(this);
         }
 
         @Override

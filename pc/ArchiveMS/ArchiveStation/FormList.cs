@@ -13,10 +13,61 @@ namespace ArchiveStation
     {
         int pagesize = Bean.Constant.PAGESIZE;
 
+        bool notClosed = false;
+
         public FormList()
         {
             InitializeComponent();
         }
+
+        public FormList( bool notClose)
+        {
+            InitializeComponent();
+
+            this.notClosed = notClose;
+
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.WindowState = FormWindowState.Maximized;
+            this.CloseBoxSize = new Size(0, 0);
+            this.CanResize = false;
+            this.AutoSize = false;
+            
+
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (notClosed)
+            {
+
+                if (m.Msg == 0x112)
+                {
+                    switch ((int)m.WParam)
+                    {
+                        //禁止双击标题栏
+                        case 0xf122:
+                            m.WParam = IntPtr.Zero;
+                            break;
+
+                        //禁止拖拽标题栏还原窗体
+                        case 0xF012:
+                        case 0xF010:
+                            m.WParam = IntPtr.Zero;
+                            break;
+
+                        //禁止还原按钮
+                        case 0xf120:
+                            m.WParam = IntPtr.Zero;
+                            break;
+                    }
+
+                }
+            }
+
+            base.WndProc(ref m);
+        }
+
 
         private void btnGo_Click(object sender, EventArgs e)
         {
@@ -200,6 +251,7 @@ namespace ArchiveStation
         private void FormList_Shown(object sender, EventArgs e)
         {
             changeBarLocation();
+            txtKey.Focus();
         }
 
         private void pageControl1_onFirst(object sender, EventArgs e)

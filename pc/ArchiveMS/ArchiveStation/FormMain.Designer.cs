@@ -132,9 +132,9 @@
             // 
             // btnLabelConfig
             // 
-            this.btnLabelConfig.Location = new System.Drawing.Point(25, 314);
+            this.btnLabelConfig.Location = new System.Drawing.Point(17, 322);
             this.btnLabelConfig.Name = "btnLabelConfig";
-            this.btnLabelConfig.Size = new System.Drawing.Size(91, 46);
+            this.btnLabelConfig.Size = new System.Drawing.Size(117, 46);
             this.btnLabelConfig.TabIndex = 5;
             this.btnLabelConfig.Text = "档案归盒";
             this.btnLabelConfig.UseVisualStyleBackColor = true;
@@ -142,9 +142,9 @@
             // 
             // btnUser
             // 
-            this.btnUser.Location = new System.Drawing.Point(25, 383);
+            this.btnUser.Location = new System.Drawing.Point(17, 391);
             this.btnUser.Name = "btnUser";
-            this.btnUser.Size = new System.Drawing.Size(91, 46);
+            this.btnUser.Size = new System.Drawing.Size(117, 46);
             this.btnUser.TabIndex = 4;
             this.btnUser.Text = "人员管理";
             this.btnUser.UseVisualStyleBackColor = true;
@@ -152,9 +152,9 @@
             // 
             // btnBox
             // 
-            this.btnBox.Location = new System.Drawing.Point(25, 245);
+            this.btnBox.Location = new System.Drawing.Point(17, 253);
             this.btnBox.Name = "btnBox";
-            this.btnBox.Size = new System.Drawing.Size(91, 46);
+            this.btnBox.Size = new System.Drawing.Size(117, 46);
             this.btnBox.TabIndex = 3;
             this.btnBox.Text = "档案盒标签注册";
             this.btnBox.UseVisualStyleBackColor = true;
@@ -162,9 +162,9 @@
             // 
             // btnFloorLabel
             // 
-            this.btnFloorLabel.Location = new System.Drawing.Point(25, 176);
+            this.btnFloorLabel.Location = new System.Drawing.Point(17, 184);
             this.btnFloorLabel.Name = "btnFloorLabel";
-            this.btnFloorLabel.Size = new System.Drawing.Size(91, 46);
+            this.btnFloorLabel.Size = new System.Drawing.Size(117, 46);
             this.btnFloorLabel.TabIndex = 2;
             this.btnFloorLabel.Text = "层架标签注册";
             this.btnFloorLabel.UseVisualStyleBackColor = true;
@@ -172,9 +172,9 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(25, 107);
+            this.btnSearch.Location = new System.Drawing.Point(17, 115);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(91, 46);
+            this.btnSearch.Size = new System.Drawing.Size(117, 46);
             this.btnSearch.TabIndex = 1;
             this.btnSearch.Text = "检索查询";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -182,9 +182,9 @@
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(25, 38);
+            this.btnExport.Location = new System.Drawing.Point(17, 46);
             this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(91, 46);
+            this.btnExport.Size = new System.Drawing.Size(117, 46);
             this.btnExport.TabIndex = 0;
             this.btnExport.Text = "导入档案数据";
             this.btnExport.UseVisualStyleBackColor = true;

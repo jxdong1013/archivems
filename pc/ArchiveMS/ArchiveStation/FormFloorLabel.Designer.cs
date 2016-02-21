@@ -223,6 +223,7 @@
             this.button5.TabIndex = 17;
             this.button5.Text = "单标签检测";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button4
@@ -233,6 +234,7 @@
             this.button4.TabIndex = 16;
             this.button4.Text = "获取工作参数";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // FormFloorLabel

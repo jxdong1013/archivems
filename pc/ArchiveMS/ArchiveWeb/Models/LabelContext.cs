@@ -65,15 +65,22 @@ namespace ContractMvcWeb.Models
             query.name = FilterSpecial(query.name);
             query.rfid = FilterSpecial(query.rfid);
        
-            string where = " 1=1 ";
+            string where = "";
             if (string.IsNullOrEmpty(query.name) == false)
             {
-                where += " and name like '%" + query.name + "%'";
+                if (string.IsNullOrEmpty(where) == false) where += " or ";
+
+                where += "  name like '%" + query.name + "%'";
             }
             if (string.IsNullOrEmpty(query.rfid) == false)
             {
-                where += string.Format(" and rfid like '%{0}%'", query.rfid);
+                if (string.IsNullOrEmpty(where) == false) where += " or ";
+
+                where += string.Format("  rfid like '%{0}%'", query.rfid);
             }
+
+            if (string.IsNullOrEmpty(where) ) where += " 1=1 ";
+
             
             return where;
         }
@@ -291,19 +298,28 @@ namespace ContractMvcWeb.Models
             query.rfid = FilterSpecial(query.rfid);
             query.floorrfid = FilterSpecial(query.floorrfid);
 
-            string where = " 1=1 ";
+            string where = "";
             if (string.IsNullOrEmpty(query.name) == false)
             {
-                where += " and name like '%" + query.name + "%'";
+                if (string.IsNullOrEmpty(where) == false) where += " or ";
+
+                where += "  name like '%" + query.name + "%'";
             }
             if (string.IsNullOrEmpty(query.rfid) == false)
             {
-                where += string.Format(" and rfid like '%{0}%'", query.rfid);
+                if (string.IsNullOrEmpty(where) == false) where += " or ";
+
+                where += string.Format("  rfid like '%{0}%'", query.rfid);
             }
             if (string.IsNullOrEmpty(query.floorrfid) == false)
             {
-                where += string.Format(" and floorrfid = '{0}'", query.floorrfid);
+                if (string.IsNullOrEmpty(where) == false) where += " or ";
+
+                where += string.Format("  floorrfid = '{0}'", query.floorrfid);
             }
+
+            if (string.IsNullOrEmpty(where) ) where = " 1=1 ";
+
 
             return where;
         }
@@ -415,10 +431,24 @@ namespace ContractMvcWeb.Models
             {
                 if ( string.IsNullOrEmpty(rfid) || string.IsNullOrEmpty(boxids)) return true;
                 string[] boxidList = boxids.Split( new string[]{","}, StringSplitOptions.RemoveEmptyEntries);
-                if (boxidList == null || boxidList.Length<1) return true;              
+                if (boxidList == null || boxidList.Length<1) return true;       
+       
+                String boxString = "";
+                for( int k=0;k<boxidList.Length;k++)
+                {
+                    if( string.IsNullOrEmpty( boxString)==false)
+                    {
+                        boxString +=",";
+                    }
+                    boxString +="'"+ boxidList[k]+"'";
+                }
+
+                String sql_0 = string.Format("update t_position set floorrfid = '{0}'  where floorrfid !='{1}' and boxrfid in( {2} )", rfid , rfid ,  boxString);
+                MySqlHelper.ExecuteSql(sql_0);
+              
                 
                 string sql_1 = string.Format( "select * from t_position where floorrfid='{0}'" , rfid);
-                DataSet ds = MySqlHelper.Query( sql_1);
+                DataSet ds = MySqlHelper.Query(sql_1);
                 if (ds == null || ds.Tables[0].Rows.Count < 1)
                 {
                     System.Collections.ArrayList sqlList = new System.Collections.ArrayList();     

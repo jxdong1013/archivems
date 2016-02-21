@@ -115,6 +115,14 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             }else if( result.getData().getType().equals("box")){
                 String boxname = result.getData().getName();
                 String boxrfid = result.getData().getRfid();
+
+                for( LocationBean item : data){
+                    if( item.getBoxRfid().equals( boxrfid)){
+                        Snackbar.make(mContentView, boxname +" 标签已经扫描过了",Snackbar.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+
                 LocationBean bean =new LocationBean();
                 bean.setBoxRfid(boxrfid);
                 bean.setBoxName(boxname);
@@ -151,7 +159,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
             Snackbar.make(mContentView, "上传成功", Snackbar.LENGTH_LONG).show();
         }else{
             String msg = result.getMessage();
-            Snackbar.make(mContentView,"上传失败"+msg,Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mContentView,"上传失败",Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -262,9 +270,13 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         String floorname = PreferenceHelper.readString(this.getActivity(), Constant.LOCATION_INFO_FILE, Constant.LOCATION_FLOORNAME, "");
         String floorrfid = PreferenceHelper.readString(this.getActivity(),Constant.LOCATION_INFO_FILE,Constant.LOCATION_FLOORRFID,"");
         String boxdata = PreferenceHelper.readString(this.getActivity(),Constant.LOCATION_INFO_FILE,Constant.LOCATION_BOXDATA );
-
+        LabelInfoBean floor = new LabelInfoBean();
+        floor.setName(floorname);
+        floor.setRfid(floorrfid);
+        floor.setType("floor");
         if( !TextUtils.isEmpty(floorname)) {
             tvFloorName.setText(floorname);
+            tvFloorName.setTag(floor);
         }
         JSONUtil<List<LocationBean>> jsonUtil = new JSONUtil<>();
         data = new ArrayList<LocationBean>();
