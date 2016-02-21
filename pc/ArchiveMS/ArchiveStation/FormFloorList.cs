@@ -12,10 +12,31 @@ namespace ArchiveStation
     public partial class FormFloorList : FormBase
     {
         public int pagesize = Constant.PAGESIZE;
+        protected String _operateType = "";
+
+        public Bean.FloorBean SelectedFloorLabel
+        {
+            get;
+            set;
+        }
 
         public FormFloorList()
         {
             InitializeComponent();
+        }
+
+        public FormFloorList(string operateType)
+        {
+            InitializeComponent();
+
+            _operateType = operateType;
+            if (_operateType.Equals("选择层架"))
+            {
+                dataGridView1.MultiSelect = false;
+                dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            }
+
+
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -211,6 +232,24 @@ namespace ArchiveStation
             Bean.FloorBean bean = dataGridView1.Rows[e.RowIndex].DataBoundItem as Bean.FloorBean;
             if (bean == null) return;
 
+            if (_operateType.Equals("选择层架"))
+            {
+                SelectFloorLabel(bean);
+            }
+            else
+            {
+                EditBean(bean);
+            }
+        }
+
+        protected void SelectFloorLabel(FloorBean bean)
+        {
+            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.SelectedFloorLabel = bean;
+        }
+
+        protected void EditBean(Bean.FloorBean bean)
+        {
             FormFloorLabel form = new FormFloorLabel(bean);
             form.OnRefreshData += form_OnRefreshData;
             form.StartPosition = FormStartPosition.CenterParent;
@@ -237,6 +276,12 @@ namespace ArchiveStation
                   form.StartPosition = FormStartPosition.CenterScreen;
                   form.setFloorRfid(bean.rfid);
                   form.ShowDialog();
+              }
+              else if (dataGridView1.Columns[e.ColumnIndex].Name.ToLower().Trim().Equals("lbledit"))
+              {
+                  Bean.FloorBean bean = dataGridView1.Rows[e.RowIndex].DataBoundItem as Bean.FloorBean;
+                  if (bean == null) return;
+                  EditBean(bean);
               }
         }
 

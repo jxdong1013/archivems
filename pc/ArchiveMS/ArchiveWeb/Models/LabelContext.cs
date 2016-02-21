@@ -108,6 +108,26 @@ namespace ContractMvcWeb.Models
             }
         }
 
+        public bool ExistFloorLabelByName( string name )
+        {
+            string sql = string.Format(" select count(1) from t_floorlabel where name ='{0}' ", name );
+            object obj = MySqlHelper.GetSingle(sql);
+            if (obj == null) return false;
+            int count = 0;
+            int.TryParse(obj.ToString(), out count);
+            return count > 0 ? true : false;
+        }
+
+        public bool ExistFloorLabelByName(string name, int id)
+        {
+            string sql = string.Format(" select count(1) from t_floorlabel where name ='{0}' and id != {1}", name , id );
+            object obj = MySqlHelper.GetSingle(sql);
+            if (obj == null) return false;
+            int count = 0;
+            int.TryParse(obj.ToString(), out count);
+            return count > 0 ? true : false;
+        }
+
         public bool ExistFloorLabel(string rfid, int id)
         {
             string sql = string.Format(" select count(1) from t_floorlabel where rfid='{0}' and id != {1}", rfid, id);
@@ -118,9 +138,9 @@ namespace ContractMvcWeb.Models
             return count > 0 ? true : false;
         }
 
-        public bool ExistBoxsOfFloorLabel(int id)
+        public bool ExistBoxsOfFloorLabel(string rfid)
         {
-            String sql = string.Format(" select count(1) from t_boxlabel where floorid =" + id);
+            String sql = string.Format(" select count(1) from t_position where floorrfid ='{0}'" , rfid);
             object obj = MySqlHelper.GetSingle(sql);
             if (obj == null) return false;
             int count = 0;
@@ -205,6 +225,13 @@ namespace ContractMvcWeb.Models
             return count > 0 ? true : false;
         }
 
+        public bool DeleteFloorLabel(string rfid)
+        {
+            string sql = string.Format(" delete from t_floorlabel where rfid = '{0}' " , rfid);
+            int count = MySqlHelper.ExecuteSql(sql);
+            return count > 0 ? true : false;
+        }
+
         public bool ExistBoxLabel(string rfid)
         {
             String sql = string.Format( "select count(1) from t_boxlabel where rfid='{0}'", rfid);
@@ -218,6 +245,27 @@ namespace ContractMvcWeb.Models
         public bool ExistBoxLabel(string rfid, int id)
         {
             String sql = string.Format("select count(1) from t_boxlabel where rfid='{0}' and id != {1}", rfid , id );
+            object obj = MySqlHelper.GetSingle(sql);
+            if (obj == null) return false;
+            int count = 0;
+            int.TryParse(obj.ToString(), out count);
+            return count > 0 ? true : false;
+        }
+
+        public bool ExistBoxLabelByName(string name)
+        {
+            String sql = string.Format("select count(1) from t_boxlabel where name='{0}'",  name );
+            object obj = MySqlHelper.GetSingle(sql);
+            if (obj == null) return false;
+            int count = 0;
+            int.TryParse(obj.ToString(), out count);
+            return count > 0 ? true : false;
+        }
+
+
+        public bool ExistBoxLabelByName(string name , int id )
+        {
+            String sql = string.Format("select count(1) from t_boxlabel where name='{0}' and id != {1}", name , id );
             object obj = MySqlHelper.GetSingle(sql);
             if (obj == null) return false;
             int count = 0;
@@ -339,6 +387,10 @@ namespace ContractMvcWeb.Models
             {
                 model.floorrfid = row["floorrfid"].ToString();
             }
+            if (row.Table.Columns.Contains("floorname"))
+            {
+                model.floorname = row["floorname"].ToString();
+            }
 
             return model;
         }
@@ -425,7 +477,7 @@ namespace ContractMvcWeb.Models
             }
         }
 
-        public bool UploadBoxListOfFloor(string rfid, string boxids)
+        public bool UploadBoxListOfFloor(string rfid, string boxids , bool isAdd = false )
         {
             try
             {
@@ -464,7 +516,10 @@ namespace ContractMvcWeb.Models
                 {
                     InsertBoxList(boxidList, ds.Tables[0], rfid);
 
-                    DeleteBoxList(boxidList, ds.Tables[0], rfid);                    
+                    if (isAdd == false)
+                    {
+                        DeleteBoxList(boxidList, ds.Tables[0], rfid);
+                    }
                 }
                
                 return true;

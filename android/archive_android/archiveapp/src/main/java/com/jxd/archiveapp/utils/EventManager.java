@@ -6,8 +6,8 @@ import android.widget.Toast;
 
 import com.jxd.archiveapp.bean.SearchEvent;
 
-import de.greenrobot.event.EventBus;
-import de.greenrobot.event.Subscribe;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by Administrator on 2016/1/28.

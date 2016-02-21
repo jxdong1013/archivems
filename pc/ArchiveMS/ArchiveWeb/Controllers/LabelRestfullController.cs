@@ -36,8 +36,16 @@ namespace ContractMvcWeb.Controllers
                 }
                 else
                 {
-                    bool isok = db.EditFloorLabel(model);
-                    result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ?"更新成功": "更新失败", null);
+                    isExist = db.ExistFloorLabelByName(model.name, model.id);
+                    if (isExist)
+                    {
+                        result = new Result((int)ResultCodeEnum.Error, "名称已经被使用，请使用别的名称", null);
+                    }
+                    else
+                    {
+                        bool isok = db.EditFloorLabel(model);
+                        result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ? "更新成功" : "更新失败", null);
+                    }
                 }
             }
             else
@@ -49,8 +57,16 @@ namespace ContractMvcWeb.Controllers
                 }
                 else
                 {
-                    bool isok = db.AddFloorLabel(model);
-                    result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok? "新增成功": "新增失败", null);
+                    isExist = db.ExistFloorLabelByName(model.name);
+                    if (isExist)
+                    {
+                        result = new Result((int)ResultCodeEnum.Error, "名称已经被使用，请使用别的名称", null);
+                    }
+                    else
+                    {
+                        bool isok = db.AddFloorLabel(model);
+                        result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ? "新增成功" : "新增失败", null);
+                    }
                 }
             }
 
@@ -60,19 +76,19 @@ namespace ContractMvcWeb.Controllers
         }
 
         [HttpGet]
-        public JsonResult DeleteFloorLabel(int id)
+        public JsonResult DeleteFloorLabel( string rfid)
         {
             ContractMvcWeb.Models.LabelContext db = new Models.LabelContext();
             Result result = null;
 
-            bool isExistBoxLabel = db.ExistBoxsOfFloorLabel(id);
+            bool isExistBoxLabel = db.ExistBoxsOfFloorLabel( rfid);
             if (isExistBoxLabel)
             {
                 result = new Result((int)ResultCodeEnum.Error, "请先删除盒标签再操作。", null);
             }
             else
             {
-                bool isok = db.DeleteFloorLabel(id);
+                bool isok = db.DeleteFloorLabel(rfid);
                 result = new Result( isok ? (int)ResultCodeEnum.Success : (int) ResultCodeEnum.Error, isok ?"删除成功":"删除失败",null);
             }
 
@@ -125,8 +141,16 @@ namespace ContractMvcWeb.Controllers
                 }
                 else
                 {
-                    bool isok = db.EditBoxLabel(model);
-                    result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok? "更新成功": "更新失败", null);
+                    isExist = db.ExistBoxLabelByName(model.name, model.id);
+                    if (isExist)
+                    {
+                        result = new Result((int)ResultCodeEnum.Error, "名称已经被使用，请使用别的名称", null);
+                    }
+                    else
+                    {
+                        bool isok = db.EditBoxLabel(model);
+                        result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ? "更新成功" : "更新失败", null);
+                    }
                 }
             }
             else
@@ -138,8 +162,16 @@ namespace ContractMvcWeb.Controllers
                 }
                 else
                 {
-                    bool isok = db.AddBoxLabel(model);
-                    result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ?"新增成功": "新增失败", null);
+                    isExist = db.ExistBoxLabelByName(model.name);
+                    if (isExist)
+                    {
+                        result = new Result((int)ResultCodeEnum.Error, "名称已经被使用，请使用别的名称", null);
+                    }
+                    else
+                    {
+                        bool isok = db.AddBoxLabel(model);
+                        result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ? "新增成功" : "新增失败", null);
+                    }
                 }
             }
 
@@ -216,11 +248,18 @@ namespace ContractMvcWeb.Controllers
             return jsonResult;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="floorrfid"></param>
+        /// <param name="boxrfids"></param>
+        /// <param name="isAdd">=true，则 删除其他 标签</param>
+        /// <returns></returns>
         [HttpGet]
-        public JsonResult UploadBoxListOfFloor(string floorrfid, string boxrfids)
+        public JsonResult UploadBoxListOfFloor(string floorrfid, string boxrfids , bool isadd = false )
         {
             ContractMvcWeb.Models.LabelContext db = new LabelContext();
-            bool isok = db.UploadBoxListOfFloor(floorrfid, boxrfids);
+            bool isok = db.UploadBoxListOfFloor(floorrfid, boxrfids , isadd );
             JsonResult jsonResult = new JsonResult();
             jsonResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             Result result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ? "定位成功" : "定位失败", null);
@@ -282,10 +321,13 @@ namespace ContractMvcWeb.Controllers
                 return jsonResult;
             }
             catch (Exception ex)
-            {                
+            {
+                String msg = ex.Message;
+                msg += ex.StackTrace;
+
                 JsonResult jsonResult = new JsonResult();
                 jsonResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-                Result result = new Result( (int)ResultCodeEnum.Error, "服务端发生错误",null);
+                Result result = new Result( (int)ResultCodeEnum.Error, "服务端发生错误"+ msg ,null);
                 jsonResult.Data = result;
                 return jsonResult;
             }

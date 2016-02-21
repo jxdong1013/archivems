@@ -50,6 +50,10 @@ namespace ContractMvcWeb.Models
             model.sex = result.Tables[0].Rows[0]["sex"].ToString();
             model.address = result.Tables[0].Rows[0]["address"].ToString();
             model.roletype = result.Tables[0].Rows[0]["roletype"].ToString();
+            if (result.Tables[0].Columns.Contains("realname"))
+            {
+                model.realname = result.Tables[0].Rows[0]["realname"].ToString();
+            }
             
             return model;
         }
@@ -157,19 +161,26 @@ namespace ContractMvcWeb.Models
             query.realname= FilterSpecial(query.realname);
             query.phone = FilterSpecial(query.phone);
 
-            string where = " 1=1 ";
+            string where = "";
             if (string.IsNullOrEmpty(query.username) == false)
             {
-                where += " and username like '%" + query.username + "%'";
+                if (string.IsNullOrEmpty(where) == false) where += " or ";
+                where += " username like '%" + query.username + "%'";
             }
             if (string.IsNullOrEmpty(query.realname) == false)
             {
-                where += string.Format(" and realname like '%{0}%'", query.realname);
+                if (string.IsNullOrEmpty(where) == false) where += " or ";
+
+                where += string.Format(" realname like '%{0}%'", query.realname);
             }
             if (string.IsNullOrEmpty(query.phone) == false)
             {
-                where += string.Format(" and phone like '%{0}%'", query.phone);
+                if (string.IsNullOrEmpty(where) == false) where += " or ";
+
+                where += string.Format(" phone like '%{0}%'", query.phone);
             }
+
+            if (string.IsNullOrEmpty(where) ) where =" 1=1 ";
 
 
             return where;

@@ -26,13 +26,13 @@ namespace ArchiveStation
             XmlNode root = doc.DocumentElement;
             if (root == null) return null;
             //List<UserBean> list = new List<UserBean>();
-            UserBean user = null;
+            UserBean userNNN = null;
             DateTime min = DateTime.MinValue;
             foreach (XmlElement ele in root.ChildNodes)
             {
                 try
                 {
-                    user = new UserBean();
+                   UserBean  user = new UserBean();
 
                     user.userid = ele["id"] == null ? 0 : int.Parse(ele["id"].InnerText);
                     user.username = ele["name"] == null ? "" : ele["name"].InnerText;
@@ -45,12 +45,22 @@ namespace ArchiveStation
                     {
                         date = DateTime.Now;
                     }
-                                                            
+
+                    if (date.CompareTo(min) >= 0)
+                    {
+                        userNNN = user;
+                        min = date;
+                    }
+                    else
+                    {
+                       //userNNN = 
+                        
+                    }
 
                 }
                 catch { }
             }
-            return user;
+            return userNNN;
         }
 
         public static void SaveUser( UserBean user)

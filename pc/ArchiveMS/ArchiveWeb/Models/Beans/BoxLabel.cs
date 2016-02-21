@@ -14,5 +14,6 @@ namespace ContractMvcWeb.Models.Beans
         public string number { get; set; }
 
         public string floorrfid { get;set;}
+        public string floorname { get; set; }
     }
 }

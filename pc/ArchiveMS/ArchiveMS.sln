@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchiveWeb", "ArchiveWeb\Ar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchiveStation", "ArchiveStation\ArchiveStation.csproj", "{4927A0FC-898A-4655-B917-4A550244EC8C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinForm", "SkinForm\SkinForm.csproj", "{3EA4B685-F7F7-4592-85C2-67E1D4A70F87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{4927A0FC-898A-4655-B917-4A550244EC8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4927A0FC-898A-4655-B917-4A550244EC8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4927A0FC-898A-4655-B917-4A550244EC8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EA4B685-F7F7-4592-85C2-67E1D4A70F87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EA4B685-F7F7-4592-85C2-67E1D4A70F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EA4B685-F7F7-4592-85C2-67E1D4A70F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EA4B685-F7F7-4592-85C2-67E1D4A70F87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -28,7 +28,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener , Handler.Callback
 {

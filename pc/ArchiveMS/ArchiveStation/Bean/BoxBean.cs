@@ -10,6 +10,9 @@ namespace ArchiveStation.Bean
         public string name { get; set; }
         public string rfid { get; set; }
         public string number { get; set; }
+
+        public string floorrfid { get; set; }
+        public string floorname { get; set; }
     }
     public class BoxResult : BaseBean
     {

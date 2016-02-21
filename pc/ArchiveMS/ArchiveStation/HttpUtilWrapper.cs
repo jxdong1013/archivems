@@ -175,7 +175,7 @@ namespace ArchiveStation
             {
                 string url = Bean.Variable.RootUrl() + "/LabelRestfull/DeleteFloorLabel";
 
-                String paramstr = String.Format("?id={0}", bean.id );
+                String paramstr = String.Format("?rfid={0}", bean.rfid );
                 url += paramstr;
                 HttpUtil util = new HttpUtil();
                 String responseContent = "";
@@ -308,6 +308,36 @@ namespace ArchiveStation
                     return null;
                 }
                 ArchiveResult result = JsonConvert.DeserializeObject<ArchiveResult>(responseContent);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                return null;
+            }
+        }
+
+        public BaseBean BoxToFloor(string floorrfid, string boxrfid , bool isadd )
+        {
+            try
+            {
+                string url = Bean.Variable.RootUrl() + "/LabelRestfull/UploadBoxListOfFloor";
+                String paramstr = String.Format("?floorrfid={0}&boxrfids={1}&isadd={2}", floorrfid, boxrfid,isadd);
+                url += paramstr;
+
+                HttpUtil util = new HttpUtil();
+                String responseContent = "";
+                WebHeaderCollection header = new WebHeaderCollection();
+
+                HttpStatusCode statusCode = util.Post(Variable.globelCookieContainer,
+                    url, "", "application/x-www-form-urlencoded", "Get",
+                    ref responseContent, ref header);
+                if (statusCode != HttpStatusCode.OK)
+                {
+                    return null;
+                }
+                BaseBean result = JsonConvert.DeserializeObject<BaseBean>(responseContent);
 
                 return result;
             }

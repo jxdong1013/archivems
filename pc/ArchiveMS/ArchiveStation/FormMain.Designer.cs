@@ -62,9 +62,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tSSLUser,
             this.tSSLCopyRight});
-            this.statusStrip1.Location = new System.Drawing.Point(156, 525);
+            this.statusStrip1.Location = new System.Drawing.Point(3, 525);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(664, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(817, 22);
             this.statusStrip1.TabIndex = 10;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -76,7 +76,7 @@
             // tSSLCopyRight
             // 
             this.tSSLCopyRight.Name = "tSSLCopyRight";
-            this.tSSLCopyRight.Size = new System.Drawing.Size(649, 17);
+            this.tSSLCopyRight.Size = new System.Drawing.Size(802, 17);
             this.tSSLCopyRight.Spring = true;
             this.tSSLCopyRight.Text = "北京乾坤科美科技有限公司 ";
             this.tSSLCopyRight.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -92,7 +92,7 @@
             // 
             this.splitter1.Location = new System.Drawing.Point(153, 30);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 517);
+            this.splitter1.Size = new System.Drawing.Size(3, 495);
             this.splitter1.TabIndex = 11;
             this.splitter1.TabStop = false;
             // 
@@ -102,7 +102,7 @@
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelLeft.Location = new System.Drawing.Point(3, 30);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(150, 517);
+            this.panelLeft.Size = new System.Drawing.Size(150, 495);
             this.panelLeft.TabIndex = 12;
             // 
             // pushPanel1
@@ -113,7 +113,7 @@
             this.pushPanel1.Location = new System.Drawing.Point(0, 0);
             this.pushPanel1.Name = "pushPanel1";
             this.pushPanel1.RoundStyle = UILibrary.RoundStyle.All;
-            this.pushPanel1.Size = new System.Drawing.Size(150, 517);
+            this.pushPanel1.Size = new System.Drawing.Size(150, 495);
             this.pushPanel1.TabIndex = 6;
             // 
             // pushPanelItem1
@@ -195,9 +195,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(823, 550);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.panelLeft);
+            this.Controls.Add(this.statusStrip1);
             this.IsMdiContainer = true;
             this.Name = "FormMain";
             this.Radius = 8;
@@ -205,9 +205,9 @@
             this.Text = "档案管理系统";
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.SizeChanged += new System.EventHandler(this.FormMain_SizeChanged);
+            this.Controls.SetChildIndex(this.statusStrip1, 0);
             this.Controls.SetChildIndex(this.panelLeft, 0);
             this.Controls.SetChildIndex(this.splitter1, 0);
-            this.Controls.SetChildIndex(this.statusStrip1, 0);
             this.Controls.SetChildIndex(this.panelLoading, 0);
             this.panelLoading.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);

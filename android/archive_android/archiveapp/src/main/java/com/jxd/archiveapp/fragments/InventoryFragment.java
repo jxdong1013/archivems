@@ -46,7 +46,7 @@ import java.util.Locale;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildCheckedChangeListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * 盘点
@@ -195,6 +195,7 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
             if(data!=null) {
                 data.clear();
             }
+            rlNoData.setVisibility(View.VISIBLE);
             return;
         }
     }
@@ -307,6 +308,7 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
                 String json = jsonUtil.toJson( boxes );
                 PreferenceHelper.writeString(getActivity(), Constant.INVENTORY_INFO_FILE , key ,  json );
                 isExist=true;
+                inventoryAdapter.notifyDataSetChanged();
                 Snackbar.make(mContentView, bean.getName(),Snackbar.LENGTH_LONG).show();
                 break;
             }

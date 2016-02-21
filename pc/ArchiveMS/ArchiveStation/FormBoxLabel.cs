@@ -66,6 +66,7 @@ namespace ArchiveStation
             if (backgroundWorker1.IsBusy) return;
 
             this.panelLoading.Visible = true;
+            this.lblLoadingText.Text = "正在请求操作，请稍等......";
             this.panelLoading.BringToFront();
             this.panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
 

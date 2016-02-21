@@ -49,8 +49,8 @@ import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
-import de.greenrobot.event.EventBus;
-import de.greenrobot.event.Subscribe;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * 标签检索
@@ -129,8 +129,13 @@ public class SearchFragment extends BaseFragment implements  BGARefreshLayout.BG
                 return true;
             }else{
                 if( result.getData() ==null ) return true;
+
                 if( result.getData().getData()==null|| result.getData().getData().size()<1 ){
-                    Snackbar.make(mContentView,"已经拉到底了,歇歇吧！",Snackbar.LENGTH_LONG).show();
+                    if(adapter.getItemCount()<1){
+                        search_nodata.setVisibility(View.VISIBLE);
+                    }else {
+                        Snackbar.make(mContentView, "已经拉到底了,歇歇吧！", Snackbar.LENGTH_LONG).show();
+                    }
                     return true;
                 }
                 pageIdx = result.getData().getPageIdx()+1;
@@ -205,6 +210,7 @@ public class SearchFragment extends BaseFragment implements  BGARefreshLayout.BG
             refreshLayout.endLoadingMore();
             return;
         }
+        search_nodata.setVisibility(View.GONE);
 
         String key = etKey.getText().toString().trim();
         RequestParams params = new RequestParams();

@@ -30,9 +30,7 @@ namespace ArchiveStation
             this.MinimizeBox = false;
             this.WindowState = FormWindowState.Maximized;
             this.CloseBoxSize = new Size(0, 0);
-            this.CanResize = false;
-            this.AutoSize = false;
-            
+            this.FullScreen = true;                     
 
         }
 
@@ -251,7 +249,7 @@ namespace ArchiveStation
         private void FormList_Shown(object sender, EventArgs e)
         {
             changeBarLocation();
-            txtKey.Focus();
+            //txtKey.Focus();
         }
 
         private void pageControl1_onFirst(object sender, EventArgs e)

@@ -6,6 +6,24 @@
     <name>nannan</name>
     <password>
     </password>
-    <date>2016-02-20 20:55:18</date>
+    <date>2016-02-21 12:59:52</date>
+  </user>
+  <user>
+    <id>1</id>
+    <code>
+    </code>
+    <name>admin</name>
+    <password>
+    </password>
+    <date>2016-02-21 20:53:59</date>
+  </user>
+  <user>
+    <id>1</id>
+    <code>
+    </code>
+    <name>admin11</name>
+    <password>
+    </password>
+    <date>2016-02-21 13:36:14</date>
   </user>
 </users>

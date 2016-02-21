@@ -270,8 +270,46 @@ namespace ArchiveStation
                 form.StartPosition = FormStartPosition.CenterParent;
                 form.ShowDialog();
             }
+            else if (dataGridView1.Columns[e.ColumnIndex].Name.ToString().ToLower().Equals("lblsetposition"))
+            {
+                Bean.BoxBean bean = dataGridView1.Rows[e.RowIndex].DataBoundItem as Bean.BoxBean;
+                if (bean == null) return;
+                SetPosition(bean);
+            }
         }
 
+        protected void SetPosition( Bean.BoxBean bean )
+        {
+            FormFloorList form = new FormFloorList("选择层架");
+            form.Text = "请选择所属层架 档案盒:"+  bean.name;
+            form.WindowState = FormWindowState.Normal;
+            form.StartPosition = FormStartPosition.CenterParent;
+            DialogResult result = form.ShowDialog();
+            if (result != System.Windows.Forms.DialogResult.OK) return;
+
+            Bean.FloorBean floor = form.SelectedFloorLabel;
+            if (floor == null) return;
+
+            if (backgroundWorker3.IsBusy) return;
+
+            panelLoading.Visible = true;
+            panelLoading.BringToFront();
+            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
+            lblLoadingText.Text = "正在请求设置层架操作，请稍等......";
+
+            PositionConfig config = new PositionConfig();
+            config.floorrfid = floor.rfid;
+            config.boxrfid = bean.rfid;
+
+            backgroundWorker3.RunWorkerAsync(config);
+
+        }
+
+        class PositionConfig
+        {
+            public string floorrfid { get; set; }
+            public string boxrfid { get; set; }
+        }
 
         protected void DeleteBoxLabel(Bean.BoxBean bean)
         {
@@ -355,6 +393,48 @@ namespace ArchiveStation
             x = (panel2.Width - pageControl1.Width) / 2;
             pageControl1.Location = new Point(x, pageControl1.Location.Y);
 
+        }
+
+        private void backgroundWorker3_DoWork(object sender, DoWorkEventArgs e)
+        {
+            PositionConfig para = e.Argument as PositionConfig;
+            if (para == null) return;
+
+            HttpUtilWrapper wrapper = new HttpUtilWrapper();
+            BaseBean result = wrapper.BoxToFloor(para.floorrfid, para.boxrfid , true );
+            e.Result = result;
+        }
+
+        private void backgroundWorker3_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            try
+            {
+                BaseBean result = e.Result as BaseBean;
+                if (result == null)
+                {
+                    panelLoading.Visible = false;
+                    MessageBox.Show("请求失败,请重试！");
+                    return;
+                }
+                if (result.Code == (int)Constant.ResultCodeEnum.Error)
+                {
+                    panelLoading.Visible = false;
+                    MessageBox.Show(result.Message);
+                    return;
+                }
+
+                String key = txtKey.Text.Trim();                
+                Go(0, Bean.Constant.PAGESIZE , key);
+
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+            }
+            finally
+            {
+                panelLoading.Visible = false;
+            }
         }
 
     }

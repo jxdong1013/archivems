@@ -36,6 +36,10 @@ namespace ArchiveStation
             FormLogin form = new FormLogin();
             if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                if (Bean.Variable.User != null)
+                {
+                    this.tSSLUser.Text = Bean.Variable.User.realname + "(" + Bean.Variable.User.username + ")";
+                }
                 this.Location = new Point(0, 0);
                 this.WindowState = FormWindowState.Maximized;
                 this.Show();
@@ -195,11 +199,17 @@ namespace ArchiveStation
             if (formLabelConfig == null)
             {
                 formLabelConfig = new FormLabelConfig();
+                formLabelConfig.FormClosed += formLabelConfig_FormClosed;
                 formLabelConfig.MdiParent = this;
             }
             formLabelConfig.WindowState = FormWindowState.Maximized;
             formLabelConfig.Show();
             formLabelConfig.BringToFront();
+        }
+
+        void formLabelConfig_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            formLabelConfig = null;
         }
 
     }
