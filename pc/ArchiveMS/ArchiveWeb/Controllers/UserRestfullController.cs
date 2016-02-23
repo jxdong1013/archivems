@@ -92,6 +92,36 @@ namespace ContractMvcWeb.Controllers
             return View();
         }
 
+        [HttpPost]
+        public JsonResult ChangePassword(string username , string oldpassword, string newpassword)
+        {
+            JsonResult json = new JsonResult();
+            Result result =null;
+
+            ContractMvcWeb.Models.AccountContext dbContext = new Models.AccountContext();
+            string msg = string.Empty;
+            LocalPasswordModel model = new LocalPasswordModel();
+            
+            model.OldPassword = oldpassword;
+            model.NewPassword = newpassword;
+            model.ConfirmPassword = newpassword;
+
+            bool issuccess = dbContext.ChangePassword(model, username , out msg);
+            if (issuccess == false)
+            {
+                result = new Result((int)ResultCodeEnum.Error, msg,null);
+
+            }
+            else
+            {
+                result = new Result((int)ResultCodeEnum.Success, "修改密码成功", null);
+            }
+
+            json.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            json.Data = result;
+            return json;
+        }
+
 
         [HttpGet]
         public JsonResult GetUserList(String name, int pageidx = 0, int pagesize = 20)

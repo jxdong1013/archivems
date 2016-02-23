@@ -10,9 +10,8 @@ namespace ArchiveStation.Bean
 
         public const int PAGESIZE = 30;
 
-        public const string Role_SalesMan = "业务员";
-        public const string Role_SalesManager = "业务主管";
-        public const string Role_Admin = "管理员";
+        public const string Role_User = "user";
+        public const string Role_Admin = "admin";
 
         public enum ResultCodeEnum
         {

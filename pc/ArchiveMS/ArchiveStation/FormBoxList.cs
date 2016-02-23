@@ -367,6 +367,10 @@ namespace ArchiveStation
                 LogHelper.WriteException(ex);
                 panelLoading.Visible = false;
             }
+            finally
+            {
+                panelLoading.Visible = false;
+            }
         }
 
         private void FormBoxList_Shown(object sender, EventArgs e)

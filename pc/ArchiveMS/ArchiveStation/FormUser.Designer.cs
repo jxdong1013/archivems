@@ -44,7 +44,13 @@
             this.txtRealName = new UILibrary.SkinTextBox();
             this.txtName = new UILibrary.SkinTextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.rdbNormal = new System.Windows.Forms.RadioButton();
+            this.rdbDB = new System.Windows.Forms.RadioButton();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panelLoading.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelLoading
@@ -53,6 +59,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.panel2);
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.lblError2);
             this.panel1.Controls.Add(this.lblError1);
             this.panel1.Controls.Add(this.rdbWoman);
@@ -105,12 +113,10 @@
             // rdbMan
             // 
             this.rdbMan.AutoSize = true;
-            this.rdbMan.Checked = true;
             this.rdbMan.Location = new System.Drawing.Point(79, 131);
             this.rdbMan.Name = "rdbMan";
             this.rdbMan.Size = new System.Drawing.Size(35, 16);
             this.rdbMan.TabIndex = 38;
-            this.rdbMan.TabStop = true;
             this.rdbMan.Text = "男";
             this.rdbMan.UseVisualStyleBackColor = true;
             // 
@@ -118,7 +124,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.label6.Location = new System.Drawing.Point(13, 218);
+            this.label6.Location = new System.Drawing.Point(13, 251);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(101, 12);
             this.label6.TabIndex = 37;
@@ -127,7 +133,7 @@
             // ckbDisable
             // 
             this.ckbDisable.AutoSize = true;
-            this.ckbDisable.Location = new System.Drawing.Point(235, 216);
+            this.ckbDisable.Location = new System.Drawing.Point(235, 249);
             this.ckbDisable.Name = "ckbDisable";
             this.ckbDisable.Size = new System.Drawing.Size(48, 16);
             this.ckbDisable.TabIndex = 36;
@@ -140,7 +146,7 @@
             this.btnCancel.ControlState = UILibrary.ControlState.Normal;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.DownBack = null;
-            this.btnCancel.Location = new System.Drawing.Point(175, 251);
+            this.btnCancel.Location = new System.Drawing.Point(175, 284);
             this.btnCancel.MouseBack = null;
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.NormlBack = null;
@@ -154,7 +160,7 @@
             this.btnOk.BackColor = System.Drawing.Color.Transparent;
             this.btnOk.ControlState = UILibrary.ControlState.Normal;
             this.btnOk.DownBack = null;
-            this.btnOk.Location = new System.Drawing.Point(77, 251);
+            this.btnOk.Location = new System.Drawing.Point(77, 284);
             this.btnOk.MouseBack = null;
             this.btnOk.Name = "btnOk";
             this.btnOk.NormlBack = null;
@@ -287,6 +293,46 @@
             this.label2.TabIndex = 27;
             this.label2.Text = "用户名：";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(17, 215);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.TabIndex = 42;
+            this.label1.Text = "用户类型：";
+            // 
+            // rdbNormal
+            // 
+            this.rdbNormal.AutoSize = true;
+            this.rdbNormal.Checked = true;
+            this.rdbNormal.Location = new System.Drawing.Point(8, 4);
+            this.rdbNormal.Name = "rdbNormal";
+            this.rdbNormal.Size = new System.Drawing.Size(71, 16);
+            this.rdbNormal.TabIndex = 43;
+            this.rdbNormal.TabStop = true;
+            this.rdbNormal.Text = "普通用户";
+            this.rdbNormal.UseVisualStyleBackColor = true;
+            // 
+            // rdbDB
+            // 
+            this.rdbDB.AutoSize = true;
+            this.rdbDB.Location = new System.Drawing.Point(103, 4);
+            this.rdbDB.Name = "rdbDB";
+            this.rdbDB.Size = new System.Drawing.Size(59, 16);
+            this.rdbDB.TabIndex = 44;
+            this.rdbDB.Text = "管理员";
+            this.rdbDB.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.rdbDB);
+            this.panel2.Controls.Add(this.rdbNormal);
+            this.panel2.Location = new System.Drawing.Point(80, 210);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(200, 29);
+            this.panel2.TabIndex = 45;
+            // 
             // FormUser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -301,8 +347,11 @@
             this.Text = "";
             this.Controls.SetChildIndex(this.panel1, 0);
             this.Controls.SetChildIndex(this.panelLoading, 0);
+            this.panelLoading.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -325,6 +374,10 @@
         private UILibrary.SkinTextBox txtRealName;
         private UILibrary.SkinTextBox txtName;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.RadioButton rdbDB;
+        private System.Windows.Forms.RadioButton rdbNormal;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel2;
 
     }
 }

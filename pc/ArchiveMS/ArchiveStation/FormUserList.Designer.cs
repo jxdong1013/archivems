@@ -218,8 +218,8 @@
             this.roletype.HeaderText = "用户类型";
             this.roletype.Name = "roletype";
             this.roletype.ReadOnly = true;
-            this.roletype.Visible = false;
-            this.roletype.Width = 85;
+            this.roletype.Visible = true;
+            this.roletype.Width = 80;
             // 
             // lbledit
             // 

@@ -201,16 +201,16 @@ namespace ArchiveStation
     
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.ColumnIndex < 0 || e.RowIndex < 0) return;
+            //if (e.ColumnIndex < 0 || e.RowIndex < 0) return;
 
-            object obj = dataGridView1.Rows[e.RowIndex].Cells["id"].Value;
-            if (obj == null) return;
-            int id = 0;
-            int.TryParse(obj.ToString(), out id);
-            if (id == 0) return;
+            //object obj = dataGridView1.Rows[e.RowIndex].Cells["id"].Value;
+            //if (obj == null) return;
+            //int id = 0;
+            //int.TryParse(obj.ToString(), out id);
+            //if (id == 0) return;
 
-            FormEditArchive form = new FormEditArchive(id);
-            form.ShowDialog();
+            //FormEditArchive form = new FormEditArchive(id);
+            //form.ShowDialog();
 
         }
 

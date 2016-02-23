@@ -220,6 +220,18 @@ namespace ArchiveStation
                     e.Value = "正常";
                 }
             }
+            else if (dataGridView1.Columns[e.ColumnIndex].Name.ToLower().Trim().Equals("roletype"))
+            {
+                object obj = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                if (obj == null) return;
+
+                String temp = obj.ToString();
+                if ( Bean.Constant.Role_Admin.Equals(temp)) e.Value = "管理员";
+                else if(Bean.Constant.Role_User.EndsWith(temp))
+                {
+                    e.Value = "普通用户";
+                }
+            }
         }
 
         private void txtKey_KeyDown(object sender, KeyEventArgs e)

@@ -25,6 +25,8 @@ namespace ArchiveStation
                 txtRealName.Text = _user.realname;
                 rdbMan.Checked = _user.sex.Equals("男");
                 ckbDisable.Checked = _user.enable == 1 ? false : true;
+                rdbNormal.Checked = _user.roletype.Equals(Bean.Constant.Role_User) ? true : false;
+                rdbDB.Checked = _user.realname.Equals(Bean.Constant.Role_Admin) ? true : false;
             }
         }
 
@@ -59,6 +61,7 @@ namespace ArchiveStation
             _user.phone = phone;
             _user.modifyman = Bean.Variable.User.username;
             _user.modifytime = DateTime.Now;
+            _user.roletype = rdbNormal.Checked ? Bean.Constant.Role_User : Bean.Constant.Role_Admin;
 
             HttpUtilWrapper wrapper = new HttpUtilWrapper();
             Bean.UserResult result;

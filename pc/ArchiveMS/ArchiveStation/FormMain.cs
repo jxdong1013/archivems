@@ -54,6 +54,8 @@ namespace ArchiveStation
                     break;
                 }
 
+                setRole();
+
                 //GetUserRoles();
 
                 //LoadTreeMenu();
@@ -72,6 +74,20 @@ namespace ArchiveStation
             else
             {
                 this.Close();
+            }
+        }
+
+        protected void setRole()
+        {
+            string role = Bean.Variable.User==null? "": Bean.Variable.User.roletype;
+            role = role.Trim();
+            if (Bean.Constant.Role_Admin.Equals(role))
+            {
+                btnUser.Visible = true;
+            }
+            else
+            {
+                btnUser.Visible = false;
             }
         }
 
@@ -103,7 +119,6 @@ namespace ArchiveStation
             myGraphics.Dispose();
         }
 
-    
 
         private void btnExport_Click(object sender, EventArgs e)
         {

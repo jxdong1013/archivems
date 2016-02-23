@@ -37,6 +37,36 @@ namespace ArchiveStation
 
         }
 
+        public BaseBean ChangePwd(string username , string oldpwd, string newpwd)
+        {
+            try
+            {
+                string url = Bean.Variable.RootUrl() + "/UserRestfull/ChangePassword";
+                String data = String.Format("username={0}&oldpwd={1}&newpwd={2}", username , oldpwd, newpwd);
+                String responseContent = "";
+                WebHeaderCollection header = new WebHeaderCollection();
+                HttpUtil util = new HttpUtil();
+                HttpStatusCode statusCode = util.Post(Variable.globelCookieContainer, url, data, "application/x-www-form-urlencoded", "POST", ref  responseContent, ref header);
+                if (statusCode != HttpStatusCode.OK)
+                {
+                    //BaseBean result = new BaseBean();
+                    //result.Code = (int)Constant.ResultCodeEnum.Error;
+                    //result.Message = "返回HTTP代码"+statusCode;
+                    //return result;
+                    return null;
+                }
+
+                BaseBean entity = JsonConvert.DeserializeObject<BaseBean>(responseContent);
+
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                return null;
+            }
+        }
+
         //TODO
         public void DownloadTemplete()
         {
