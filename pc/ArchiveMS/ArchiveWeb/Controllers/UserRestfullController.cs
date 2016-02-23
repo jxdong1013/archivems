@@ -93,7 +93,7 @@ namespace ContractMvcWeb.Controllers
         }
 
         [HttpPost]
-        public JsonResult ChangePassword(string username , string oldpassword, string newpassword)
+        public JsonResult ChangePwd(string username , string oldpassword, string newpassword)
         {
             JsonResult json = new JsonResult();
             Result result =null;

@@ -148,6 +148,27 @@ namespace ArchiveStation
                 if (model == null) return;
                 EditUser(model);
             }
+            else if (dataGridView1.Columns[e.ColumnIndex].Name.ToLower().Trim().Equals("lblresetpwd"))
+            {
+                Bean.UserBean model = dataGridView1.Rows[e.RowIndex].DataBoundItem as Bean.UserBean;
+                if (model == null) return;
+                ResetPassword(model);
+            }
+        }
+
+        protected void ResetPassword(Bean.UserBean model)
+        {
+            DialogResult result = MessageBox.Show("您确定要重置【" + model.username + "】用户的密码吗？", "询问", MessageBoxButtons.OKCancel);
+            if (result != System.Windows.Forms.DialogResult.OK) return;
+            if (backgroundWorker3.IsBusy) return;
+
+            panelLoading.Visible = true;
+            panelLoading.BringToFront();
+            lblLoadingText.Text = "正在重置密码，请稍等......";
+            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
+
+            backgroundWorker3.RunWorkerAsync(model);
+
         }
 
         private void DeleteUser( int userid , String username )
@@ -201,6 +222,10 @@ namespace ArchiveStation
             catch (Exception ex)
             {
                 LogHelper.WriteException(ex);
+                panelLoading.Visible = false;
+            }
+            finally
+            {
                 panelLoading.Visible = false;
             }
         }
@@ -269,6 +294,45 @@ namespace ArchiveStation
             x = (panel2.Width - pageControl1.Width) / 2;
             pageControl1.Location = new Point(x, pageControl1.Location.Y);
 
+        }
+
+        private void backgroundWorker3_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Bean.UserBean model = e.Argument as Bean.UserBean;
+            if (model == null) return;
+
+            HttpUtilWrapper wrapper = new HttpUtilWrapper();
+            Bean.BaseBean result = wrapper.ChangePwd(model.username , model.password, "123456");
+
+            e.Result = result;
+        }
+
+        private void backgroundWorker3_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            try
+            {
+                Bean.BaseBean result = e.Result as Bean.BaseBean;
+                if (result == null)
+                {
+                    panelLoading.Visible = false;
+                    MessageBox.Show("请求失败,请重试！");
+                    return;
+                }
+                if (result.Code == (int)Bean.Constant.ResultCodeEnum.Error)
+                {
+                    panelLoading.Visible = false;
+                    MessageBox.Show(result.Message);
+                    return;
+                }
+
+                String key = txtKey.Text.Trim();
+                RefreshData(0, Bean.Constant.PAGESIZE, key);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                panelLoading.Visible = false;
+            }
         }
     }
 }

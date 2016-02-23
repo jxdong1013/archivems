@@ -28,16 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblAdd = new System.Windows.Forms.LinkLabel();
             this.txtKey = new UILibrary.SkinTextBox();
             this.btnGo = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.pageControl1 = new ArchiveStation.PageControl();
+            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.userid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.username = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.realname = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,12 +51,10 @@
             this.enable = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.roletype = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lbledit = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.lblResetPwd = new System.Windows.Forms.DataGridViewLinkColumn();
             this.lblDelete = new System.Windows.Forms.DataGridViewLinkColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.pageControl1 = new ArchiveStation.PageControl();
-            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.backgroundWorker3 = new System.ComponentModel.BackgroundWorker();
             this.panelLoading.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -128,14 +131,14 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.userid,
@@ -146,6 +149,7 @@
             this.enable,
             this.roletype,
             this.lbledit,
+            this.lblResetPwd,
             this.lblDelete,
             this.Column1});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -159,100 +163,6 @@
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
             this.dataGridView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseDoubleClick);
-            // 
-            // userid
-            // 
-            this.userid.DataPropertyName = "userid";
-            this.userid.HeaderText = "userid";
-            this.userid.Name = "userid";
-            this.userid.ReadOnly = true;
-            this.userid.Visible = false;
-            // 
-            // username
-            // 
-            this.username.DataPropertyName = "username";
-            this.username.HeaderText = "用户名";
-            this.username.Name = "username";
-            this.username.ReadOnly = true;
-            // 
-            // realname
-            // 
-            this.realname.DataPropertyName = "realname";
-            this.realname.HeaderText = "真实姓名";
-            this.realname.Name = "realname";
-            this.realname.ReadOnly = true;
-            this.realname.Width = 150;
-            // 
-            // sex
-            // 
-            this.sex.DataPropertyName = "sex";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.sex.DefaultCellStyle = dataGridViewCellStyle2;
-            this.sex.HeaderText = "性别";
-            this.sex.MinimumWidth = 70;
-            this.sex.Name = "sex";
-            this.sex.ReadOnly = true;
-            this.sex.Width = 80;
-            // 
-            // phone
-            // 
-            this.phone.DataPropertyName = "phone";
-            this.phone.HeaderText = "联系电话";
-            this.phone.Name = "phone";
-            this.phone.ReadOnly = true;
-            this.phone.Width = 180;
-            // 
-            // enable
-            // 
-            this.enable.DataPropertyName = "enable";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.enable.DefaultCellStyle = dataGridViewCellStyle3;
-            this.enable.HeaderText = "状态";
-            this.enable.Name = "enable";
-            this.enable.ReadOnly = true;
-            this.enable.Width = 80;
-            // 
-            // roletype
-            // 
-            this.roletype.DataPropertyName = "roletype";
-            this.roletype.HeaderText = "用户类型";
-            this.roletype.Name = "roletype";
-            this.roletype.ReadOnly = true;
-            this.roletype.Visible = true;
-            this.roletype.Width = 80;
-            // 
-            // lbledit
-            // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.lbledit.DefaultCellStyle = dataGridViewCellStyle4;
-            this.lbledit.HeaderText = "编辑";
-            this.lbledit.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.lbledit.Name = "lbledit";
-            this.lbledit.ReadOnly = true;
-            this.lbledit.Text = "编辑";
-            this.lbledit.ToolTipText = "编辑";
-            this.lbledit.UseColumnTextForLinkValue = true;
-            this.lbledit.Width = 70;
-            // 
-            // lblDelete
-            // 
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.lblDelete.DefaultCellStyle = dataGridViewCellStyle5;
-            this.lblDelete.HeaderText = "删除";
-            this.lblDelete.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.lblDelete.Name = "lblDelete";
-            this.lblDelete.ReadOnly = true;
-            this.lblDelete.Text = "删除";
-            this.lblDelete.ToolTipText = "删除";
-            this.lblDelete.UseColumnTextForLinkValue = true;
-            this.lblDelete.Width = 70;
-            // 
-            // Column1
-            // 
-            this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column1.HeaderText = "";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
             // 
             // backgroundWorker1
             // 
@@ -281,6 +191,119 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(784, 55);
             this.panel2.TabIndex = 15;
+            // 
+            // userid
+            // 
+            this.userid.DataPropertyName = "userid";
+            this.userid.HeaderText = "userid";
+            this.userid.Name = "userid";
+            this.userid.ReadOnly = true;
+            this.userid.Visible = false;
+            // 
+            // username
+            // 
+            this.username.DataPropertyName = "username";
+            this.username.HeaderText = "用户名";
+            this.username.Name = "username";
+            this.username.ReadOnly = true;
+            // 
+            // realname
+            // 
+            this.realname.DataPropertyName = "realname";
+            this.realname.HeaderText = "真实姓名";
+            this.realname.Name = "realname";
+            this.realname.ReadOnly = true;
+            this.realname.Width = 150;
+            // 
+            // sex
+            // 
+            this.sex.DataPropertyName = "sex";
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.sex.DefaultCellStyle = dataGridViewCellStyle14;
+            this.sex.HeaderText = "性别";
+            this.sex.MinimumWidth = 70;
+            this.sex.Name = "sex";
+            this.sex.ReadOnly = true;
+            this.sex.Width = 80;
+            // 
+            // phone
+            // 
+            this.phone.DataPropertyName = "phone";
+            this.phone.HeaderText = "联系电话";
+            this.phone.Name = "phone";
+            this.phone.ReadOnly = true;
+            this.phone.Width = 180;
+            // 
+            // enable
+            // 
+            this.enable.DataPropertyName = "enable";
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.enable.DefaultCellStyle = dataGridViewCellStyle15;
+            this.enable.HeaderText = "状态";
+            this.enable.Name = "enable";
+            this.enable.ReadOnly = true;
+            this.enable.Width = 80;
+            // 
+            // roletype
+            // 
+            this.roletype.DataPropertyName = "roletype";
+            this.roletype.HeaderText = "用户类型";
+            this.roletype.Name = "roletype";
+            this.roletype.ReadOnly = true;
+            this.roletype.Width = 80;
+            // 
+            // lbledit
+            // 
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.lbledit.DefaultCellStyle = dataGridViewCellStyle16;
+            this.lbledit.HeaderText = "编辑";
+            this.lbledit.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.lbledit.Name = "lbledit";
+            this.lbledit.ReadOnly = true;
+            this.lbledit.Text = "编辑";
+            this.lbledit.ToolTipText = "编辑";
+            this.lbledit.UseColumnTextForLinkValue = true;
+            this.lbledit.Width = 70;
+            // 
+            // lblResetPwd
+            // 
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.lblResetPwd.DefaultCellStyle = dataGridViewCellStyle17;
+            this.lblResetPwd.HeaderText = "操作";
+            this.lblResetPwd.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.lblResetPwd.Name = "lblResetPwd";
+            this.lblResetPwd.ReadOnly = true;
+            this.lblResetPwd.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.lblResetPwd.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.lblResetPwd.Text = "重置密码";
+            this.lblResetPwd.ToolTipText = "重置密码";
+            this.lblResetPwd.UseColumnTextForLinkValue = true;
+            this.lblResetPwd.Width = 80;
+            // 
+            // lblDelete
+            // 
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.lblDelete.DefaultCellStyle = dataGridViewCellStyle18;
+            this.lblDelete.HeaderText = "删除";
+            this.lblDelete.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.lblDelete.Name = "lblDelete";
+            this.lblDelete.ReadOnly = true;
+            this.lblDelete.Text = "删除";
+            this.lblDelete.ToolTipText = "删除";
+            this.lblDelete.UseColumnTextForLinkValue = true;
+            this.lblDelete.Width = 70;
+            // 
+            // Column1
+            // 
+            this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column1.HeaderText = "";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // backgroundWorker3
+            // 
+            this.backgroundWorker3.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker3_DoWork);
+            this.backgroundWorker3.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker3_RunWorkerCompleted);
             // 
             // FormUserList
             // 
@@ -318,6 +341,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private PageControl pageControl1;
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
+        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataGridViewTextBoxColumn userid;
         private System.Windows.Forms.DataGridViewTextBoxColumn username;
         private System.Windows.Forms.DataGridViewTextBoxColumn realname;
@@ -326,8 +350,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn enable;
         private System.Windows.Forms.DataGridViewTextBoxColumn roletype;
         private System.Windows.Forms.DataGridViewLinkColumn lbledit;
+        private System.Windows.Forms.DataGridViewLinkColumn lblResetPwd;
         private System.Windows.Forms.DataGridViewLinkColumn lblDelete;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.Panel panel2;
+        private System.ComponentModel.BackgroundWorker backgroundWorker3;
     }
 }

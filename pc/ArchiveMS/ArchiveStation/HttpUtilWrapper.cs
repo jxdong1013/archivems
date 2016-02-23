@@ -41,8 +41,8 @@ namespace ArchiveStation
         {
             try
             {
-                string url = Bean.Variable.RootUrl() + "/UserRestfull/ChangePassword";
-                String data = String.Format("username={0}&oldpwd={1}&newpwd={2}", username , oldpwd, newpwd);
+                string url = Bean.Variable.RootUrl() + "/UserRestfull/ChangePwd";
+                String data = String.Format("username={0}&oldpassword={1}&newpassword={2}", username, oldpwd, newpwd);
                 String responseContent = "";
                 WebHeaderCollection header = new WebHeaderCollection();
                 HttpUtil util = new HttpUtil();
