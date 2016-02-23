@@ -39,10 +39,16 @@ namespace ArchiveStation
                 txtNewPwd2.Focus();
                 return;
             }
-
+            
             if ( newpwd.Equals(newpwd2 )==false)
             {
                 lblInfo.Text = "两次密码输入不一致";
+                txtNewPwd.Focus();
+                return;
+            }
+            if (newpwd.Length < 6)
+            {
+                lblInfo.Text = "密码长度必须6位以上";
                 txtNewPwd.Focus();
                 return;
             }
@@ -50,6 +56,7 @@ namespace ArchiveStation
             if (backgroundWorker1.IsBusy) return;
            
             panelLoading.Visible = true;
+            panelLoading.BringToFront();
             panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
 
 

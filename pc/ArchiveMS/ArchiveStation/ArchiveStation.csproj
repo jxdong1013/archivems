@@ -74,9 +74,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="UILibrary">
-      <HintPath>..\Dll\UILibrary.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bean\ArchiveBean.cs" />
@@ -300,6 +297,10 @@
     <ProjectReference Include="..\SkinForm\SkinForm.csproj">
       <Project>{3ea4b685-f7f7-4592-85c2-67e1d4a70f87}</Project>
       <Name>SkinForm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UILibrary\UILibrary.csproj">
+      <Project>{54f1985f-c70b-401a-9ceb-c18086525506}</Project>
+      <Name>UILibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

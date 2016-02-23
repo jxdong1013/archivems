@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tSSLUser = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslchangepwd = new System.Windows.Forms.ToolStripStatusLabel();
             this.tSSLCopyRight = new System.Windows.Forms.ToolStripStatusLabel();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.splitter1 = new System.Windows.Forms.Splitter();
@@ -61,6 +63,8 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tSSLUser,
+            this.toolStripStatusLabel1,
+            this.tsslchangepwd,
             this.tSSLCopyRight});
             this.statusStrip1.Location = new System.Drawing.Point(3, 525);
             this.statusStrip1.Name = "statusStrip1";
@@ -73,11 +77,27 @@
             this.tSSLUser.Name = "tSSLUser";
             this.tSSLUser.Size = new System.Drawing.Size(0, 17);
             // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(582, 17);
+            this.toolStripStatusLabel1.Spring = true;
+            // 
+            // tsslchangepwd
+            // 
+            this.tsslchangepwd.ForeColor = System.Drawing.Color.Blue;
+            this.tsslchangepwd.IsLink = true;
+            this.tsslchangepwd.Name = "tsslchangepwd";
+            this.tsslchangepwd.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.tsslchangepwd.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.tsslchangepwd.Size = new System.Drawing.Size(65, 17);
+            this.tsslchangepwd.Text = "修改密码";
+            this.tsslchangepwd.Click += new System.EventHandler(this.tsslchangepwd_Click);
+            // 
             // tSSLCopyRight
             // 
             this.tSSLCopyRight.Name = "tSSLCopyRight";
-            this.tSSLCopyRight.Size = new System.Drawing.Size(802, 17);
-            this.tSSLCopyRight.Spring = true;
+            this.tSSLCopyRight.Size = new System.Drawing.Size(155, 17);
             this.tSSLCopyRight.Text = "北京乾坤科美科技有限公司 ";
             this.tSSLCopyRight.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -198,6 +218,7 @@
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.panelLeft);
             this.Controls.Add(this.statusStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.Name = "FormMain";
             this.Radius = 8;
@@ -238,6 +259,8 @@
         private System.Windows.Forms.Button btnFloorLabel;
         private System.Windows.Forms.Button btnUser;
         private System.Windows.Forms.Button btnLabelConfig;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel tsslchangepwd;
     }
 }
 

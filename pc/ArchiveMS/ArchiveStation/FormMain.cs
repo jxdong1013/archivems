@@ -227,5 +227,12 @@ namespace ArchiveStation
             formLabelConfig = null;
         }
 
+        private void tsslchangepwd_Click(object sender, EventArgs e)
+        {
+            FormChangePwd form = new FormChangePwd();
+            form.StartPosition = FormStartPosition.CenterParent;
+            form.ShowDialog();
+        }
+
     }
 }

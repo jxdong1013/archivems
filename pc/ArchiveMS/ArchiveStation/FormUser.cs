@@ -26,7 +26,7 @@ namespace ArchiveStation
                 rdbMan.Checked = _user.sex.Equals("男");
                 ckbDisable.Checked = _user.enable == 1 ? false : true;
                 rdbNormal.Checked = _user.roletype.Equals(Bean.Constant.Role_User) ? true : false;
-                rdbDB.Checked = _user.realname.Equals(Bean.Constant.Role_Admin) ? true : false;
+                rdbDB.Checked = _user.roletype.Equals(Bean.Constant.Role_Admin) ? true : false;
             }
         }
 

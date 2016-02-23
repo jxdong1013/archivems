@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLogin));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnOk = new UILibrary.SkinButtom();
@@ -57,7 +58,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("SimSun", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label1.Location = new System.Drawing.Point(103, 81);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 14);
@@ -67,7 +68,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("SimSun", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.Location = new System.Drawing.Point(103, 27);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 14);
@@ -171,7 +172,7 @@
             this.tcCheckBox1.Checked = true;
             this.tcCheckBox1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.tcCheckBox1.ControlState = UILibrary.ControlState.Normal;
-            this.tcCheckBox1.Font = new System.Drawing.Font("SimSun", 10F);
+            this.tcCheckBox1.Font = new System.Drawing.Font("宋体", 10F);
             this.tcCheckBox1.Location = new System.Drawing.Point(104, 133);
             this.tcCheckBox1.Name = "tcCheckBox1";
             this.tcCheckBox1.Size = new System.Drawing.Size(96, 18);
@@ -360,6 +361,7 @@
             this.ControlBoxOffset = new System.Drawing.Point(2, 1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(480, 280);
             this.MinimumSize = new System.Drawing.Size(480, 280);

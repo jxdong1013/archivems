@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchiveStation", "ArchiveSt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinForm", "SkinForm\SkinForm.csproj", "{3EA4B685-F7F7-4592-85C2-67E1D4A70F87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UILibrary", "UILibrary\UILibrary.csproj", "{54F1985F-C70B-401A-9CEB-C18086525506}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{0E4DF6CE-B608-40EB-9D31-4D0204230235}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,14 @@ Global
 		{3EA4B685-F7F7-4592-85C2-67E1D4A70F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EA4B685-F7F7-4592-85C2-67E1D4A70F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EA4B685-F7F7-4592-85C2-67E1D4A70F87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54F1985F-C70B-401A-9CEB-C18086525506}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54F1985F-C70B-401A-9CEB-C18086525506}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54F1985F-C70B-401A-9CEB-C18086525506}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54F1985F-C70B-401A-9CEB-C18086525506}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E4DF6CE-B608-40EB-9D31-4D0204230235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E4DF6CE-B608-40EB-9D31-4D0204230235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E4DF6CE-B608-40EB-9D31-4D0204230235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E4DF6CE-B608-40EB-9D31-4D0204230235}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

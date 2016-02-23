@@ -205,6 +205,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormChangePwd";
+            this.Radius = 8;
+            this.RoundStyle = SkinForm.RoundStyle.All;
             this.Text = "修改密码";
             this.Controls.SetChildIndex(this.panel1, 0);
             this.Controls.SetChildIndex(this.panelLoading, 0);
