@@ -265,6 +265,7 @@ namespace ArchiveStation
                 Bean.BoxBean bean = dataGridView1.Rows[e.RowIndex].DataBoundItem as Bean.BoxBean;
                 if (bean == null) return;
                 FormList form = new FormList();
+                form.Text = "【"+bean.name+"】盒标签下的档案信息";
                 form.SetBoxRfid(bean.rfid);
                 form.WindowState = FormWindowState.Normal;
                 form.StartPosition = FormStartPosition.CenterParent;
