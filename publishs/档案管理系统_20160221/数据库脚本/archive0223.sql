@@ -141,7 +141,7 @@ CREATE TABLE `t_user` (
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES ('1', 'admin', '123456', 'admin', '女', '137571934761111', '30', 'admin', '2016-01-16 13:16:31', 'admin', '2016-02-21 13:36:46', 'admin11', '1', null);
+INSERT INTO `t_user` VALUES ('1', 'admin', '123456', 'admin', '女', '137571934761111', '30', 'admin', '2016-01-16 13:16:31', 'admin', '2016-02-21 13:36:46', 'admin', '1', null);
 
 -- ----------------------------
 -- View structure for v_archive
