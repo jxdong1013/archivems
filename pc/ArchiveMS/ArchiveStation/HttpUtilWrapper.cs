@@ -169,6 +169,36 @@ namespace ArchiveStation
             }
         }
 
+        public ArchiveResult DeleteArchives(List<int> archiveIds)
+        {
+            try
+            {
+                string url = Bean.Variable.RootUrl() + "/ArchiveRestfull/DeleteArchives";
+
+                String jsonParam = JsonConvert.SerializeObject(archiveIds);
+                String paramstr = String.Format("{{archiveids:{0}}}", jsonParam);
+                HttpUtil util = new HttpUtil();
+                String responseContent = "";
+                WebHeaderCollection header = new WebHeaderCollection();
+
+                HttpStatusCode statusCode = util.Post(Variable.globelCookieContainer,
+                    url, paramstr, "application/json", "POST",
+                    ref responseContent, ref header);
+                if (statusCode != HttpStatusCode.OK)
+                {
+                    return null;
+                }
+                ArchiveResult result = JsonConvert.DeserializeObject<ArchiveResult>(responseContent);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                return null;
+            }
+        }
+
         public FloorResult EditFloorLabel(FloorBean bean)
         {
             try

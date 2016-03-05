@@ -340,11 +340,82 @@ namespace ArchiveStation
             x = x + btnGo.Width + 8;
             btnConfig.Location = new Point(x, txtKey.Location.Y);
 
+            x = x + btnConfig.Width + 8;
+            btnDelete.Location = new Point(x, txtKey.Location.Y);
+
             x = txtKey.Location.X + 8;
             ckbNoPosition.Location = new Point(x, ckbNoPosition.Location.Y);
 
             x = (panel2.Width - pageControl1.Width) / 2;
             pageControl1.Location = new Point(x, pageControl1.Location.Y);
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            List<int> records = GetCheckedRecord();
+            if (records == null || records.Count < 1)
+            {
+                MessageBox.Show("请勾选需要删除的档案记录", "提示信息");
+                return;
+            }
+
+            if (MessageBox.Show("您确定要删除勾选的档案记录吗？", "询问", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.Cancel) return;
+
+            if (backgroundWorker3.IsBusy) return;
+
+            panelLoading.Visible = true;
+            panelLoading.BringToFront();
+            panelLoading.Location = new Point((this.Width / 2 - this.panelLoading.Width / 2), this.Height / 2 - this.panelLoading.Height - 20);
+            lblLoadingText.Text = "正在请求删除档案操作，请稍等...";
+
+            BoxLabelConfig para = new BoxLabelConfig();
+            para.ArchiveIds = records;
+            
+            backgroundWorker3.RunWorkerAsync(para);
+
+        }
+
+        private void backgroundWorker3_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BoxLabelConfig para = e.Argument as BoxLabelConfig;
+            if (para == null) return;
+
+            HttpUtilWrapper wrapper = new HttpUtilWrapper();
+            ArchiveResult result = wrapper.DeleteArchives(para.ArchiveIds);
+            e.Result = result;
+        }
+
+        private void backgroundWorker3_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            try
+            {
+                ArchiveResult result = e.Result as ArchiveResult;
+                if (result == null)
+                {
+                    panelLoading.Visible = false;
+                    MessageBox.Show("请求失败,请重试！");
+                    return;
+                }
+                if (result.Code == (int)Constant.ResultCodeEnum.Error)
+                {
+                    panelLoading.Visible = false;
+                    MessageBox.Show(result.Message);
+                    return;
+                }
+
+                String key = txtKey.Text.Trim();
+                bool showNoposition = ckbNoPosition.Checked;
+                Go(0, pagesize, key, showNoposition);
+
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+            }
+            finally
+            {
+                panelLoading.Visible = false;
+            }
         }
     }
 }

@@ -447,6 +447,7 @@ namespace ContractMvcWeb.Models
         public bool DeleteArchives(List<int> ids)
         {
             string idsstr = string.Empty;
+            if (ids == null || ids.Count < 1) return false;
             foreach(int id in ids )
             {
                 if (string.IsNullOrEmpty(idsstr) == false)
@@ -457,7 +458,7 @@ namespace ContractMvcWeb.Models
             }
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("delete from t_archive where id in( "+ids+" )"  );      
+            strSql.Append("delete from t_archive where id in ( " + idsstr + " )");      
             int count = MySqlHelper.ExecuteSql(strSql.ToString());
             return count > 0 ?true: false;
         }

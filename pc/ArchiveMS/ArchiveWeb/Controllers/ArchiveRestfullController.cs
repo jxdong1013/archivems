@@ -97,5 +97,17 @@ namespace ContractMvcWeb.Controllers
             return File(new FileStream(path + fileName, FileMode.Open), "application/ms-excel", fileName);
         }
 
+        [HttpPost]
+        public JsonResult DeleteArchives(List<int> archiveids)
+        {
+            ContractMvcWeb.Models.ArchiveContext db = new ArchiveContext();
+            bool isok = db.DeleteArchives(archiveids);
+
+            JsonResult jsonResult = new JsonResult();
+            Result result = new Result(isok ? (int)ResultCodeEnum.Success : (int)ResultCodeEnum.Error, isok ? "删除操作成功" : "删除操作失败", null);
+            jsonResult.Data = result;
+            return jsonResult;
+        }
+
     }
 }
