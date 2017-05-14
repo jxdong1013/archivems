@@ -19,7 +19,7 @@ namespace ContractMvcWeb.Models
 
             string where = GetWhere(query);
             string limit = string.Format( " limit {0} , {1}" , pageidx <0 ? 0 : pageidx* pagesize , pagesize );
-            string orderby = "order by operatetime desc , id desc";
+            string orderby = "order by operatetime asc , id asc";
             string sql = string.Format( "select count(1) from v_archive where {0} " , where );
             int totalrecord = 0;
             object obj = MySqlHelper.GetSingle( sql );
@@ -384,7 +384,7 @@ namespace ContractMvcWeb.Models
             foreach (Archive c in list)
             {           
                 idx ++;
-                bool isExist = ExistArchive(c.manager, c.title, c.number);
+                bool isExist = ExistArchive( c.idx , c.manager, c.title, c.number);
                 if (isExist)
                 {
                     //bool isSuccess = EditContractByProjectNumAndSeq(c); // EditContractByProjectNumAndProjectName(c);
@@ -412,17 +412,16 @@ namespace ContractMvcWeb.Models
         }
 
         
-        public bool ExistArchive(string  manger , string title , String number)
+        public bool ExistArchive( string idx , string  manger , string title , String number)
         {
-            string sql = string.Format(" select count(1) from t_archive where manager='{0}' and title ='{1}' and number='{2}'", manger ,  title , number);
+            string sql = string.Format(" select count(1) from t_archive where idx='{0}'and manager='{1}' and title ='{2}' and number='{3}'", idx , manger ,  title , number);
             object obj = MySqlHelper.GetSingle(sql);
             if (obj == null) return false;
             int count = 0;
             int.TryParse(obj.ToString(), out count);
             return count > 0 ? true : false;
         }
-
-       
+              
 
   
         public bool ExistContract(int  id)

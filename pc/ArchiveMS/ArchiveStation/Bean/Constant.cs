@@ -8,7 +8,7 @@ namespace ArchiveStation.Bean
     {
         public const string KEY = "JINXINAGDONG";
 
-        public const int PAGESIZE = 30;
+        public const int PAGESIZE = 80;
 
         public const string Role_User = "user";
         public const string Role_Admin = "admin";
