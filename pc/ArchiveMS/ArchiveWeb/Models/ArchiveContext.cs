@@ -370,7 +370,8 @@ namespace ContractMvcWeb.Models
 
             if (list == null || list.Count < 1) return result;
 
-            if (CheckData(list , out result ) == false) return result;
+
+            if (CheckData(list, startLine, out result) == false) return result;
 
             result = new BatchImportResult();
             result.TotalCount = list.Count;               
@@ -469,7 +470,7 @@ namespace ContractMvcWeb.Models
             return true;
         }
 
-        protected bool CheckData(List<Archive> list , out BatchImportResult result )
+        protected bool CheckData(List<Archive> list , int startLineIndex , out BatchImportResult result )
         {
             result = new BatchImportResult();
             if (list == null) return true;
@@ -505,7 +506,7 @@ namespace ContractMvcWeb.Models
 
                 if ( msg !="")
                 {
-                    result.ErrorList.Add(new BatchImportResult.ExcelErrorLine((i + 2).ToString(), msg ));
+                    result.ErrorList.Add(new BatchImportResult.ExcelErrorLine(( startLineIndex + i +1 ).ToString(), msg ));
                 }
             }
             return isok;
