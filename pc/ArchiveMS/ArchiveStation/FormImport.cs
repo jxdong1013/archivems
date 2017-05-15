@@ -42,7 +42,7 @@ namespace ArchiveStation
                 backgroundWorker1.ReportProgress(percent);
 
                 temp.Clear();
-                for (int k = i * pagecount; k < list.Count; k++)
+                for (int k = i * pagecount; (k< (i+1)*pagecount && k < list.Count); k++)
                 {
                     temp.Add(list[k]);
                 }
