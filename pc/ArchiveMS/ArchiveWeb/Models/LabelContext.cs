@@ -391,6 +391,10 @@ namespace ContractMvcWeb.Models
             {
                 model.floorname = row["floorname"].ToString();
             }
+            if (row.Table.Columns.Contains("count"))
+            {
+                model.count = Convert.ToInt32( row["count"]);
+            }
 
             return model;
         }
@@ -650,7 +654,10 @@ namespace ContractMvcWeb.Models
 
         public List<BoxLabel> GetBoxListOfFloorRFId(string floorrfid)
         {
-            string sql = string.Format( "select b.id , b.number , b.rfid , b.name from t_position a INNER JOIN t_boxlabel b on a.boxrfid = b.rfid where a.floorrfid='{0}'", floorrfid);
+            //string sql = string.Format( "select b.id , b.number , b.rfid , b.name from t_position a INNER JOIN t_boxlabel b on a.boxrfid = b.rfid where a.floorrfid='{0}'", floorrfid);
+            string sql = string.Format("select b.id , b.number , b.rfid , b.name ,  (select count(1) from t_archive where t_archive.boxid = b.id) as count  from t_position a INNER JOIN t_boxlabel b on a.boxrfid = b.rfid where a.floorrfid='{0}'", floorrfid);
+
+
             DataSet ds = MySqlHelper.Query(sql);
             if (ds != null && ds.Tables[0].Rows.Count > 0)
             {

@@ -236,6 +236,7 @@ public class LocationFragment extends BaseFragment implements View.OnClickListen
         RequestParams params = new RequestParams();
         params.add("floorrfid", floor.getRfid() );
         params.add("boxrfids",boxids);
+        params.add("isadd","true");
         AsyncHttpUtil.get( Constant.UPLOAD_BOX_URL , params , gsonResponseHandler );
     }
 
