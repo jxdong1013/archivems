@@ -8,6 +8,10 @@ public class BoxBean {
     private String rfid;
     private String name ;
     private String number;
+    /***
+     * 盒标签有多少个档案
+     */
+    private int count;
 
     public int getId() {
         return id;
@@ -39,5 +43,13 @@ public class BoxBean {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

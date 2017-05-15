@@ -28,10 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.ckbNoPosition = new System.Windows.Forms.CheckBox();
             this.btnConfig = new System.Windows.Forms.Button();
             this.txtKey = new UILibrary.SkinTextBox();
@@ -51,6 +52,7 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.backgroundWorker3 = new System.ComponentModel.BackgroundWorker();
             this.panelLoading.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -59,6 +61,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnDelete);
             this.panel1.Controls.Add(this.ckbNoPosition);
             this.panel1.Controls.Add(this.btnConfig);
             this.panel1.Controls.Add(this.txtKey);
@@ -68,6 +71,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(764, 70);
             this.panel1.TabIndex = 11;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(660, 13);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 28);
+            this.btnDelete.TabIndex = 6;
+            this.btnDelete.Text = "删除档案";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // ckbNoPosition
             // 
@@ -84,7 +97,7 @@
             // 
             // btnConfig
             // 
-            this.btnConfig.Location = new System.Drawing.Point(568, 12);
+            this.btnConfig.Location = new System.Drawing.Point(568, 13);
             this.btnConfig.Name = "btnConfig";
             this.btnConfig.Size = new System.Drawing.Size(75, 28);
             this.btnConfig.TabIndex = 0;
@@ -103,7 +116,7 @@
             this.txtKey.IsSystemPasswordChar = false;
             this.txtKey.LeftIcon = null;
             this.txtKey.Lines = new string[0];
-            this.txtKey.Location = new System.Drawing.Point(55, 12);
+            this.txtKey.Location = new System.Drawing.Point(55, 13);
             this.txtKey.Margin = new System.Windows.Forms.Padding(0);
             this.txtKey.MaxLength = 32767;
             this.txtKey.MinimumSize = new System.Drawing.Size(0, 28);
@@ -124,7 +137,7 @@
             // 
             // btnGo
             // 
-            this.btnGo.Location = new System.Drawing.Point(476, 12);
+            this.btnGo.Location = new System.Drawing.Point(476, 13);
             this.btnGo.Name = "btnGo";
             this.btnGo.Size = new System.Drawing.Size(75, 28);
             this.btnGo.TabIndex = 4;
@@ -161,18 +174,18 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView1.ColumnHeadersHeight = 28;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ckbSelect,
@@ -245,8 +258,8 @@
             // position
             // 
             this.position.DataPropertyName = "position";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.position.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.position.DefaultCellStyle = dataGridViewCellStyle6;
             this.position.HeaderText = "位置信息";
             this.position.Name = "position";
             this.position.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -281,6 +294,11 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(764, 55);
             this.panel2.TabIndex = 15;
+            // 
+            // backgroundWorker3
+            // 
+            this.backgroundWorker3.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker3_DoWork);
+            this.backgroundWorker3.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker3_RunWorkerCompleted);
             // 
             // FormLabelConfig
             // 
@@ -335,5 +353,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn position;
         private System.Windows.Forms.DataGridViewTextBoxColumn remark;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button btnDelete;
+        private System.ComponentModel.BackgroundWorker backgroundWorker3;
     }
 }

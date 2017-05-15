@@ -37,6 +37,8 @@ public class ScanAdapter extends BGARecyclerViewAdapter<ScanBean> {
         bgaViewHolderHelper.setText( R.id.scan_item_name , scanBean.getName() );
         bgaViewHolderHelper.setText(R.id.scan_item_rfid, scanBean.getRfid());
 
+        bgaViewHolderHelper.setText(R.id.scan_item_count, "共" + String.valueOf( scanBean.getCount())+"个档案");
+
         RadioGroup radioGroup = bgaViewHolderHelper.getView(R.id.scan_item_group);
         radioGroup.clearCheck();
         //bgaViewHolderHelper.setChecked(R.id.scan_item_normal,false);
