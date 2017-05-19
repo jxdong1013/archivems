@@ -17,6 +17,9 @@ namespace ArchiveStation
         FormBoxList formBoxList = null;
         FormImport formImport = null;
         FormLabelConfig formLabelConfig = null;
+        FormBorrow formBorrow = null;
+        FormReturn formReturn = null;
+        FormBorrowBackList formBorrowBackList = null;
 
         public FormMain()
         {
@@ -83,10 +86,14 @@ namespace ArchiveStation
             role = role.Trim();
             if (Bean.Constant.Role_Admin.Equals(role))
             {
+                btnBorrow.Visible = true;
+                btnReturn.Visible = true;
                 btnUser.Visible = true;
             }
             else
             {
+                btnBorrow.Visible = false;
+                btnReturn.Visible = false;                    
                 btnUser.Visible = false;
             }
         }
@@ -232,6 +239,60 @@ namespace ArchiveStation
             FormChangePwd form = new FormChangePwd();
             form.StartPosition = FormStartPosition.CenterParent;
             form.ShowDialog();
+        }
+
+        private void btnBorrow_Click(object sender, EventArgs e)
+        {
+            if (formBorrow == null)
+            {
+                formBorrow = new FormBorrow();
+                formBorrow.FormClosed += formBorrow_FormClosed;
+                formBorrow.MdiParent = this;
+            }
+            formBorrow.WindowState = FormWindowState.Maximized;
+            formBorrow.Show();
+            formBorrow.BringToFront();
+        }
+
+        void formBorrow_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            formBorrow = null;
+        }
+
+        private void btnReturn_Click(object sender, EventArgs e)
+        {
+            if ( formReturn == null)
+            {
+                formReturn = new FormReturn();
+                formReturn.FormClosed += formReturn_FormClosed;
+                formReturn.MdiParent = this;
+            }
+            formReturn.WindowState = FormWindowState.Maximized;
+            formReturn.Show();
+            formReturn.BringToFront();
+        }
+
+        void formReturn_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            formReturn=null;
+        }
+
+        private void btnBorrowLog_Click(object sender, EventArgs e)
+        {
+            if (formBorrowBackList == null)
+            {
+                formBorrowBackList = new FormBorrowBackList();
+                formBorrowBackList.FormClosed += formBorrowBackList_FormClosed;
+                formBorrowBackList.MdiParent = this;
+            }
+            formBorrowBackList.WindowState = FormWindowState.Maximized;
+            formBorrowBackList.Show();
+            formBorrowBackList.BringToFront();
+        }
+
+        void formBorrowBackList_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            formBorrowBackList = null;
         }
 
     }

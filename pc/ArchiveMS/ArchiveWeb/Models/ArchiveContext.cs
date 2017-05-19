@@ -45,7 +45,7 @@ namespace ContractMvcWeb.Models
             return page;
         }
 
-        protected Archive DataRowToArchive(DataRow row)
+        public static Archive DataRowToArchive(DataRow row)
         {
             Archive model = new Archive();
             if (row["id"].ToString() != "")
@@ -57,15 +57,22 @@ namespace ContractMvcWeb.Models
             model.title = row["title"].ToString();
             model.pages = row["pages"].ToString();
             model.number = row["number"].ToString();
-            model.remark = row["remark"].ToString(); 
-            model.operateman = row["operateman"].ToString();
-            model.operatetime = DateTime.Parse(row["operatetime"].ToString());
-
+            if (row.Table.Columns.Contains("remark"))
+            {
+                model.remark = row["remark"].ToString();
+            }
+            if (row.Table.Columns.Contains("operateman"))
+            {
+                model.operateman = row["operateman"].ToString();
+            }
+            if (row.Table.Columns.Contains("operatetime"))
+            {
+                model.operatetime = DateTime.Parse(row["operatetime"].ToString());
+            }
             if (row.Table.Columns.Contains("position"))
             {
                 model.position = row["position"].ToString();
             }
-
             if (row.Table.Columns.Contains("floorrfid"))
             {
                 model.floorrfid = row["floorrfid"].ToString();
@@ -73,6 +80,18 @@ namespace ContractMvcWeb.Models
             if (row.Table.Columns.Contains("boxrfid"))
             {
                 model.boxrfid = row["boxrfid"].ToString();
+            }
+            if (row.Table.Columns.Contains("boxnumber"))
+            {
+                model.boxnumber = row["boxnumber"].ToString();
+            }
+            if (row.Table.Columns.Contains("status"))
+            {
+                model.status = Convert.ToInt32( row["status"].ToString());
+            }
+            if (row.Table.Columns.Contains("statusname"))
+            {
+                model.statusname = row["statusname"].ToString();
             }
 
             return model;
@@ -363,6 +382,17 @@ namespace ContractMvcWeb.Models
             Archive model = DataRowToArchive(row);
             return model;
         }
+
+        public Archive GetModelEx(int id)
+        {
+            string sql = "select * from v_archive where id=" + id;
+            DataSet ds = MySqlHelper.Query(sql);
+            if (ds == null || ds.Tables.Count < 1 || ds.Tables[0].Rows.Count < 1) return null;
+            DataRow row = ds.Tables[0].Rows[0];
+            Archive model = DataRowToArchive(row);
+            return model;
+        }
+
 
         public Beans.BatchImportResult BatchAddArchives(List<Archive> list , int startLine , string operatorName )
         {

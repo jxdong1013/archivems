@@ -11,13 +11,25 @@
         <TextView
             android:text=""
             android:hint="请扫描层架标签"
+            android:maxLength="20"
+            android:ellipsize="end"
             android:textColor="@color/blue"
             android:padding="5dp"
             android:textSize="16sp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_centerVertical="true"
             android:layout_height="wrap_content"
             android:id="@+id/scan_floor" />
+        <TextView
+            android:id="@+id/scan_boxcount"
+            android:layout_toRightOf="@id/scan_floor"
+            android:padding="5dp"
+            android:textSize="16sp"
+            android:text="20个档案盒"
+            android:textColor="@color/main_header_bg"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </RelativeLayout>
     <TextView
         android:id="@+id/scan_line1"

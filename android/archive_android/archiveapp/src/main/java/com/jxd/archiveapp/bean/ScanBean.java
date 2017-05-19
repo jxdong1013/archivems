@@ -5,6 +5,10 @@ package com.jxd.archiveapp.bean;
  */
 public class ScanBean extends BoxBean {
     private String status;
+     /***
+     *  借出时间
+     */
+    private String borrowDate;
 
     public String getStatus() {
         return status;
@@ -13,4 +17,13 @@ public class ScanBean extends BoxBean {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getBorrowDate() {
+        return borrowDate;
+    }
+
+    public void setBorrowDate(String borrowDate) {
+        this.borrowDate = borrowDate;
+    }
+
 }

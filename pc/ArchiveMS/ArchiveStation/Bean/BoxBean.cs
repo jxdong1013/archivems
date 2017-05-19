@@ -13,6 +13,12 @@ namespace ArchiveStation.Bean
 
         public string floorrfid { get; set; }
         public string floorname { get; set; }
+
+        public int status { get; set; }
+
+        public string statusname { get; set; }
+
+        public int count { get; set; }
     }
     public class BoxResult : BaseBean
     {

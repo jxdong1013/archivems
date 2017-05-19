@@ -61,6 +61,7 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
     //-----------------------------------------------------------
     RecyclerView recyclerViewScanBox;
     TextView tvScanFloor;
+    TextView tvScanBoxCount;
     Handler handler;
     ScanAdapter scanAdapter;
     GsonResponseHandler<InventoryLabelInfoResult > inventoryLabelResponeseHandler;
@@ -202,6 +203,7 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
 
     private void setScanData( InventoryLabelInfoBean bean ){
         tvScanFloor.setText(bean.getName());
+        tvScanBoxCount.setText( String.valueOf( bean.getBoxCount() )+"个档案盒");
         tvScanFloor.setTag(bean);
         if( scanAdapter == null ){
             scanAdapter=new ScanAdapter(recyclerViewScanBox);
@@ -415,6 +417,8 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
         manager = new LinearLayoutManager(this.getActivity());
         recyclerViewScanBox.setLayoutManager(manager);
         tvScanFloor = getViewById(R.id.scan_floor);
+        tvScanBoxCount = getViewById(R.id.scan_boxcount);
+
         inventoryLabelResponeseHandler =new GsonResponseHandler<>(getContext(),handler, InventoryLabelInfoResult.class);
 
         uploadInventoryResponseHandler = new GsonResponseHandler<>(getContext(),handler, BaseBean.class);

@@ -50,6 +50,10 @@
     <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FastReport, Version=2014.2.3.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program Files (x86)\FastReports\FastReport.Net Demo\FastReport.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\Dll\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -78,15 +82,38 @@
   <ItemGroup>
     <Compile Include="Bean\ArchiveBean.cs" />
     <Compile Include="Bean\BaseBean.cs" />
+    <Compile Include="Bean\BorrowBean.cs" />
+    <Compile Include="Bean\BorrowerBean.cs" />
+    <Compile Include="Bean\BorrowLogBean.cs" />
+    <Compile Include="Bean\BorrowParameter.cs" />
     <Compile Include="Bean\BoxBean.cs" />
     <Compile Include="Bean\Constant.cs" />
     <Compile Include="Bean\FloorBean.cs" />
     <Compile Include="Bean\ImportResult.cs" />
     <Compile Include="Bean\Page.cs" />
+    <Compile Include="Bean\PrintBorrowBean.cs" />
     <Compile Include="Bean\UserBean.cs" />
     <Compile Include="Bean\Variable.cs" />
     <Compile Include="DesEncryptUtil.cs" />
     <Compile Include="ExcelUtils.cs" />
+    <Compile Include="FormBorrow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBorrow.Designer.cs">
+      <DependentUpon>FormBorrow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormBorrowBackList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBorrowBackList.Designer.cs">
+      <DependentUpon>FormBorrowBackList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormBorrowerList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBorrowerList.Designer.cs">
+      <DependentUpon>FormBorrowerList.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormBoxList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,6 +186,24 @@
     <Compile Include="FormPosition.Designer.cs">
       <DependentUpon>FormPosition.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormPreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPreview.Designer.cs">
+      <DependentUpon>FormPreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormQuery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormQuery.Designer.cs">
+      <DependentUpon>FormQuery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormReturn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReturn.Designer.cs">
+      <DependentUpon>FormReturn.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormTest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -187,6 +232,7 @@
     <Compile Include="PageControl.Designer.cs">
       <DependentUpon>PageControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="PrintManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reader.cs" />
@@ -200,6 +246,15 @@
     </Compile>
     <EmbeddedResource Include="FormBase.resx">
       <DependentUpon>FormBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormBorrow.resx">
+      <DependentUpon>FormBorrow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormBorrowBackList.resx">
+      <DependentUpon>FormBorrowBackList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormBorrowerList.resx">
+      <DependentUpon>FormBorrowerList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormBoxList.resx">
       <DependentUpon>FormBoxList.cs</DependentUpon>
@@ -234,6 +289,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormPosition.resx">
       <DependentUpon>FormPosition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPreview.resx">
+      <DependentUpon>FormPreview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormQuery.resx">
+      <DependentUpon>FormQuery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormReturn.resx">
+      <DependentUpon>FormReturn.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormTest.resx">
       <DependentUpon>FormTest.cs</DependentUpon>
@@ -272,6 +336,7 @@
     <None Include="Templete\templete.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Templete\借阅单.frx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\bg.jpg" />

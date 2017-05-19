@@ -395,6 +395,36 @@ namespace ContractMvcWeb.Models
             {
                 model.count = Convert.ToInt32( row["count"]);
             }
+            if (row.Table.Columns.Contains("status"))
+            {
+                model.status = Convert.ToInt32(row["status"]);
+            }
+            if (row.Table.Columns.Contains("statusname"))
+            {
+                model.statusname = row["statusname"].ToString();
+            }
+            //if (row.Table.Columns.Contains("borrowerid"))
+            //{
+            //    model.borrowerid = Convert.ToInt32(row["borrowerid"]);
+            //}
+            //if (row.Table.Columns.Contains("lastborrowtime"))
+            //{
+            //    DateTime temp;
+            //    if(DateTime.TryParse( row["lastborrowtime"].ToString() , out temp)){
+            //        model.lastborrowtime = temp;
+            //    }
+            //}
+            //if (row.Table.Columns.Contains("lastbacktime"))
+            //{
+            //    DateTime temp;
+            //    if(DateTime.TryParse( row["lastbacktime"].ToString() , out temp)){
+            //        model.lastbacktime = temp;
+            //    }
+            //}
+            // if (row.Table.Columns.Contains("borrowid"))
+            //{
+            //    model.borrowid = Convert.ToInt32(row["borrowid"]);
+            //}
 
             return model;
         }
@@ -712,6 +742,63 @@ namespace ContractMvcWeb.Models
             return true;
 
         }
-    
+
+
+        //public BoxLabel GetArchiveBoxInfoByRFID(string rfid)
+        //{
+        //    string sql = string.Format("select * ,  (case status when 0 then '在库' when 1 then '借出' else '未知' end) as statusname  , (select count(1) from t_archive where boxid=t_boxlabel.id) count  from t_boxlabel where rfid='{0}'", rfid);
+        //    BoxLabel model = null;
+        //    DataSet ds = MySqlHelper.Query(sql);
+        //    if (ds != null && ds.Tables[0].Rows.Count > 0)
+        //    {
+        //        int count = ds.Tables[0].Rows.Count;
+        //        DataRow row = ds.Tables[0].Rows[0];
+        //        model = DataRowToBoxLabel(row);
+        //    }
+        //    return model;
+        //}
+
+
+        public BoxLabel GetBoxModelByBoxId(int boxid)
+        {
+            string sql = string.Format("select * from t_boxlabel where id=@id");
+            MySqlParameter[] parameter ={
+                                           new MySqlParameter("@id", boxid)
+                                       };
+            DataSet ds = MySqlHelper.Query(sql, parameter);
+            BoxLabel model = null;
+             if (ds != null && ds.Tables[0].Rows.Count > 0)
+             {
+                 int count = ds.Tables[0].Rows.Count;
+                 DataRow row = ds.Tables[0].Rows[0];
+                 model = DataRowToBoxLabel(row);
+             }
+             return model;
+        }
+
+
+        public List<Beans.Archive> GetArchiveListOfBox(string boxrfid , int status )
+        {
+            string sql = string.Format("select * from v_archive where boxrfid = @boxrfid and status=@status");
+
+            MySqlParameter[] parameter ={
+                                           new MySqlParameter("@boxrfid", boxrfid),
+                                           new MySqlParameter("@status",status),
+                                       };
+            DataSet ds = MySqlHelper.Query(sql, parameter);
+            List<Archive> list=new List<Archive>();
+            if (ds != null && ds.Tables[0].Rows.Count > 0)
+            {
+                int count = ds.Tables[0].Rows.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    DataRow row = ds.Tables[0].Rows[i];
+                    Archive model = ArchiveContext.DataRowToArchive(row);
+                    list.Add(model);
+                }
+            }
+            return list;
+        }
+
     }
 }

@@ -19,6 +19,11 @@ namespace ArchiveStation.Bean
             Success = 1
         }
 
+        public enum ArchiveStatusEnum
+        {
+            在库=0,
+            借出=1,
+        }
 
     }
 }
