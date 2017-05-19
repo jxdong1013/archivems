@@ -43,12 +43,12 @@
             this.title = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.manager = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.boxnumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.statusname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.borrowname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.idcard = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.boxnumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.department = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.createtime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.statusname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.position = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.boxname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rfid = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -111,9 +111,9 @@
             // 
             this.panel2.Controls.Add(this.pageControl1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(3, 460);
+            this.panel2.Location = new System.Drawing.Point(3, 465);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1003, 55);
+            this.panel2.Size = new System.Drawing.Size(1003, 50);
             this.panel2.TabIndex = 12;
             // 
             // pageControl1
@@ -150,12 +150,12 @@
             this.title,
             this.number,
             this.manager,
-            this.boxnumber,
+            this.statusname,
             this.borrowname,
             this.idcard,
+            this.boxnumber,
             this.department,
             this.createtime,
-            this.statusname,
             this.position,
             this.boxname,
             this.rfid});
@@ -164,7 +164,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.ShowCellErrors = false;
-            this.dataGridView1.Size = new System.Drawing.Size(1003, 330);
+            this.dataGridView1.Size = new System.Drawing.Size(1003, 335);
             this.dataGridView1.TabIndex = 13;
             // 
             // boxid
@@ -195,12 +195,14 @@
             this.manager.HeaderText = "负责人";
             this.manager.Name = "manager";
             // 
-            // boxnumber
+            // statusname
             // 
-            this.boxnumber.DataPropertyName = "boxnumber";
-            this.boxnumber.HeaderText = "盒编号";
-            this.boxnumber.Name = "boxnumber";
-            this.boxnumber.Width = 150;
+            this.statusname.DataPropertyName = "statusname";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.statusname.DefaultCellStyle = dataGridViewCellStyle3;
+            this.statusname.HeaderText = "状态";
+            this.statusname.Name = "statusname";
+            this.statusname.Width = 70;
             // 
             // borrowname
             // 
@@ -216,37 +218,36 @@
             this.idcard.Name = "idcard";
             this.idcard.Width = 130;
             // 
+            // boxnumber
+            // 
+            this.boxnumber.DataPropertyName = "boxnumber";
+            this.boxnumber.HeaderText = "盒编号";
+            this.boxnumber.Name = "boxnumber";
+            this.boxnumber.Width = 150;
+            // 
             // department
             // 
             this.department.DataPropertyName = "department";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.department.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.department.DefaultCellStyle = dataGridViewCellStyle4;
             this.department.HeaderText = "部门";
             this.department.Name = "department";
             // 
             // createtime
             // 
             this.createtime.DataPropertyName = "createtime";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.createtime.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.createtime.DefaultCellStyle = dataGridViewCellStyle5;
             this.createtime.HeaderText = "时间";
             this.createtime.Name = "createtime";
             this.createtime.Width = 120;
-            // 
-            // statusname
-            // 
-            this.statusname.DataPropertyName = "statusname";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.statusname.DefaultCellStyle = dataGridViewCellStyle5;
-            this.statusname.HeaderText = "状态";
-            this.statusname.Name = "statusname";
-            this.statusname.Width = 80;
             // 
             // position
             // 
             this.position.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.position.DataPropertyName = "position";
             this.position.HeaderText = "位置";
+            this.position.MinimumWidth = 100;
             this.position.Name = "position";
             // 
             // boxname
@@ -306,12 +307,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn title;
         private System.Windows.Forms.DataGridViewTextBoxColumn number;
         private System.Windows.Forms.DataGridViewTextBoxColumn manager;
-        private System.Windows.Forms.DataGridViewTextBoxColumn boxnumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn statusname;
         private System.Windows.Forms.DataGridViewTextBoxColumn borrowname;
         private System.Windows.Forms.DataGridViewTextBoxColumn idcard;
+        private System.Windows.Forms.DataGridViewTextBoxColumn boxnumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn department;
         private System.Windows.Forms.DataGridViewTextBoxColumn createtime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn statusname;
         private System.Windows.Forms.DataGridViewTextBoxColumn position;
         private System.Windows.Forms.DataGridViewTextBoxColumn boxname;
         private System.Windows.Forms.DataGridViewTextBoxColumn rfid;

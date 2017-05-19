@@ -145,44 +145,57 @@ namespace ContractMvcWeb.Models
 
         private string GetWhere(BorrowLogBean parameter)
         {
-            string wherestr = " 1=1 ";
+            string wherestr = "";
             if (parameter != null)
             {
                 if (!string.IsNullOrEmpty(parameter.boxnumber))
                 {
-                    wherestr += string.Format(" and boxnumber like '%{0}%' ", parameter.boxnumber);
+                    if (string.IsNullOrEmpty(wherestr) == false) wherestr += " or ";
+                    wherestr += string.Format(" boxnumber like '%{0}%' ", parameter.boxnumber);
                 }
                 if (!string.IsNullOrEmpty(parameter.floornumber))
                 {
-                    wherestr += string.Format(" and floornumber like '%{0}%'", parameter.floornumber);
+                    if (string.IsNullOrEmpty(wherestr) == false) wherestr += " or ";
+                    wherestr += string.Format(" floornumber like '%{0}%'", parameter.floornumber);
                 }
                 if (!string.IsNullOrEmpty(parameter.borrowername))
                 {
-                    wherestr += string.Format(" and borrowername like '%{0}%'", parameter.borrowername);
+                    if (string.IsNullOrEmpty(wherestr) == false) wherestr += " or ";
+                    wherestr += string.Format(" borrowername like '%{0}%'", parameter.borrowername);
                 }
                 if (!string.IsNullOrEmpty(parameter.idcard))
                 {
-                    wherestr += string.Format(" and idcard like '%{0}%'", parameter.idcard);
+                    if (string.IsNullOrEmpty(wherestr) == false) wherestr += " or ";
+                    wherestr += string.Format(" idcard like '%{0}%'", parameter.idcard);
                 }
                 if (!string.IsNullOrEmpty(parameter.department))
                 {
-                    wherestr += string.Format(" and department like '%{0}%'", parameter.department);
+                    if (string.IsNullOrEmpty(wherestr) == false) wherestr += " or ";
+                    wherestr += string.Format(" department like '%{0}%'", parameter.department);
                 }
                 if (!string.IsNullOrEmpty(parameter.title))
                 {
-                    wherestr += string.Format(" and title like '%{0}%'", parameter.title);
+                    if (string.IsNullOrEmpty(wherestr) == false) wherestr += " or ";
+                    wherestr += string.Format(" title like '%{0}%'", parameter.title);
                 }
                 if (!string.IsNullOrEmpty(parameter.number))
                 {
-                    wherestr += string.Format(" and number like '%{0}%'", parameter.number);
+                    if (string.IsNullOrEmpty(wherestr) == false) wherestr += " or ";
+                    wherestr += string.Format(" number like '%{0}%'", parameter.number);
                 }
                 if (!string.IsNullOrEmpty(parameter.manager))
                 {
-                    wherestr += string.Format(" and manager like '%{0}%'", parameter.manager);
+                    if (string.IsNullOrEmpty(wherestr) == false) wherestr += " or ";
+                    wherestr += string.Format(" manager like '%{0}%'", parameter.manager);
                 }
                 if (parameter.status >= 0)
                 {
-                    wherestr += string.Format(" and status = {0}", parameter.status);
+                    //wherestr += string.Format(" or status = {0}", parameter.status);
+                }
+
+                if( string.IsNullOrEmpty(wherestr))
+                {
+                    wherestr = " 1=1 ";
                 }
 
             }
