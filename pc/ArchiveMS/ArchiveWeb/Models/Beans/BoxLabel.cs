@@ -26,4 +26,18 @@ namespace ContractMvcWeb.Models.Beans
     
  
     }
+
+
+    [Serializable]
+    public class InventoryBoxLabel : BoxLabel
+    {
+        public DateTime borrowDate { get; set; }
+        public int inventoryStatus { get; set; }
+
+        public string borrowDateString
+        {
+            get { return borrowDate.ToString("yyyy-MM-dd HH:mm:ss"); }
+        }
+    }
+
 }

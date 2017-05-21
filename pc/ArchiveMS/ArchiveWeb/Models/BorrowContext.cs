@@ -11,14 +11,14 @@ namespace ContractMvcWeb.Models
 {
     public class BorrowContext
     {
-        public void  Borrow(List<string> archiveIdList , int borrowerid , string operatename , int operateid )
+        public void  Borrow(List<string> archiveIdList , int borrowerid , string operatename , int operateid , DateTime borrowDate)
         {
             foreach (string aid in archiveIdList)
             {
                 Borrow b = new Beans.Borrow();
                 b.borrowerid = borrowerid;
                 b.archiveid = Convert.ToInt32( aid );
-                b.createtime = DateTime.Now;
+                b.createtime = borrowDate;
                 b.operatorid = operateid;
                 b.operatorname = operatename;
                 b.status = (int)Constant.ArchiveStatusEnum.借出;
@@ -26,19 +26,20 @@ namespace ContractMvcWeb.Models
                 int borrowid = AddBorrowLog(b);
                 b.borrowid = borrowid;
 
-                int count = UpdateArchiveBorrowStatus(b.archiveid , borrowerid, (int)Constant.ArchiveStatusEnum.借出 , borrowid );
+                int count = UpdateArchiveBorrowStatus(b.archiveid , borrowerid, (int)Constant.ArchiveStatusEnum.借出 , borrowid , borrowDate );
             }
         }
 
 
         public void Return(List<string> archiveList,  string operatename, int operateid)
         {
+            DateTime returnDate = DateTime.Now;
             for (int i = 0; i < archiveList.Count; i++)
             {
                 Borrow b = new Beans.Borrow();
                 b.borrowerid = 0;//returner[i];
                 b.archiveid = Convert.ToInt32(archiveList[i]);
-                b.createtime = DateTime.Now;
+                b.createtime = returnDate;
                 b.operatorid = operateid;
                 b.operatorname = operatename;
                 b.status = (int)Constant.ArchiveStatusEnum.在库;
@@ -46,7 +47,7 @@ namespace ContractMvcWeb.Models
                 int borrowid = AddBorrowLog(b);
                 b.borrowid = borrowid;
 
-                int count = UpdateArchiveReturnStatus(b.archiveid , (int)Constant.ArchiveStatusEnum.在库 );
+                int count = UpdateArchiveReturnStatus(b.archiveid , (int)Constant.ArchiveStatusEnum.在库 , returnDate );
             }
         }
         
@@ -77,32 +78,36 @@ namespace ContractMvcWeb.Models
          
         }
 
-        public int UpdateArchiveBorrowStatus(int archiveid , int borrowerid, int status , int borrowid )
+        public int UpdateArchiveBorrowStatus(int archiveid , int borrowerid, int status , int borrowid , DateTime borrowDate)
         {
-            string sql = string.Format("update t_archive set status=@status, borrowid=@borrowid where id=@archiveid");
+            string sql = string.Format("update t_archive set status=@status, borrowid=@borrowid, lastborrowtime=@lastborrowtime where id=@archiveid");
             MySqlParameter[] parameters ={
                                              new MySqlParameter("@status", MySqlDbType.Int16),                   
                                              new MySqlParameter("@borrowid",MySqlDbType.Int32),
-                                             new MySqlParameter("@archiveid", MySqlDbType.Int32),
+                                             new MySqlParameter("@lastborrowtime",MySqlDbType.Timestamp),
+                                            new MySqlParameter("@archiveid", MySqlDbType.Int32),
                                         };
             parameters[0].Value = status;    
             parameters[1].Value = borrowid;
-            parameters[2].Value = archiveid;
+            parameters[2].Value = borrowDate;
+            parameters[3].Value = archiveid;
 
             int count = MySqlHelper.ExecuteSql(sql, parameters);
             return count;
         }
 
-        public int UpdateArchiveReturnStatus(int archiveid, int status)
+        public int UpdateArchiveReturnStatus(int archiveid, int status , DateTime returnDate)
         {
-            string sql = string.Format("update t_archive set status=@status , borrowid=@borrowid where id=@archiveid");
+            string sql = string.Format("update t_archive set status=@status , borrowid=@borrowid , lastborrowtime=@lastborrowtime where id=@archiveid");
             MySqlParameter[] parameters ={
                                              new MySqlParameter("@status", MySqlDbType.Int16),  
                                              new MySqlParameter("@borrowid", 0),
+                                               new MySqlParameter("@lastborrowtime",MySqlDbType.Timestamp),
                                              new MySqlParameter("@archiveid", MySqlDbType.Int32),
                                         };
             parameters[0].Value = status;
-            parameters[1].Value = archiveid;
+            parameters[2].Value = returnDate;
+            parameters[3].Value = archiveid;
 
             int count = MySqlHelper.ExecuteSql(sql, parameters);
             return count;

@@ -57,6 +57,12 @@ namespace ContractMvcWeb.Models.Beans
 			set{ _createtime=value;}
 			get{return _createtime;}
 		}
+
+
+        public string createtimestring
+        {
+            get { return _createtime.ToString("yyyy-MM-dd HH:mm:ss"); }
+        }
 		/// <summary>
 		/// 
 		/// </summary>

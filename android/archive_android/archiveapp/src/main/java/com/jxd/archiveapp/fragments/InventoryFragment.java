@@ -419,9 +419,16 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
         tvScanFloor = getViewById(R.id.scan_floor);
         tvScanBoxCount = getViewById(R.id.scan_boxcount);
 
+
         inventoryLabelResponeseHandler =new GsonResponseHandler<>(getContext(),handler, InventoryLabelInfoResult.class);
 
         uploadInventoryResponseHandler = new GsonResponseHandler<>(getContext(),handler, BaseBean.class);
+
+
+
+        ///
+        //setRFID("22222");
+
     }
 
     @Override
@@ -432,9 +439,9 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
         rlScan.setVisibility(View.VISIBLE);
         EventBus.getDefault().post(new SwitchFragmentEvent(Constant.FRAGMENT_INVENTORY));
 
-        if( !queryFloorLabelInfoByLocal(rfid) ) {
+        //if( !queryFloorLabelInfoByLocal(rfid) ) {
             queryFloorLabelInfoByRFID(rfid);
-        }
+        //}
     }
 
     private boolean queryFloorLabelInfoByLocal(String rfid){
@@ -542,6 +549,8 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
                     record.setBoxrfid(child.getRfid());
                     record.setFloorrfid(bean.getRfid());
                     record.setStatus(child.getStatus());
+                    record.setBorrowstatus( String.valueOf( child.getInventoryStatus()) );
+                    record.setBorrowdate(child.getBorrowDateString() );
                     records.add(record);
                 }
             }

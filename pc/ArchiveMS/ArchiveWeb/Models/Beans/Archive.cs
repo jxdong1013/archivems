@@ -33,5 +33,9 @@ namespace ContractMvcWeb.Models.Beans
         /// 是否显示未归盒的档案
         /// </summary>
         public bool shownoposition { get; set; }
+        /// <summary>
+        /// 最新借或还时间
+        /// </summary>
+        public DateTime lastborrowtime { get; set; }
     }
 }

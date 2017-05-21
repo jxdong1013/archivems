@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : 127.0.0.1
-Source Server Version : 50625
-Source Host           : localhost:3306
+Source Server Version : 50624
+Source Host           : 127.0.0.1:3306
 Source Database       : archive
 
 Target Server Type    : MYSQL
-Target Server Version : 50625
+Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2017-05-19 10:05:38
+Date: 2017-05-21 15:33:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,4 +29,4 @@ CREATE TABLE `t_borrow` (
   `operatorname` varchar(255) DEFAULT NULL COMMENT '经办人',
   `remark` varchar(256) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`borrowid`)
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;

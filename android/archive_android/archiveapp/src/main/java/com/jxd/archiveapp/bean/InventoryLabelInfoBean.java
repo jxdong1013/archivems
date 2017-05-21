@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class InventoryLabelInfoBean extends LabelInfoBean {
     private List<ScanBean> boxs;
-    private List<ArchiveBean> archives;
+    //private List<ArchiveBean> archives;
 
     public List<ScanBean> getBoxs() {
         return boxs;
@@ -21,11 +21,11 @@ public class InventoryLabelInfoBean extends LabelInfoBean {
         this.boxs = boxs;
     }
 
-    public List<ArchiveBean> getArchives() {
-        return archives;
-    }
+//    public List<ArchiveBean> getArchives() {
+//        return archives;
+//    }
 
-    public void setArchives(List<ArchiveBean> archives) {
-        this.archives = archives;
-    }
+//    public void setArchives(List<ArchiveBean> archives) {
+//        this.archives = archives;
+//    }
 }

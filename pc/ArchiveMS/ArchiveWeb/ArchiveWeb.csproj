@@ -220,6 +220,7 @@
     <Compile Include="Models\Beans\User.cs" />
     <Compile Include="Models\Beans\BoxLabel.cs" />
     <Compile Include="Models\BorrowContext.cs" />
+    <Compile Include="Models\BorrowDateComperater.cs" />
     <Compile Include="Models\BorrowerContext.cs" />
     <Compile Include="Models\ContractContext.cs" />
     <Compile Include="Models\LabelContext.cs" />

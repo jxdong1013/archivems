@@ -18,6 +18,13 @@ namespace ContractMvcWeb.Models.Beans
             在库 = 0,
             借出 = 1,
         }
+
+        public enum InventoryBoxStatusEnum
+        {
+            在库=0,
+            有借已还=1,
+            有借未还=2,
+        }
     }
  
 }

@@ -39,20 +39,20 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.pageControl1 = new ArchiveStation.PageControl();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.boxid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.title = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.manager = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.statusname = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.borrowname = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.borrowername = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.idcard = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.boxnumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.department = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.createtime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.createtimestring = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.position = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.boxname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rfid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.panelLoading.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -73,7 +73,7 @@
             // 
             this.txtKey.BackColor = System.Drawing.Color.Transparent;
             this.txtKey.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtKey.Font = new System.Drawing.Font("SimSun", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtKey.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtKey.Location = new System.Drawing.Point(127, 36);
             this.txtKey.Margin = new System.Windows.Forms.Padding(0);
             this.txtKey.MinimumSize = new System.Drawing.Size(0, 28);
@@ -138,7 +138,7 @@
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -151,11 +151,11 @@
             this.number,
             this.manager,
             this.statusname,
-            this.borrowname,
+            this.borrowername,
             this.idcard,
             this.boxnumber,
             this.department,
-            this.createtime,
+            this.createtimestring,
             this.position,
             this.boxname,
             this.rfid});
@@ -166,6 +166,11 @@
             this.dataGridView1.ShowCellErrors = false;
             this.dataGridView1.Size = new System.Drawing.Size(1003, 335);
             this.dataGridView1.TabIndex = 13;
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
             // boxid
             // 
@@ -187,13 +192,14 @@
             this.number.DataPropertyName = "number";
             this.number.HeaderText = "文件编号";
             this.number.Name = "number";
-            this.number.Width = 120;
+            this.number.Width = 130;
             // 
             // manager
             // 
             this.manager.DataPropertyName = "manager";
             this.manager.HeaderText = "负责人";
             this.manager.Name = "manager";
+            this.manager.Width = 120;
             // 
             // statusname
             // 
@@ -204,12 +210,12 @@
             this.statusname.Name = "statusname";
             this.statusname.Width = 70;
             // 
-            // borrowname
+            // borrowername
             // 
-            this.borrowname.DataPropertyName = "borrowname";
-            this.borrowname.HeaderText = "借阅人";
-            this.borrowname.MinimumWidth = 80;
-            this.borrowname.Name = "borrowname";
+            this.borrowername.DataPropertyName = "borrowername";
+            this.borrowername.HeaderText = "借阅人";
+            this.borrowername.MinimumWidth = 80;
+            this.borrowername.Name = "borrowername";
             // 
             // idcard
             // 
@@ -233,14 +239,14 @@
             this.department.HeaderText = "部门";
             this.department.Name = "department";
             // 
-            // createtime
+            // createtimestring
             // 
-            this.createtime.DataPropertyName = "createtime";
+            this.createtimestring.DataPropertyName = "createtimestring";
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.createtime.DefaultCellStyle = dataGridViewCellStyle5;
-            this.createtime.HeaderText = "时间";
-            this.createtime.Name = "createtime";
-            this.createtime.Width = 120;
+            this.createtimestring.DefaultCellStyle = dataGridViewCellStyle5;
+            this.createtimestring.HeaderText = "时间";
+            this.createtimestring.Name = "createtimestring";
+            this.createtimestring.Width = 120;
             // 
             // position
             // 
@@ -264,11 +270,6 @@
             this.rfid.HeaderText = "rfid";
             this.rfid.Name = "rfid";
             this.rfid.Visible = false;
-            // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
             // FormBorrowBackList
             // 
@@ -308,11 +309,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn number;
         private System.Windows.Forms.DataGridViewTextBoxColumn manager;
         private System.Windows.Forms.DataGridViewTextBoxColumn statusname;
-        private System.Windows.Forms.DataGridViewTextBoxColumn borrowname;
+        private System.Windows.Forms.DataGridViewTextBoxColumn borrowername;
         private System.Windows.Forms.DataGridViewTextBoxColumn idcard;
         private System.Windows.Forms.DataGridViewTextBoxColumn boxnumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn department;
-        private System.Windows.Forms.DataGridViewTextBoxColumn createtime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn createtimestring;
         private System.Windows.Forms.DataGridViewTextBoxColumn position;
         private System.Windows.Forms.DataGridViewTextBoxColumn boxname;
         private System.Windows.Forms.DataGridViewTextBoxColumn rfid;

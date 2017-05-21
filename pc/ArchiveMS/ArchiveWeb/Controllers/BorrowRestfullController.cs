@@ -149,7 +149,9 @@ namespace ContractMvcWeb.Controllers
                  }
                  
                  BorrowContext borrowContext = new BorrowContext();
-                 borrowContext.Borrow(archiveidlist.ToList(), borrowerid, parameter.operatename, parameter.operateid);
+                 DateTime borrowDate = DateTime.Now;
+                 borrowContext.Borrow(archiveidlist.ToList(), borrowerid, parameter.operatename, parameter.operateid, borrowDate );
+                 borrower.borrowdate = borrowDate;
                  result = new Result((int)ResultCodeEnum.Success, "", getPrintEntity(borrower, archives));
                  jsonresult.Data = result;
                  jsonresult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;

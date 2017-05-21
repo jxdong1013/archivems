@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <LinearLayout
-        android:layout_toLeftOf="@+id/scan_item_group"
+        android:layout_toLeftOf="@+id/scan_item_borrowdate"
         android:layout_toRightOf="@id/scan_item_pic"
         android:orientation="vertical"
         android:layout_centerVertical="true"
@@ -33,6 +33,8 @@
          android:layout_width="match_parent"
          android:layout_height="wrap_content"/>
     <TextView
+        android:text=""
+        android:textColor="@color/black"
         android:id="@+id/scan_item_rfid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

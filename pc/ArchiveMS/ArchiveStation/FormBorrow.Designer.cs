@@ -30,6 +30,7 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panelUserinfo = new System.Windows.Forms.Panel();
             this.btnreset = new UILibrary.SkinButtom();
@@ -42,20 +43,20 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.panelTip = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.lblCheck = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idx = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.title = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.number = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idx = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.manager = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.boxnumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.statusname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rfid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panelTip = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.panelLoading.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panelUserinfo.SuspendLayout();
@@ -97,6 +98,7 @@
             this.btnreset.ControlState = UILibrary.ControlState.Normal;
             this.btnreset.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnreset.DownBack = null;
+            this.btnreset.ForeColor = System.Drawing.Color.White;
             this.btnreset.Location = new System.Drawing.Point(771, 18);
             this.btnreset.MouseBack = null;
             this.btnreset.Name = "btnreset";
@@ -139,7 +141,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label1.Location = new System.Drawing.Point(12, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 12);
@@ -152,6 +154,7 @@
             this.btnBorrow.ControlState = UILibrary.ControlState.Normal;
             this.btnBorrow.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnBorrow.DownBack = null;
+            this.btnBorrow.ForeColor = System.Drawing.Color.White;
             this.btnBorrow.Location = new System.Drawing.Point(649, 18);
             this.btnBorrow.MouseBack = null;
             this.btnBorrow.Name = "btnBorrow";
@@ -205,7 +208,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label3.Location = new System.Drawing.Point(422, 12);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(70, 12);
@@ -215,7 +218,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.Location = new System.Drawing.Point(206, 12);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(96, 12);
@@ -232,7 +235,7 @@
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 10F);
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -242,9 +245,9 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.lblCheck,
             this.id,
+            this.idx,
             this.title,
             this.number,
-            this.idx,
             this.manager,
             this.boxnumber,
             this.statusname,
@@ -260,6 +263,35 @@
             this.dataGridView1.TabIndex = 11;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
+            // panelTip
+            // 
+            this.panelTip.Controls.Add(this.label4);
+            this.panelTip.Location = new System.Drawing.Point(174, 176);
+            this.panelTip.Name = "panelTip";
+            this.panelTip.Size = new System.Drawing.Size(367, 80);
+            this.panelTip.TabIndex = 12;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("宋体", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.label4.Location = new System.Drawing.Point(26, 27);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(292, 27);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "请将档案盒放在感应器";
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
+            // backgroundWorker2
+            // 
+            this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
+            this.backgroundWorker2.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker2_RunWorkerCompleted);
+            // 
             // lblCheck
             // 
             this.lblCheck.HeaderText = "操作";
@@ -274,6 +306,13 @@
             this.id.Name = "id";
             this.id.Visible = false;
             // 
+            // idx
+            // 
+            this.idx.DataPropertyName = "idx";
+            this.idx.HeaderText = "序号";
+            this.idx.Name = "idx";
+            this.idx.Width = 80;
+            // 
             // title
             // 
             this.title.DataPropertyName = "title";
@@ -286,20 +325,14 @@
             this.number.DataPropertyName = "number";
             this.number.HeaderText = "档案编号";
             this.number.Name = "number";
-            this.number.Width = 150;
-            // 
-            // idx
-            // 
-            this.idx.DataPropertyName = "idx";
-            this.idx.HeaderText = "序号";
-            this.idx.Name = "idx";
+            this.number.Width = 160;
             // 
             // manager
             // 
             this.manager.DataPropertyName = "manager";
             this.manager.HeaderText = "负责人";
             this.manager.Name = "manager";
-            this.manager.Width = 120;
+            this.manager.Width = 140;
             // 
             // boxnumber
             // 
@@ -312,6 +345,8 @@
             // statusname
             // 
             this.statusname.DataPropertyName = "statusname";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.statusname.DefaultCellStyle = dataGridViewCellStyle3;
             this.statusname.HeaderText = "状态";
             this.statusname.MinimumWidth = 80;
             this.statusname.Name = "statusname";
@@ -330,35 +365,6 @@
             this.rfid.HeaderText = "rfid";
             this.rfid.Name = "rfid";
             this.rfid.Visible = false;
-            // 
-            // panelTip
-            // 
-            this.panelTip.Controls.Add(this.label4);
-            this.panelTip.Location = new System.Drawing.Point(174, 176);
-            this.panelTip.Name = "panelTip";
-            this.panelTip.Size = new System.Drawing.Size(367, 80);
-            this.panelTip.TabIndex = 12;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("SimSun", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label4.Location = new System.Drawing.Point(26, 27);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(292, 27);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "请将档案盒放在感应器";
-            // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
-            // 
-            // backgroundWorker2
-            // 
-            this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
-            this.backgroundWorker2.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker2_RunWorkerCompleted);
             // 
             // FormBorrow
             // 
@@ -407,16 +413,16 @@
         private UILibrary.TCTextBox txtDepartment;
         private System.Windows.Forms.Label lblError;
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
+        private UILibrary.SkinButtom btnreset;
         private System.Windows.Forms.DataGridViewCheckBoxColumn lblCheck;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idx;
         private System.Windows.Forms.DataGridViewTextBoxColumn title;
         private System.Windows.Forms.DataGridViewTextBoxColumn number;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idx;
         private System.Windows.Forms.DataGridViewTextBoxColumn manager;
         private System.Windows.Forms.DataGridViewTextBoxColumn boxnumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn statusname;
         private System.Windows.Forms.DataGridViewTextBoxColumn status;
         private System.Windows.Forms.DataGridViewTextBoxColumn rfid;
-        private UILibrary.SkinButtom btnreset;
     }
 }
