@@ -67,9 +67,9 @@
             // 
             this.groupBox1.Controls.Add(this.panelUserinfo);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(3, 423);
+            this.groupBox1.Location = new System.Drawing.Point(3, 442);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1228, 121);
+            this.groupBox1.Size = new System.Drawing.Size(1228, 102);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "借阅人信息";
@@ -85,9 +85,10 @@
             this.panelUserinfo.Controls.Add(this.txtIdcard);
             this.panelUserinfo.Controls.Add(this.label3);
             this.panelUserinfo.Controls.Add(this.label2);
-            this.panelUserinfo.Location = new System.Drawing.Point(6, 18);
+            this.panelUserinfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelUserinfo.Location = new System.Drawing.Point(3, 17);
             this.panelUserinfo.Name = "panelUserinfo";
-            this.panelUserinfo.Size = new System.Drawing.Size(1196, 80);
+            this.panelUserinfo.Size = new System.Drawing.Size(1222, 82);
             this.panelUserinfo.TabIndex = 16;
             // 
             // btnreset
@@ -255,7 +256,7 @@
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dataGridView1.ShowCellErrors = false;
-            this.dataGridView1.Size = new System.Drawing.Size(1228, 393);
+            this.dataGridView1.Size = new System.Drawing.Size(1228, 412);
             this.dataGridView1.TabIndex = 11;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 

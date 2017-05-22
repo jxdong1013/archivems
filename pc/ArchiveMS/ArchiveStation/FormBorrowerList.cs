@@ -72,16 +72,15 @@ namespace ArchiveStation
         {
             try
             {
+                panelLoading.Visible = false;
                 BorrowerPageResult result = e.Result as BorrowerPageResult;
                 if (result == null)
-                {
-                    panelLoading.Visible = false;
+                {                  
                     MessageBox.Show("请求失败,请重试！");
                     return;
                 }
                 if (result.Code == (int)Constant.ResultCodeEnum.Error)
                 {
-                    panelLoading.Visible = false;
                     MessageBox.Show(result.Message);
                     return;
                 }
@@ -102,7 +101,7 @@ namespace ArchiveStation
             }
             catch (Exception ex)
             {
-                LogHelper.WriteException(ex);
+                LogHelper.WriteException(ex);                
             }
             finally
             {

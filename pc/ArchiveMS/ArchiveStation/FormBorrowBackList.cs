@@ -42,6 +42,8 @@ namespace ArchiveStation
             bean.department = key;
             bean.boxnumber = key;
             bean.title = key;
+            bean.number = key;
+            bean.manager = key;            
             bean.status = -1;
             p.Key = bean;
 
