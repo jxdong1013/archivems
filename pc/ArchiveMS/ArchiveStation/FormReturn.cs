@@ -222,7 +222,10 @@ namespace ArchiveStation
 
             BorrowParameter parameter = new BorrowParameter();
             parameter.archiveids = archiveids;
-
+            parameter.operateid = Variable.User == null ? 0 : Variable.User.userid;
+            parameter.operatename = Variable.User == null ? string.Empty : Variable.User.username;
+            
+            
 
             backgroundWorker2.RunWorkerAsync(parameter);            
         }

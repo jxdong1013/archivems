@@ -93,7 +93,13 @@ namespace ContractMvcWeb.Models
             {
                 model.statusname = row["statusname"].ToString();
             }
-
+            if(row.Table.Columns.Contains("lastborrowtime"))
+            {
+                DateTime t;
+                if( DateTime.TryParse( row["lastborrowtime"].ToString(), out t)){
+                    model.lastborrowtime = t;
+                }
+            }
             return model;
         }
 

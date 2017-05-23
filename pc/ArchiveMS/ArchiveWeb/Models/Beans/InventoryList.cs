@@ -18,5 +18,7 @@ namespace ContractMvcWeb.Models.Beans
         public string floorrfid { get; set; }
         public string boxrfid { get; set; }
         public string status { get; set; }
+        public string borrowstatus { get; set; }
+        public string borrowdate { get; set; }
     }
 }

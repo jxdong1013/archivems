@@ -294,7 +294,9 @@ namespace ContractMvcWeb.Controllers
             return jsonResult;
 
         }
-    
+
+
+   
     
         [HttpPost]
         public JsonResult UploadInventoryInfo(Models.Beans.InventoryList data)

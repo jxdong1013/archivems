@@ -18,7 +18,7 @@
         android:text="编号"
         android:layout_marginTop="2dp"
         android:layout_marginLeft="2dp"
-        android:layout_toRightOf="@id/item_manager"
+        android:layout_below="@id/item_manager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
@@ -27,7 +27,7 @@
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:textColor="@color/midnightblue"
-        android:layout_below="@id/item_manager"
+        android:layout_below="@id/item_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView

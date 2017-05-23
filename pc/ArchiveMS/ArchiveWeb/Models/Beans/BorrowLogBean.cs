@@ -18,6 +18,10 @@ namespace ContractMvcWeb.Models.Beans
         public string idcard { get; set; }
         public string department { get; set; }
         public string operatorname { get; set; }
-    
+
+        public string createtimestring
+        {
+            get { return  createtime.Equals( DateTime.MinValue) ?"": createtime.ToString("yyyy-MM-dd HH:mm:ss"); }
+        }
     }
 }

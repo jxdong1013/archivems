@@ -1,5 +1,6 @@
 package com.jxd.archiveapp.adapters;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -38,6 +39,19 @@ public class ScanAdapter extends BGARecyclerViewAdapter<ScanBean> {
         bgaViewHolderHelper.setText(R.id.scan_item_rfid, scanBean.getRfid());
 
         bgaViewHolderHelper.setText(R.id.scan_item_count, "共" + String.valueOf( scanBean.getCount())+"个档案");
+
+        bgaViewHolderHelper.setTextColor(R.id.scan_item_name , Color.BLACK);
+        bgaViewHolderHelper.setTextColor(R.id.scan_item_borrowdate,Color.BLACK);
+        if( scanBean.getInventoryStatus() == 1) {
+            bgaViewHolderHelper.setText( R.id.scan_item_borrowdate , scanBean.getBorrowDateString() );
+            bgaViewHolderHelper.setTextColor( R.id.scan_item_borrowdate , Color.BLACK);
+        }else if(scanBean.getInventoryStatus() ==2){
+            bgaViewHolderHelper.setText(R.id.scan_item_borrowdate , scanBean.getBorrowDateString());
+            bgaViewHolderHelper.setTextColor(R.id.scan_item_borrowdate , Color.RED);
+            bgaViewHolderHelper.setTextColor(R.id.scan_item_name, Color.RED);
+        }else{
+            bgaViewHolderHelper.setText(R.id.scan_item_borrowdate , "");
+        }
 
         RadioGroup radioGroup = bgaViewHolderHelper.getView(R.id.scan_item_group);
         radioGroup.clearCheck();

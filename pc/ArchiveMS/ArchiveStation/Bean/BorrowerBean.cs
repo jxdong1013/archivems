@@ -121,5 +121,13 @@ namespace ArchiveStation.Bean
         }
         #endregion Model
 
+        public DateTime borrowdate { get; set; }
+
+        public string borrowdatestring
+        {
+            get;
+            set;
+        }
+
     }
 }

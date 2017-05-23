@@ -20,6 +20,8 @@ namespace ArchiveStation.Bean
 
         public DateTime createtime { get; set; }
 
+        public string createtimestring { get; set; }
+
         public string borrowername { get; set; }
         public string idcard { get; set; }
         public string department { get; set; }

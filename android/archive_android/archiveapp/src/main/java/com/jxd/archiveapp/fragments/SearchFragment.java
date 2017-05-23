@@ -140,7 +140,9 @@ public class SearchFragment extends BaseFragment implements  BGARefreshLayout.BG
                 }
                 pageIdx = result.getData().getPageIdx()+1;
                 PageArchive data = result.getData();
-                adapter.addNewDatas(  data.getData() );
+                //adapter.addNewDatas(  data.getData() );
+                adapter.addMoreDatas(data.getData());
+                //adapter.notifyDataSetChanged();
                 return true;
             }
         }else if(msg.what==GsonResponseHandler.FAILTURE){

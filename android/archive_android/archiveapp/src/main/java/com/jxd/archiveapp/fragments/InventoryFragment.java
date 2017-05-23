@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.jxd.archiveapp.Constant;
@@ -155,6 +156,8 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
 
     @Override
     public boolean handleMessage(Message msg) {
+        Toast.makeText(getActivity(), "消息="+ String.valueOf( msg.what ) +"消息内容："+ msg.obj==null ? "": msg.obj.toString()   , Toast.LENGTH_LONG).show();
+
         this.closeProgressDialog();
         if( msg.what== GsonResponseHandler.SUCCESS ){
             if( msg.obj instanceof InventoryLabelInfoResult ) {
@@ -270,12 +273,18 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
 
     private void deal_data( Object obj ){
         InventoryLabelInfoResult result = (InventoryLabelInfoResult)obj;
-        if( result==null)return;
+        if( result==null){
+            Toast.makeText(getActivity(),  "服务端返回空数据" , Toast.LENGTH_LONG).show();
+            return;
+        }
         if(result.getCode()==Constant.REQUEST_LOGIN){
             EventBus.getDefault().post(new LoginEvent());
             return;
         }else if( result.getCode()== Constant.REQUEST_SCUESS){
             if( result.getData().getType().equals("floor")) {
+
+                Toast.makeText(getActivity(),  "档案盒数量=" + String.valueOf( result.getData().getBoxCount()) , Toast.LENGTH_LONG).show();
+
                 setScanData( result.getData() );
             }else if( result.getData().getType().equals("box")){
                 if( TextUtils.isEmpty( tvScanFloor.getText()) ) {
@@ -419,22 +428,31 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
         tvScanFloor = getViewById(R.id.scan_floor);
         tvScanBoxCount = getViewById(R.id.scan_boxcount);
 
+
         inventoryLabelResponeseHandler =new GsonResponseHandler<>(getContext(),handler, InventoryLabelInfoResult.class);
 
         uploadInventoryResponseHandler = new GsonResponseHandler<>(getContext(),handler, BaseBean.class);
+
+
+
+        ///
+        //setRFID("E004015036FACE4D");
+
     }
 
     @Override
     public void setRFID(String rfid) {
         if(TextUtils.isEmpty(rfid))return;
 
+        Snackbar.make(mContentView,rfid , Snackbar.LENGTH_LONG).show();
+
         rlContain.setVisibility(View.GONE);
         rlScan.setVisibility(View.VISIBLE);
         EventBus.getDefault().post(new SwitchFragmentEvent(Constant.FRAGMENT_INVENTORY));
 
-        if( !queryFloorLabelInfoByLocal(rfid) ) {
+        //if( !queryFloorLabelInfoByLocal(rfid) ) {
             queryFloorLabelInfoByRFID(rfid);
-        }
+        //}
     }
 
     private boolean queryFloorLabelInfoByLocal(String rfid){
@@ -500,6 +518,8 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
 //        setRFID("308");
 //        setRFID("3");
 
+        //setRFID("E00401002916ECBC");
+
         UploadInventory();
 
     }
@@ -542,6 +562,8 @@ public class InventoryFragment extends BaseFragment implements Handler.Callback 
                     record.setBoxrfid(child.getRfid());
                     record.setFloorrfid(bean.getRfid());
                     record.setStatus(child.getStatus());
+                    record.setBorrowstatus( String.valueOf( child.getInventoryStatus()) );
+                    record.setBorrowdate(child.getBorrowDateString() );
                     records.add(record);
                 }
             }

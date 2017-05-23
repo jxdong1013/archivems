@@ -76,10 +76,10 @@ namespace ArchiveStation
         {
 
 #if DEBUG
-            string[] fff = { "7", "11", "5", "3" };
-            rfid = fff[new Random().Next(4)];
+            //string[] fff = { "aaaaaaa", "bbbbbbb", "b333333", "3" };
+            //rfid = fff[new Random().Next(4)];
 #endif
-            
+
 
 
             if (string.IsNullOrEmpty(rfid)) return;
@@ -166,7 +166,14 @@ namespace ArchiveStation
                     dataGridView1.DataSource = _archives;
                 }
 
-                panelTip.Visible = false;
+                if (_archives == null || _archives.Count < 1)
+                {
+                    panelTip.Visible = true;
+                }
+                else
+                {
+                    panelTip.Visible = false;
+                }
             }
             catch (Exception ex)
             {
@@ -381,7 +388,9 @@ namespace ArchiveStation
             _boxs.Clear();
             _archives.Clear();
             _selectedArchives.Clear();
+            dataGridView1.AutoGenerateColumns = false;
             dataGridView1.DataSource = null;
+            dataGridView1.AutoGenerateColumns = false;
             dataGridView1.DataSource = _archives;
             txtDepartment.Text = txtIdcard.Text = txtName.Text = string.Empty;
             changePanelTipLocation();
