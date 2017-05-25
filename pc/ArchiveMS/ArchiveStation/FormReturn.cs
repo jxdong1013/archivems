@@ -307,6 +307,7 @@ namespace ArchiveStation
                 dataGridView1.DataSource = _archives;
                 //changePanelTipLocation();
                 panelLoading.Visible = false;
+                ckbAll.Checked = false;
                 MessageBox.Show("归还操作完成");
             }
             catch (Exception ex)
@@ -374,6 +375,21 @@ namespace ArchiveStation
             _borrower = null;
             txtKey.Text = string.Empty;
             dataGridView1.DataSource = null;
+            ckbAll.Checked = false;
+        }
+
+        private void ckbAll_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckRecords(ckbAll.Checked);
+        }
+
+        protected void CheckRecords(bool state)
+        {
+            if (dataGridView1.Rows.Count < 1) return;
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                row.Cells["lblCheck"].Value = state;
+            }
         }
 
     }

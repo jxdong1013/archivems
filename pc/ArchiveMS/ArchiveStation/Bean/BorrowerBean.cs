@@ -129,5 +129,7 @@ namespace ArchiveStation.Bean
             set;
         }
 
+        public string operatename { get; set; }
+
     }
 }

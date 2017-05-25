@@ -76,8 +76,8 @@ namespace ArchiveStation
         {
 
 #if DEBUG
-            //string[] fff = { "aaaaaaa", "bbbbbbb", "b333333", "3" };
-            //rfid = fff[new Random().Next(4)];
+            string[] fff = { "E004015036FAC953", "E004015036FACDD1", "E00401503676EC81", "E004015036FA66F5" };
+            rfid = fff[new Random().Next(4)];
 #endif
 
 
@@ -252,7 +252,7 @@ namespace ArchiveStation
             parameter.idcard = txtIdcard.Text.Trim();
             parameter.name = txtName.Text.Trim();
             parameter.operateid = Variable.User == null ? 0 : Variable.User.userid;
-            parameter.operatename = Variable.User == null ? "" : Variable.User.username;
+            parameter.operatename = Variable.User == null ? "" : Variable.User.realname;
 
             backgroundWorker2.RunWorkerAsync(parameter);
             
@@ -344,6 +344,7 @@ namespace ArchiveStation
                 dataGridView1.DataSource = null;                
                 txtDepartment.Text = txtIdcard.Text = txtName.Text = string.Empty;             
                 panelTip.Visible = true;
+                ckbAll.Checked = false;
             }
             catch (Exception ex)
             {
@@ -397,8 +398,36 @@ namespace ArchiveStation
             panelTip.Visible = true;
             panelLoading.Visible = false;
             lblError.Text = string.Empty;
+            ckbAll.Checked = false;
         }
 
+        private void ckbAll_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckRecords(ckbAll.Checked);
+        }
 
+        protected void CheckRecords(bool state)
+        {
+            if (dataGridView1.Rows.Count < 1) return;
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                row.Cells["lblCheck"].Value = state;
+            }
+        }
+
+        private void txtName_DoubleClick(object sender, EventArgs e)
+        {
+            QueryUserInfo(txtName.Text.Trim());
+        }
+
+        private void txtIdcard_DoubleClick(object sender, EventArgs e)
+        {
+            QueryUserInfo(txtIdcard.Text.Trim());
+        }
+
+        private void txtDepartment_DoubleClick(object sender, EventArgs e)
+        {
+            QueryUserInfo(txtDepartment.Text.Trim());
+        }
     }
 }

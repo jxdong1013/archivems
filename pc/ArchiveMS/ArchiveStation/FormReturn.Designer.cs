@@ -40,6 +40,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtKey = new UILibrary.SkinTextBox();
             this.btnGo = new System.Windows.Forms.Button();
+            this.ckbAll = new System.Windows.Forms.CheckBox();
             this.lblCheck = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.number = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -215,10 +216,24 @@
             this.btnGo.UseVisualStyleBackColor = true;
             this.btnGo.Click += new System.EventHandler(this.btnGo_Click);
             // 
+            // ckbAll
+            // 
+            this.ckbAll.AutoSize = true;
+            this.ckbAll.BackColor = System.Drawing.Color.White;
+            this.ckbAll.FlatAppearance.BorderColor = System.Drawing.Color.SpringGreen;
+            this.ckbAll.Location = new System.Drawing.Point(57, 103);
+            this.ckbAll.Name = "ckbAll";
+            this.ckbAll.Size = new System.Drawing.Size(48, 16);
+            this.ckbAll.TabIndex = 16;
+            this.ckbAll.Text = "全选";
+            this.ckbAll.UseVisualStyleBackColor = false;
+            this.ckbAll.CheckedChanged += new System.EventHandler(this.ckbAll_CheckedChanged);
+            // 
             // lblCheck
             // 
-            this.lblCheck.HeaderText = "操作";
+            this.lblCheck.HeaderText = "";
             this.lblCheck.Name = "lblCheck";
+            this.lblCheck.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.lblCheck.ToolTipText = "勾选";
             this.lblCheck.Width = 80;
             // 
@@ -266,14 +281,14 @@
             // boxname
             // 
             this.boxname.DataPropertyName = "boxname";
-            this.boxname.HeaderText = "盒名称";
+            this.boxname.HeaderText = "档案盒名称";
             this.boxname.Name = "boxname";
             this.boxname.Width = 150;
             // 
             // boxnumber
             // 
             this.boxnumber.DataPropertyName = "boxnumber";
-            this.boxnumber.HeaderText = "盒编号";
+            this.boxnumber.HeaderText = "档案盒编号";
             this.boxnumber.Name = "boxnumber";
             // 
             // statusname
@@ -304,6 +319,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderWidth = 1;
             this.ClientSize = new System.Drawing.Size(982, 518);
+            this.Controls.Add(this.ckbAll);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.panelBottom);
             this.Controls.Add(this.panel1);
@@ -318,12 +334,14 @@
             this.Controls.SetChildIndex(this.panelBottom, 0);
             this.Controls.SetChildIndex(this.dataGridView1, 0);
             this.Controls.SetChildIndex(this.panelLoading, 0);
+            this.Controls.SetChildIndex(this.ckbAll, 0);
             this.panelLoading.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panelBottom.ResumeLayout(false);
             this.panelBottom.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -339,6 +357,7 @@
         private UILibrary.SkinTextBox txtKey;
         private System.Windows.Forms.Button btnGo;
         private UILibrary.SkinButtom btnReset;
+        private System.Windows.Forms.CheckBox ckbAll;
         private System.Windows.Forms.DataGridViewCheckBoxColumn lblCheck;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn number;

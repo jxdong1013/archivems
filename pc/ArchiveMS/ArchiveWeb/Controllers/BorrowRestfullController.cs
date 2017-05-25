@@ -152,6 +152,7 @@ namespace ContractMvcWeb.Controllers
                  DateTime borrowDate = DateTime.Now;
                  borrowContext.Borrow(archiveidlist.ToList(), borrowerid, parameter.operatename, parameter.operateid, borrowDate );
                  borrower.borrowdate = borrowDate;
+                 borrower.operatename = parameter.operatename;
                  result = new Result((int)ResultCodeEnum.Success, "", getPrintEntity(borrower, archives));
                  jsonresult.Data = result;
                  jsonresult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;

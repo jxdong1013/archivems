@@ -118,5 +118,7 @@ namespace ContractMvcWeb.Models.Beans
         public DateTime borrowdate { get; set; }
 
         public string borrowdatestring { get { return borrowdate.ToString("yyyy-MM-dd HH:mm:ss"); } }
+
+        public string operatename { get; set; }
     }
 }

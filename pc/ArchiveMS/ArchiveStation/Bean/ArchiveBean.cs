@@ -37,6 +37,8 @@ namespace ArchiveStation.Bean
         public int status { get; set; }
 
         public string statusname { get; set; }
+
+        public string boxname { get; set; }
         public string boxnumber { get; set; }
         public string boxrfid { get; set; }
     }

@@ -47,12 +47,14 @@
             this.label4 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
+            this.ckbAll = new System.Windows.Forms.CheckBox();
             this.lblCheck = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.idx = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.title = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.manager = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.boxname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.boxnumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.statusname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.status = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -136,12 +138,13 @@
             this.txtDepartment.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtDepartment.WaterColor = System.Drawing.Color.DarkGray;
             this.txtDepartment.WaterText = "";
+            this.txtDepartment.DoubleClick += new System.EventHandler(this.txtDepartment_DoubleClick);
             this.txtDepartment.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtDepartment_KeyDown);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label1.Location = new System.Drawing.Point(12, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 12);
@@ -183,6 +186,7 @@
             this.txtName.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtName.WaterColor = System.Drawing.Color.DarkGray;
             this.txtName.WaterText = "";
+            this.txtName.DoubleClick += new System.EventHandler(this.txtName_DoubleClick);
             this.txtName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtName_KeyDown);
             // 
             // txtIdcard
@@ -203,12 +207,13 @@
             this.txtIdcard.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtIdcard.WaterColor = System.Drawing.Color.DarkGray;
             this.txtIdcard.WaterText = "";
+            this.txtIdcard.DoubleClick += new System.EventHandler(this.txtIdcard_DoubleClick);
             this.txtIdcard.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtIdcard_KeyDown);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label3.Location = new System.Drawing.Point(422, 12);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(70, 12);
@@ -218,7 +223,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.Location = new System.Drawing.Point(206, 12);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(96, 12);
@@ -235,7 +240,7 @@
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 10F);
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("SimSun", 10F);
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -249,6 +254,7 @@
             this.title,
             this.number,
             this.manager,
+            this.boxname,
             this.boxnumber,
             this.statusname,
             this.status,
@@ -274,7 +280,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("宋体", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Font = new System.Drawing.Font("SimSun", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label4.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.label4.Location = new System.Drawing.Point(26, 27);
             this.label4.Name = "label4";
@@ -292,11 +298,24 @@
             this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
             this.backgroundWorker2.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker2_RunWorkerCompleted);
             // 
+            // ckbAll
+            // 
+            this.ckbAll.AutoSize = true;
+            this.ckbAll.BackColor = System.Drawing.Color.White;
+            this.ckbAll.FlatAppearance.BorderColor = System.Drawing.Color.SpringGreen;
+            this.ckbAll.Location = new System.Drawing.Point(55, 37);
+            this.ckbAll.Name = "ckbAll";
+            this.ckbAll.Size = new System.Drawing.Size(48, 16);
+            this.ckbAll.TabIndex = 13;
+            this.ckbAll.Text = "全选";
+            this.ckbAll.UseVisualStyleBackColor = false;
+            this.ckbAll.CheckedChanged += new System.EventHandler(this.ckbAll_CheckedChanged);
+            // 
             // lblCheck
             // 
-            this.lblCheck.HeaderText = "操作";
+            this.lblCheck.HeaderText = "";
             this.lblCheck.Name = "lblCheck";
-            this.lblCheck.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.lblCheck.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.lblCheck.Width = 70;
             // 
             // id
@@ -334,13 +353,20 @@
             this.manager.Name = "manager";
             this.manager.Width = 140;
             // 
+            // boxname
+            // 
+            this.boxname.DataPropertyName = "boxname";
+            this.boxname.HeaderText = "档案盒名称";
+            this.boxname.Name = "boxname";
+            this.boxname.Width = 150;
+            // 
             // boxnumber
             // 
             this.boxnumber.DataPropertyName = "boxnumber";
-            this.boxnumber.HeaderText = "盒编号";
+            this.boxnumber.HeaderText = "档案盒编号";
             this.boxnumber.MinimumWidth = 100;
             this.boxnumber.Name = "boxnumber";
-            this.boxnumber.Width = 150;
+            this.boxnumber.Width = 120;
             // 
             // statusname
             // 
@@ -371,6 +397,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1234, 547);
+            this.Controls.Add(this.ckbAll);
             this.Controls.Add(this.panelTip);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.groupBox1);
@@ -385,6 +412,7 @@
             this.Controls.SetChildIndex(this.groupBox1, 0);
             this.Controls.SetChildIndex(this.dataGridView1, 0);
             this.Controls.SetChildIndex(this.panelTip, 0);
+            this.Controls.SetChildIndex(this.ckbAll, 0);
             this.panelLoading.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.panelUserinfo.ResumeLayout(false);
@@ -393,6 +421,7 @@
             this.panelTip.ResumeLayout(false);
             this.panelTip.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -414,12 +443,14 @@
         private System.Windows.Forms.Label lblError;
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private UILibrary.SkinButtom btnreset;
+        private System.Windows.Forms.CheckBox ckbAll;
         private System.Windows.Forms.DataGridViewCheckBoxColumn lblCheck;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn idx;
         private System.Windows.Forms.DataGridViewTextBoxColumn title;
         private System.Windows.Forms.DataGridViewTextBoxColumn number;
         private System.Windows.Forms.DataGridViewTextBoxColumn manager;
+        private System.Windows.Forms.DataGridViewTextBoxColumn boxname;
         private System.Windows.Forms.DataGridViewTextBoxColumn boxnumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn statusname;
         private System.Windows.Forms.DataGridViewTextBoxColumn status;

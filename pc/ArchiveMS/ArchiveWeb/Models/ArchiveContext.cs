@@ -77,6 +77,11 @@ namespace ContractMvcWeb.Models
             {
                 model.floorrfid = row["floorrfid"].ToString();
             }
+
+            if (row.Table.Columns.Contains("boxname"))
+            {
+                model.boxname = row["boxname"].ToString();
+            }
             if (row.Table.Columns.Contains("boxrfid"))
             {
                 model.boxrfid = row["boxrfid"].ToString();
