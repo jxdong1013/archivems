@@ -395,6 +395,36 @@ namespace ContractMvcWeb.Models
             {
                 model.count = Convert.ToInt32( row["count"]);
             }
+            if (row.Table.Columns.Contains("status"))
+            {
+                model.status = Convert.ToInt32(row["status"]);
+            }
+            if (row.Table.Columns.Contains("statusname"))
+            {
+                model.statusname = row["statusname"].ToString();
+            }
+            //if (row.Table.Columns.Contains("borrowerid"))
+            //{
+            //    model.borrowerid = Convert.ToInt32(row["borrowerid"]);
+            //}
+            //if (row.Table.Columns.Contains("lastborrowtime"))
+            //{
+            //    DateTime temp;
+            //    if(DateTime.TryParse( row["lastborrowtime"].ToString() , out temp)){
+            //        model.lastborrowtime = temp;
+            //    }
+            //}
+            //if (row.Table.Columns.Contains("lastbacktime"))
+            //{
+            //    DateTime temp;
+            //    if(DateTime.TryParse( row["lastbacktime"].ToString() , out temp)){
+            //        model.lastbacktime = temp;
+            //    }
+            //}
+            // if (row.Table.Columns.Contains("borrowid"))
+            //{
+            //    model.borrowid = Convert.ToInt32(row["borrowid"]);
+            //}
 
             return model;
         }
@@ -630,25 +660,128 @@ namespace ContractMvcWeb.Models
                 bean.rfid = rfid;
                 bean.type = "floor";
                 //bean.number = row["number"].ToString();
-                bean.boxs = GetBoxListOfFloorRFId(rfid);
+                bean.boxs = GetInventoryBoxListOfFloorRfid(rfid); //GetBoxListOfFloorRFId(rfid);
                
                 return bean;
             }
 
-            sql = string.Format("select * from t_boxlabel where rfid='{0}'", rfid);
-            ds = MySqlHelper.Query(sql);
+            //sql = string.Format("select * from t_boxlabel where rfid='{0}'", rfid);
+            //ds = MySqlHelper.Query(sql);
+            //if (ds != null && ds.Tables[0].Rows.Count > 0)
+            //{
+            //    DataRow row = ds.Tables[0].Rows[0];
+            //    InventoryLabelInfo bean = new InventoryLabelInfo();
+            //    bean.name = row["name"].ToString();
+            //    bean.rfid = rfid;
+            //    bean.type = "box";
+            //    return bean;
+            //}
+
+            return null;
+        }
+
+
+
+
+        public List<InventoryBoxLabel> GetInventoryBoxListOfFloorRfid(string floorrfid)
+        {
+            string sql = string.Format("select b.id , b.number , b.rfid , b.name , (select count(1) from t_archive where t_archive.boxid = b.id) as count   from t_position a INNER JOIN t_boxlabel b on a.boxrfid = b.rfid where a.floorrfid='{0}'", floorrfid);
+            DataSet ds = MySqlHelper.Query(sql);
             if (ds != null && ds.Tables[0].Rows.Count > 0)
             {
-                DataRow row = ds.Tables[0].Rows[0];
-                InventoryLabelInfo bean = new InventoryLabelInfo();
-                //bean.id = int.Parse(row["id"].ToString());
-                bean.name = row["name"].ToString();
-                bean.rfid = rfid;
-                bean.type = "box";
-                //bean.number = row["number"].ToString();
-                return bean;
+                int count = ds.Tables[0].Rows.Count;
+                List<InventoryBoxLabel> list = new List<InventoryBoxLabel>();
+                for (int i = 0; i < count; i++)
+                {
+                    DataRow row = ds.Tables[0].Rows[i];
+                    InventoryBoxLabel model = DataRowToInventoryBoxLabel(row);
+                    DealBorrowtimeofBox(model);
+                    list.Add(model);
+                }
+
+                SortBoxList(list);
+
+                return list;
             }
             return null;
+
+        }
+
+        private InventoryBoxLabel DataRowToInventoryBoxLabel(DataRow row)
+        {
+            InventoryBoxLabel model = new InventoryBoxLabel();
+            model.id = Convert.ToInt32(row["id"].ToString());
+            model.number = row["number"].ToString();
+            model.name = row["name"].ToString();
+            model.rfid = row["rfid"].ToString();
+            model.count = Convert.ToInt32( row["count"].ToString());
+
+            return model;
+        }
+
+        protected void DealBorrowtimeofBox(InventoryBoxLabel box)
+        {
+            string sql = string.Format("select * from t_archive where boxid = @boxid");
+
+            MySqlParameter[] parameter ={
+                                           new MySqlParameter("@boxid", box.id )
+                                       };
+            DataSet ds = MySqlHelper.Query(sql, parameter);
+            
+            DateTime maxtime = DateTime.MinValue;
+            bool haslastborrowtime = false;
+            int status = -1;
+            if (ds != null && ds.Tables[0].Rows.Count > 0)
+            {
+                int count = ds.Tables[0].Rows.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    DataRow row = ds.Tables[0].Rows[i];
+                    Archive model = ArchiveContext.DataRowToArchive(row);
+                    
+                    DateTime t;
+                    if (!DateTime.TryParse(row["lastborrowtime"].ToString(), out t))
+                    {
+                        continue;
+                    }
+                    if (t.CompareTo(maxtime) >= 0)
+                    {
+                        int s = Convert.ToInt32(row["status"]);
+                        maxtime = t;
+                        haslastborrowtime = true;
+                        if (s == (int)Constant.ArchiveStatusEnum.借出)
+                        {
+                            status = (int)Constant.InventoryBoxStatusEnum.有借未还;
+                        }
+                        else if (s == (int)Constant.ArchiveStatusEnum.在库)
+                        {
+                            status = (int)Constant.InventoryBoxStatusEnum.有借已还;
+                        }
+                    }
+                }
+            }
+
+            if (haslastborrowtime)
+            {
+                box.inventoryStatus = status;
+                box.borrowDate = maxtime;
+            }
+            else
+            {
+                box.inventoryStatus = (int)Constant.InventoryBoxStatusEnum.在库;
+                box.borrowDate = DateTime.MinValue;
+            }
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="list"></param>
+        protected void SortBoxList(List<InventoryBoxLabel> list)
+        {
+            list.Sort( new BorrowDateComperater());
+            list.Reverse();
         }
 
 
@@ -693,18 +826,22 @@ namespace ContractMvcWeb.Models
 
             foreach (InventoryRecord item in data.records)
             {
-                string sql2 = "insert into t_inventorydetail(mid,floorrfid,boxrfid,status) values(@mid,@floorrfid,@boxrfid,@status)";
+                string sql2 = "insert into t_inventorydetail(mid,floorrfid,boxrfid,status,borrowstatus,borrowdate) values(@mid,@floorrfid,@boxrfid,@status,@borrowstatus,@borrowdate)";
 
                 MySqlParameter[] parameters2 = {
 					new MySqlParameter("@mid", MySqlDbType.Int32),
 					new MySqlParameter("@floorrfid", MySqlDbType.VarChar,100),
 					new MySqlParameter("@boxrfid", MySqlDbType.VarChar,100),
-                    new MySqlParameter("@status", MySqlDbType.VarChar,50)
+                    new MySqlParameter("@status", MySqlDbType.VarChar,50),
+                    new MySqlParameter("@borrowstatus", MySqlDbType.VarChar,50) ,
+                    new MySqlParameter("@borrowdate", MySqlDbType.VarChar,50),
                 };
                 parameters2[0].Value = id;
                 parameters2[1].Value = item.floorrfid;
                 parameters2[2].Value = item.boxrfid;
                 parameters2[3].Value = item.status;
+                parameters2[4].Value = item.borrowstatus;
+                parameters2[5].Value = item.borrowdate;
 
                 MySqlHelper.ExecuteSql(sql2, parameters2);
             }
@@ -712,6 +849,63 @@ namespace ContractMvcWeb.Models
             return true;
 
         }
-    
+
+
+        //public BoxLabel GetArchiveBoxInfoByRFID(string rfid)
+        //{
+        //    string sql = string.Format("select * ,  (case status when 0 then '在库' when 1 then '借出' else '未知' end) as statusname  , (select count(1) from t_archive where boxid=t_boxlabel.id) count  from t_boxlabel where rfid='{0}'", rfid);
+        //    BoxLabel model = null;
+        //    DataSet ds = MySqlHelper.Query(sql);
+        //    if (ds != null && ds.Tables[0].Rows.Count > 0)
+        //    {
+        //        int count = ds.Tables[0].Rows.Count;
+        //        DataRow row = ds.Tables[0].Rows[0];
+        //        model = DataRowToBoxLabel(row);
+        //    }
+        //    return model;
+        //}
+
+
+        public BoxLabel GetBoxModelByBoxId(int boxid)
+        {
+            string sql = string.Format("select * from t_boxlabel where id=@id");
+            MySqlParameter[] parameter ={
+                                           new MySqlParameter("@id", boxid)
+                                       };
+            DataSet ds = MySqlHelper.Query(sql, parameter);
+            BoxLabel model = null;
+             if (ds != null && ds.Tables[0].Rows.Count > 0)
+             {
+                 int count = ds.Tables[0].Rows.Count;
+                 DataRow row = ds.Tables[0].Rows[0];
+                 model = DataRowToBoxLabel(row);
+             }
+             return model;
+        }
+
+
+        public List<Beans.Archive> GetArchiveListOfBox(string boxrfid , int status )
+        {
+            string sql = string.Format("select * from v_archive where boxrfid = @boxrfid and status=@status");
+
+            MySqlParameter[] parameter ={
+                                           new MySqlParameter("@boxrfid", boxrfid),
+                                           new MySqlParameter("@status",status),
+                                       };
+            DataSet ds = MySqlHelper.Query(sql, parameter);
+            List<Archive> list=new List<Archive>();
+            if (ds != null && ds.Tables[0].Rows.Count > 0)
+            {
+                int count = ds.Tables[0].Rows.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    DataRow row = ds.Tables[0].Rows[i];
+                    Archive model = ArchiveContext.DataRowToArchive(row);
+                    list.Add(model);
+                }
+            }
+            return list;
+        }
+
     }
 }

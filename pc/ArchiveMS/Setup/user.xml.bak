@@ -1,0 +1,33 @@
+<users>
+  <user>
+    <id>1</id>
+    <code>
+    </code>
+    <name>admin</name>
+    <password>
+    </password>
+<<<<<<< HEAD
+    <date>2017-05-19 20:33:48</date>
+  </user>
+  <user>
+    <id>1</id>
+    <code>
+    </code>
+    <name>admin11</name>
+    <password>
+    </password>
+    <date>2016-02-21 13:36:14</date>
+  </user>
+  <user>
+    <id>2</id>
+    <code>
+    </code>
+    <name>a</name>
+    <password>
+    </password>
+    <date>2016-02-23 18:08:16</date>
+=======
+    <date>2017-05-25 11:31:58</date>
+>>>>>>> 8c64b436296d77f8f58a9486be41c0e0d17a0f92
+  </user>
+</users>

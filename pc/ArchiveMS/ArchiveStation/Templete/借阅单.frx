@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/17/2017 16:42:41" ReportInfo.Modified="05/25/2017 11:36:28" ReportInfo.CreatorVersion="2014.2.3.0">
+  <Dictionary>
+    <XmlDataConnection Name="Connection" ConnectionString="rijcmlqmmfdjkQxfe1iwShBNGpud+29a/Joh/BktgoJgjia6tGfBSYzVzaoxjFfwkG3EqVPgBd2PrcqJO5sGNAj7xZSZds9dUuqIi4I2Xl6NHjzwO8=">
+      <TableDataSource Name="detail" DataType="System.Int32" Enabled="true" TableName="detail">
+        <Column Name="title" DataType="System.String"/>
+        <Column Name="number" DataType="System.String"/>
+        <Column Name="boxnumber" DataType="System.String"/>
+        <Column Name="boxname" DataType="System.String"/>
+      </TableDataSource>
+    </XmlDataConnection>
+    <Parameter Name="name" DataType="System.String"/>
+    <Parameter Name="idcard" DataType="System.String"/>
+    <Parameter Name="department" DataType="System.String"/>
+    <Parameter Name="archivecount" DataType="System.String"/>
+    <Parameter Name="borrowdatestring" DataType="System.String"/>
+    <Parameter Name="departmentmanager" DataType="System.String"/>
+    <Parameter Name="operatename" DataType="System.String"/>
+    <Parameter Name="remark" DataType="System.String"/>
+    <Total Name="Total" TotalType="Count" Evaluator="Data1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Guides="56.7,661.5,-9308.25,-9128.7,-9062.55,-8845.2,-9450,-9213.75,-9298.8,-9081.45,-9053.1,-8911.35,-8901.9,103.95,198.45,321.3,415.8,548.1,642.6,0,718.2,18.9,292.95,500.85,510.3,708.75,9.45,245.7,255.15,491.4,689.85">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="35.91" Guides="9.45,35.91,-9412.2,-9393.3,-9450,-9431.1,-9383.85,-9364.949,-9336.6,-9317.699">
+      <TextObject Name="Text1" Left="56.7" Top="9.45" Width="604.8" Height="26.46" Text="档案借阅单" HorzAlign="Center" Font="宋体, 18pt, style=Bold"/>
+      <TextObject Name="Text9" Left="-9308.25" Top="-9412.2" Width="179.55" Height="18.9" Text="身份证：[idcard]" Font="宋体, 9pt"/>
+      <TextObject Name="Text10" Left="-9062.55" Top="-9412.2" Width="217.35" Height="18.9" Text="部门：[department]" Font="宋体, 9pt"/>
+      <TextObject Name="Text11" Left="-9450" Top="-9450" Width="236.25" Height="18.9" Text="借阅数量:[archivecount]" Font="宋体, 12pt"/>
+      <TextObject Name="Text13" Left="-9298.8" Top="-9383.85" Width="217.35" Height="18.9" Text="部门批准人:[departmentmanager]" Font="宋体, 12pt"/>
+      <TextObject Name="Text14" Left="-9053.1" Top="-9383.85" Width="141.75" Height="18.9" Text="经办人：[operatename]" Font="宋体, 12pt"/>
+      <TextObject Name="Text15" Left="-9450" Top="-9336.6" Width="548.1" Height="18.9" Text="备注：[remark]" Font="宋体, 12pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="39.91" Width="718.2" Height="33.26" Guides="9.45,28.35,31">
+      <TextObject Name="Text3" Left="103.95" Top="9.45" Width="94.5" Height="18.9" Text="档案名称" HorzAlign="Center" Font="宋体, 12pt"/>
+      <TextObject Name="Text5" Left="321.3" Top="9.45" Width="94.5" Height="18.9" Text="文件编号" HorzAlign="Center" Font="宋体, 12pt"/>
+      <TextObject Name="Text7" Left="548.1" Top="9.45" Width="94.5" Height="18.9" Text="档案盒名称" HorzAlign="Center" Font="宋体, 12pt"/>
+      <LineObject Name="Line1" Top="31" Width="718.2"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="77.17" Width="718.2" Height="22.68" CanGrow="true" Guides="3.78,22.68" DataSource="detail">
+      <TextObject Name="Text2" Left="18.9" Top="3.78" Width="274.05" Height="18.9" CanGrow="true" Text="[detail.title]" VertAlign="Center" Font="宋体, 10pt"/>
+      <TextObject Name="Text4" Left="292.95" Top="3.78" Width="207.9" Height="18.9" Text="[detail.number]" VertAlign="Center" Font="宋体, 10pt"/>
+      <TextObject Name="Text6" Left="510.3" Top="3.78" Width="198.45" Height="18.9" Text="[detail.boxname]" VertAlign="Center" Font="宋体, 10pt"/>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="103.85" Width="718.2" Height="126.63" Guides="18.9,41.58,47.25,69.93,75.6,98.28,103.95,126.63,3.78">
+      <TextObject Name="Text19" Left="9.45" Top="18.9" Width="236.25" Height="22.68" Text="借阅数量:[Total]" VertAlign="Center" Font="宋体, 11pt"/>
+      <TextObject Name="Text16" Left="9.45" Top="47.25" Width="245.7" Height="22.68" Text="借阅人：[name]" Font="宋体, 11pt"/>
+      <TextObject Name="Text17" Left="255.15" Top="47.25" Width="236.25" Height="22.68" Text="身份证：[idcard]" Font="宋体, 11pt"/>
+      <TextObject Name="Text18" Left="491.4" Top="47.25" Width="217.35" Height="22.68" Text="部门：[department]" Font="宋体, 11pt"/>
+      <TextObject Name="Text20" Left="9.45" Top="75.6" Width="245.7" Height="22.68" Text="借阅日期：[borrowdatestring]" Font="宋体, 11pt"/>
+      <TextObject Name="Text21" Left="255.15" Top="75.6" Width="236.25" Height="22.68" Text="部门批准人:[departmentmanager]" Font="宋体, 11pt"/>
+      <TextObject Name="Text22" Left="491.4" Top="75.6" Width="217.35" Height="22.68" Text="经办人：[operatename]" Font="宋体, 11pt"/>
+      <TextObject Name="Text23" Left="9.45" Top="103.95" Width="680.4" Height="22.68" Text="备注：[remark]" Font="宋体, 11pt"/>
+      <LineObject Name="Line2" Top="3.78" Width="718.2"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="234.48" Width="718.2"/>
+  </ReportPage>
+</Report>

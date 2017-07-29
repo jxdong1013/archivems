@@ -40,6 +40,8 @@
             this.panelLeft = new System.Windows.Forms.Panel();
             this.pushPanel1 = new UILibrary.PushPanel.PushPanel();
             this.pushPanelItem1 = new UILibrary.PushPanel.PushPanelItem();
+            this.btnReturn = new System.Windows.Forms.Button();
+            this.btnBorrow = new System.Windows.Forms.Button();
             this.btnLabelConfig = new System.Windows.Forms.Button();
             this.btnUser = new System.Windows.Forms.Button();
             this.btnBox = new System.Windows.Forms.Button();
@@ -47,6 +49,7 @@
             this.btnSearch = new System.Windows.Forms.Button();
             this.btnExport = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.btnBorrowLog = new System.Windows.Forms.Button();
             this.panelLoading.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panelLeft.SuspendLayout();
@@ -66,21 +69,21 @@
             this.toolStripStatusLabel1,
             this.tsslchangepwd,
             this.tSSLCopyRight});
-            this.statusStrip1.Location = new System.Drawing.Point(3, 525);
+            this.statusStrip1.Location = new System.Drawing.Point(3, 642);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(817, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(817, 24);
             this.statusStrip1.TabIndex = 10;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // tSSLUser
             // 
             this.tSSLUser.Name = "tSSLUser";
-            this.tSSLUser.Size = new System.Drawing.Size(0, 17);
+            this.tSSLUser.Size = new System.Drawing.Size(0, 19);
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(582, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(562, 19);
             this.toolStripStatusLabel1.Spring = true;
             // 
             // tsslchangepwd
@@ -90,14 +93,14 @@
             this.tsslchangepwd.Name = "tsslchangepwd";
             this.tsslchangepwd.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
             this.tsslchangepwd.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.tsslchangepwd.Size = new System.Drawing.Size(65, 17);
+            this.tsslchangepwd.Size = new System.Drawing.Size(71, 19);
             this.tsslchangepwd.Text = "修改密码";
             this.tsslchangepwd.Click += new System.EventHandler(this.tsslchangepwd_Click);
             // 
             // tSSLCopyRight
             // 
             this.tSSLCopyRight.Name = "tSSLCopyRight";
-            this.tSSLCopyRight.Size = new System.Drawing.Size(155, 17);
+            this.tSSLCopyRight.Size = new System.Drawing.Size(169, 19);
             this.tSSLCopyRight.Text = "北京乾坤科美科技有限公司 ";
             this.tSSLCopyRight.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -112,7 +115,7 @@
             // 
             this.splitter1.Location = new System.Drawing.Point(153, 30);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 495);
+            this.splitter1.Size = new System.Drawing.Size(3, 612);
             this.splitter1.TabIndex = 11;
             this.splitter1.TabStop = false;
             // 
@@ -122,7 +125,7 @@
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelLeft.Location = new System.Drawing.Point(3, 30);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(150, 495);
+            this.panelLeft.Size = new System.Drawing.Size(150, 612);
             this.panelLeft.TabIndex = 12;
             // 
             // pushPanel1
@@ -133,12 +136,15 @@
             this.pushPanel1.Location = new System.Drawing.Point(0, 0);
             this.pushPanel1.Name = "pushPanel1";
             this.pushPanel1.RoundStyle = UILibrary.RoundStyle.All;
-            this.pushPanel1.Size = new System.Drawing.Size(150, 495);
+            this.pushPanel1.Size = new System.Drawing.Size(150, 612);
             this.pushPanel1.TabIndex = 6;
             // 
             // pushPanelItem1
             // 
             this.pushPanelItem1.CaptionFont = new System.Drawing.Font("Microsoft YaHei UI", 11.25F);
+            this.pushPanelItem1.Controls.Add(this.btnBorrowLog);
+            this.pushPanelItem1.Controls.Add(this.btnReturn);
+            this.pushPanelItem1.Controls.Add(this.btnBorrow);
             this.pushPanelItem1.Controls.Add(this.btnLabelConfig);
             this.pushPanelItem1.Controls.Add(this.btnUser);
             this.pushPanelItem1.Controls.Add(this.btnBox);
@@ -150,9 +156,29 @@
             this.pushPanelItem1.RoundStyle = UILibrary.RoundStyle.All;
             this.pushPanelItem1.Text = "菜单";
             // 
+            // btnReturn
+            // 
+            this.btnReturn.Location = new System.Drawing.Point(15, 426);
+            this.btnReturn.Name = "btnReturn";
+            this.btnReturn.Size = new System.Drawing.Size(117, 46);
+            this.btnReturn.TabIndex = 7;
+            this.btnReturn.Text = "归还操作";
+            this.btnReturn.UseVisualStyleBackColor = true;
+            this.btnReturn.Click += new System.EventHandler(this.btnReturn_Click);
+            // 
+            // btnBorrow
+            // 
+            this.btnBorrow.Location = new System.Drawing.Point(15, 361);
+            this.btnBorrow.Name = "btnBorrow";
+            this.btnBorrow.Size = new System.Drawing.Size(117, 46);
+            this.btnBorrow.TabIndex = 6;
+            this.btnBorrow.Text = "借阅操作";
+            this.btnBorrow.UseVisualStyleBackColor = true;
+            this.btnBorrow.Click += new System.EventHandler(this.btnBorrow_Click);
+            // 
             // btnLabelConfig
             // 
-            this.btnLabelConfig.Location = new System.Drawing.Point(17, 322);
+            this.btnLabelConfig.Location = new System.Drawing.Point(17, 297);
             this.btnLabelConfig.Name = "btnLabelConfig";
             this.btnLabelConfig.Size = new System.Drawing.Size(117, 46);
             this.btnLabelConfig.TabIndex = 5;
@@ -162,7 +188,7 @@
             // 
             // btnUser
             // 
-            this.btnUser.Location = new System.Drawing.Point(17, 391);
+            this.btnUser.Location = new System.Drawing.Point(17, 553);
             this.btnUser.Name = "btnUser";
             this.btnUser.Size = new System.Drawing.Size(117, 46);
             this.btnUser.TabIndex = 4;
@@ -172,7 +198,7 @@
             // 
             // btnBox
             // 
-            this.btnBox.Location = new System.Drawing.Point(17, 253);
+            this.btnBox.Location = new System.Drawing.Point(17, 234);
             this.btnBox.Name = "btnBox";
             this.btnBox.Size = new System.Drawing.Size(117, 46);
             this.btnBox.TabIndex = 3;
@@ -182,7 +208,7 @@
             // 
             // btnFloorLabel
             // 
-            this.btnFloorLabel.Location = new System.Drawing.Point(17, 184);
+            this.btnFloorLabel.Location = new System.Drawing.Point(17, 171);
             this.btnFloorLabel.Name = "btnFloorLabel";
             this.btnFloorLabel.Size = new System.Drawing.Size(117, 46);
             this.btnFloorLabel.TabIndex = 2;
@@ -192,7 +218,7 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(17, 115);
+            this.btnSearch.Location = new System.Drawing.Point(17, 107);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(117, 46);
             this.btnSearch.TabIndex = 1;
@@ -202,7 +228,7 @@
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(17, 46);
+            this.btnExport.Location = new System.Drawing.Point(17, 42);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(117, 46);
             this.btnExport.TabIndex = 0;
@@ -210,11 +236,21 @@
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
+            // btnBorrowLog
+            // 
+            this.btnBorrowLog.Location = new System.Drawing.Point(15, 491);
+            this.btnBorrowLog.Name = "btnBorrowLog";
+            this.btnBorrowLog.Size = new System.Drawing.Size(117, 46);
+            this.btnBorrowLog.TabIndex = 8;
+            this.btnBorrowLog.Text = "借阅查询";
+            this.btnBorrowLog.UseVisualStyleBackColor = true;
+            this.btnBorrowLog.Click += new System.EventHandler(this.btnBorrowLog_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(823, 550);
+            this.ClientSize = new System.Drawing.Size(823, 669);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.panelLeft);
             this.Controls.Add(this.statusStrip1);
@@ -261,6 +297,9 @@
         private System.Windows.Forms.Button btnLabelConfig;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel tsslchangepwd;
+        private System.Windows.Forms.Button btnBorrow;
+        private System.Windows.Forms.Button btnReturn;
+        private System.Windows.Forms.Button btnBorrowLog;
     }
 }
 

@@ -187,6 +187,8 @@
     <Compile Include="Attributes\AuthorizeRestfulAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArchiveRestfullController.cs" />
+    <Compile Include="Controllers\BorrowerRestfullController.cs" />
+    <Compile Include="Controllers\BorrowRestfullController.cs" />
     <Compile Include="Controllers\ContractRestfullController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -201,6 +203,11 @@
     <Compile Include="Models\AccountContext.cs" />
     <Compile Include="Models\Beans\Archive.cs" />
     <Compile Include="Models\Beans\BatchImportResult.cs" />
+    <Compile Include="Models\Beans\Borrow.cs" />
+    <Compile Include="Models\Beans\Borrower.cs" />
+    <Compile Include="Models\Beans\BorrowLogBean.cs" />
+    <Compile Include="Models\Beans\BorrowParameter.cs" />
+    <Compile Include="Models\Beans\Constant.cs" />
     <Compile Include="Models\Beans\ContractQuery.cs" />
     <Compile Include="Models\Beans\FloorLabel.cs" />
     <Compile Include="Models\Beans\InventoryLabelInfo.cs" />
@@ -209,8 +216,12 @@
     <Compile Include="Models\Beans\Contract.cs" />
     <Compile Include="Models\Beans\LabelInfo.cs" />
     <Compile Include="Models\Beans\Page.cs" />
+    <Compile Include="Models\Beans\PrintBorrowBean.cs" />
     <Compile Include="Models\Beans\User.cs" />
     <Compile Include="Models\Beans\BoxLabel.cs" />
+    <Compile Include="Models\BorrowContext.cs" />
+    <Compile Include="Models\BorrowDateComperater.cs" />
+    <Compile Include="Models\BorrowerContext.cs" />
     <Compile Include="Models\ContractContext.cs" />
     <Compile Include="Models\LabelContext.cs" />
     <Compile Include="Models\MySqlHelper.cs" />

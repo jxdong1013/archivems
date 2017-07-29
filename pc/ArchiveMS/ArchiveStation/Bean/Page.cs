@@ -16,6 +16,12 @@ namespace ArchiveStation.Bean
         public List<T> Data { get; set; }
     }
 
+    public class PageObject<T> : PageBase
+    {
+        public T Key { get; set; }
+        public List<T> Data { get; set; }
+    }
+
     public class PageBase
     {
         public int PageIdx { get; set; }

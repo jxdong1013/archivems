@@ -526,5 +526,193 @@ namespace ArchiveStation
                 return null;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rfid"></param>
+        /// <returns></returns>
+        public ArchiveListResult Borrow_GetArchiveListOfBox(string rfid , int status )
+        {
+            try
+            {
+                string url = Bean.Variable.RootUrl() + "/BorrowRestfull/GetArchiveListOfBox?boxrfid=" + rfid+"&status="+status;
+                         
+                HttpUtil util = new HttpUtil();
+                String responseContent = "";
+                WebHeaderCollection header = new WebHeaderCollection();
+                HttpStatusCode statusCode = util.Post(Variable.globelCookieContainer,
+                    url, "", "application/x-www-form-urlencoded", "Get",
+                    ref responseContent, ref header);
+                if (statusCode != HttpStatusCode.OK)
+                {
+                    return null;
+                }
+                ArchiveListResult result = JsonConvert.DeserializeObject<ArchiveListResult>(responseContent);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                return null;
+            }
+        }
+
+
+
+        public BorrowerPageResult QueryBorrowerByPage(Page<BorrowerBean> page )
+        {
+            try
+            {
+                string url = Bean.Variable.RootUrl() + "/BorrowerRestfull/QueryBorrowerByPage";
+                String paramsStr = String.Format("?name={0}&idcard={1}&department={2}&pageidx={3}&pagesize={4}", page.Key, page.Key, page.Key,  page.PageIdx, page.PageSize);
+                url += paramsStr;
+                HttpUtil util = new HttpUtil();
+                String responseContent = "";
+                WebHeaderCollection header = new WebHeaderCollection();
+
+                HttpStatusCode statusCode = util.Post(Variable.globelCookieContainer,
+                    url, "", "application/x-www-form-urlencoded", "Get",
+                    ref responseContent, ref header);
+                if (statusCode != HttpStatusCode.OK)
+                {
+                    return null;
+                }
+                BorrowerPageResult result = JsonConvert.DeserializeObject<BorrowerPageResult>(responseContent);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                return null;
+            }
+        }
+
+
+
+        public BorrowResult Borrow(BorrowParameter parameter)
+        {
+            try
+            {
+                string url = Bean.Variable.RootUrl() + "/BorrowRestfull/Borrow";
+                String jsonParam = JsonConvert.SerializeObject(parameter);
+                String paramstr = String.Format("{{parameter:{0}}}", jsonParam);  // String.Format("{{boxs:'{0}',name:{1},idcard:{2},department:{3},operatename:{4},operatorid:{5}}}", parameter.boxids, parameter.name , parameter.idcard, parameter.department,parameter.operatename,parameter.operateid);
+                HttpUtil util = new HttpUtil();
+                String responseContent = "";
+                WebHeaderCollection header = new WebHeaderCollection();
+                HttpStatusCode statusCode = util.Post(Variable.globelCookieContainer,
+                    url, paramstr, "application/json", "POST",
+                    ref responseContent, ref header);
+                if (statusCode != HttpStatusCode.OK)
+                {
+                    return null;
+                }
+                BorrowResult result = JsonConvert.DeserializeObject<BorrowResult>(responseContent);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                return null;
+            }
+        }
+
+
+        public BorrowLogPageResult QueryBorrowLogByPage( PageObject<BorrowLogBean> page )
+        {
+            try
+            {
+                string url = Bean.Variable.RootUrl() + "/BorrowRestfull/QueryBorrowLogByPage";
+                string json = JsonConvert.SerializeObject( page.Key );
+                //String paramsStr = String.Format("?name={0}&idcard={1}&department={2}&pageidx={3}&pagesize={4}", page.Key, page.Key, page.Key, page.PageIdx, page.PageSize);
+                string parameterStr = string.Format("{{parameter:{0}, pageidx:{1},pagesize:{2}}}", json, page.PageIdx , page.PageSize);
+                //url += paramsStr;
+                HttpUtil util = new HttpUtil();
+                String responseContent = "";
+                WebHeaderCollection header = new WebHeaderCollection();
+
+                HttpStatusCode statusCode = util.Post(Variable.globelCookieContainer,
+                    url, parameterStr , "application/json", "POST",
+                    ref responseContent, ref header);
+                if (statusCode != HttpStatusCode.OK)
+                {
+                    return null;
+                }
+                BorrowLogPageResult result = JsonConvert.DeserializeObject<BorrowLogPageResult>(responseContent);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                return null;
+            }
+        }
+    
+
+        public BaseBean Return(BorrowParameter parameter){
+            try
+            {
+                string url = Bean.Variable.RootUrl() + "/BorrowRestfull/Return";
+                String jsonParam = JsonConvert.SerializeObject(parameter);
+                String paramstr = String.Format("{{parameter:{0}}}", jsonParam);  // String.Format("{{boxs:'{0}',name:{1},idcard:{2},department:{3},operatename:{4},operatorid:{5}}}", parameter.boxids, parameter.name , parameter.idcard, parameter.department,parameter.operatename,parameter.operateid);
+                HttpUtil util = new HttpUtil();
+                String responseContent = "";
+                WebHeaderCollection header = new WebHeaderCollection();
+                HttpStatusCode statusCode = util.Post(Variable.globelCookieContainer,
+                    url, paramstr, "application/json", "POST",
+                    ref responseContent, ref header);
+                if (statusCode != HttpStatusCode.OK)
+                {
+                    return null;
+                }
+                BorrowResult result = JsonConvert.DeserializeObject<BorrowResult>(responseContent);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                return null;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rfid"></param>
+        /// <returns></returns>
+        public BorrowListResult Borrow_GetArchiveListByBorrower(int borrowerid)
+        {
+            try
+            {
+                string url = Bean.Variable.RootUrl() + "/BorrowRestfull/GetArchiveListOfBorrower?borrowerid=" +borrowerid;
+
+                HttpUtil util = new HttpUtil();
+                String responseContent = "";
+                WebHeaderCollection header = new WebHeaderCollection();
+                HttpStatusCode statusCode = util.Post(Variable.globelCookieContainer,
+                    url, "", "application/x-www-form-urlencoded", "Get",
+                    ref responseContent, ref header);
+                if (statusCode != HttpStatusCode.OK)
+                {
+                    return null;
+                }
+                BorrowListResult result = JsonConvert.DeserializeObject<BorrowListResult>(responseContent);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException(ex);
+                return null;
+            }
+        }
+
+
     }
 }
