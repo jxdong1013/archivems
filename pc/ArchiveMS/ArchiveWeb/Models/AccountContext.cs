@@ -40,8 +40,22 @@ namespace ContractMvcWeb.Models
             }
             model.username = result.Tables[0].Rows[0]["username"].ToString();
             model.password = result.Tables[0].Rows[0]["password"].ToString();
-            model.createtime=DateTime.Parse( result.Tables[0].Rows[0]["createtime"].ToString());
-            model.modifytime=DateTime.Parse( result.Tables[0].Rows[0]["modifytime"].ToString());
+            DateTime temp;
+            if (DateTime.TryParse(result.Tables[0].Rows[0]["createtime"].ToString(), out temp))
+            {
+                model.createtime = temp;//DateTime.Parse( result.Tables[0].Rows[0]["createtime"].ToString());
+            }else
+            {
+                model.createtime = DateTime.Now;
+            }
+            if (DateTime.TryParse(result.Tables[0].Rows[0]["modifytime"].ToString(), out temp))
+            {
+                model.modifytime = temp; //DateTime.Parse( result.Tables[0].Rows[0]["modifytime"].ToString());
+            }else
+            {
+                model.modifytime = model.createtime;
+            }
+
             if (result.Tables[0].Rows[0]["enable"].ToString() != "")
             {
                 model.enable = int.Parse(result.Tables[0].Rows[0]["enable"].ToString());
